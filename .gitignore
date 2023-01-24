@@ -360,4 +360,6 @@ poetry.toml
 .history
 .ionide
 
+.DS_STORE
+
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,pycharm+all,python,visualstudiocode
