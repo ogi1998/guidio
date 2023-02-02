@@ -8,7 +8,7 @@ import Register from "./components/pages/Register"
 
 const App = () => {
 	return (
-		<Box minHeight='100vh' display='flex' flexDirection='column'>
+		<Box minHeight='100vh' display='flex' flexDirection='column' bgcolor='light.main'>
 			<Navbar />
 			<Routes>
 				<Route path="/" element={<Landing />} />
