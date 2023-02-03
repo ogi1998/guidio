@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Register = () => {
     return (
         <Box
-            width={0.3}
+            width={{sx: 0.5, md:0.3}}
             alignSelf="center"
             bgcolor="white"
             mt="auto"
