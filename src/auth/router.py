@@ -34,6 +34,4 @@ def login_user(data: schemas.LoginSchema, response: Response, db=DBDependency):
 
 @router.post('/logout', dependencies=[ValidToken])
 def logout_user(response: Response):
-    response.delete_cookie(key=AUTH_TOKEN)
-    response.status_code = status.HTTP_200_OK
-    return response
+    return service.perform_user_logout(response)

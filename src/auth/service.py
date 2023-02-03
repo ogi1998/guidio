@@ -3,7 +3,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Match
 
-from fastapi import Depends
+from fastapi import Depends, Response, status
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
@@ -12,6 +12,7 @@ from auth import schemas
 from auth.dependencies import has_valid_token
 from auth.exceptions import invalid_credentials_exception, token_exception
 from core.dependencies import DBDependency
+from core.settings import AUTH_TOKEN
 from users import models
 from users.models import User
 
@@ -158,3 +159,9 @@ def create_user(db: Session, data: schemas.RegistrationSchema) -> User:
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def perform_user_logout(response: Response):
+    response.delete_cookie(key=AUTH_TOKEN)
+    response.status_code = status.HTTP_200_OK
+    return response
