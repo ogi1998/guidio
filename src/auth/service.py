@@ -121,20 +121,6 @@ def authenticate_user(email: str, password: str, db: Session) -> User | bool:
     return user
 
 
-def get_user_by_email(db: Session, email: str) -> User | None:
-    """Search for user in database based on provided email.
-
-    Args:
-        db (Session): database Session
-        email (str): user's provided email
-
-    Returns:
-        object: User's object if user exist
-        None: If user doesn't exist
-    """
-    return db.query(models.User).filter(models.User.email == email).first()
-
-
 def create_user(db: Session, data: schemas.RegistrationSchema) -> User:
     """Create user in database and return created object
 
