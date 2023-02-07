@@ -10,6 +10,11 @@ def get_list_of_guides(db: Session) -> list[Guide] | None:
     return guides
 
 
+def get_guide_by_id(db: Session, guide_id: int) -> Guide | None:
+    guide = db.query(Guide).get(guide_id)
+    return guide
+
+
 def save_guide(db: Session, data: GuideCreateUpdateSchema, user_id: int, guide=None) -> Guide:
     if not guide:
         guide = Guide()

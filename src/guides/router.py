@@ -22,6 +22,18 @@ def get_list_of_guides(db=DBDependency):
     return guides
 
 
+@router.get("/{guide_id}",
+            dependencies=[ValidToken],
+            description="Get single guide by ID",
+            status_code=status.HTTP_200_OK,
+            response_model=schemas.GuideReadSchema)
+def get_guide_by_id(guide_id: int, db=DBDependency):
+    guide = service.get_guide_by_id(db, guide_id)
+    if not guide:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
+    return guide
+
+
 @router.post("/", dependencies=[ValidToken],
              description="Create guide",
              status_code=status.HTTP_201_CREATED,
