@@ -25,3 +25,10 @@ def save_guide(db: Session, data: GuideCreateUpdateSchema, user_id: int, guide=N
     db.commit()
     db.refresh(guide)
     return guide
+
+
+def delete_guide(db: Session, guide_id: int) -> None:
+    guide = db.query(Guide).get(guide_id)
+    db.delete(guide)
+    db.commit()
+    return None

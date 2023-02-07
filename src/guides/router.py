@@ -59,3 +59,18 @@ def create_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
     if user.user_id != guide.user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     return service.save_guide(db, data, user_id=user.user_id, guide=guide)
+
+
+@router.delete("/{guide_id}",
+               dependencies=[ValidToken],
+               description="Delete guide",
+               status_code=status.HTTP_204_NO_CONTENT)
+def delete_guide(guide_id: int,
+                 db=DBDependency,
+                 user: User = Depends(get_current_user)):
+    guide = service.get_guide_by_id(db, guide_id)
+    if not guide:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
+    if user.user_id != guide.user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    return service.delete_guide(db, guide_id)
