@@ -5,8 +5,8 @@ from core.models import Guide
 from guides.schemas import GuideCreateUpdateSchema
 
 
-def get_list_of_guides(db: Session) -> list[Guide] | None:
-    guides = db.query(Guide).order_by(desc(Guide.last_modified)).all()
+def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | None:
+    guides = db.query(Guide).order_by(desc(Guide.last_modified)).offset(page).limit(page_size).all()
     return guides
 
 
