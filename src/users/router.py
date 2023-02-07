@@ -13,6 +13,14 @@ from users.schemas import UserUpdateSchema, UserReadSchema
 router = APIRouter()
 
 
+@router.get("/user/{user_id}", description="Get user profile by id", response_model=UserReadSchema)
+def get_user_profile_by_id(user_id: int, db=DBDependency):
+    user = service.get_user_profile_by_id(user_id, db)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return user
+
+
 @router.put('/user/{user_id}', dependencies=[ValidToken], description="Update user profile",
             response_model=UserReadSchema)
 def update_user_profile(user_id: int, data: UserUpdateSchema, db=DBDependency,
