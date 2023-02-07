@@ -1,6 +1,10 @@
+import Header from "./Header"
+
 const Landing = () => {
   return (
-	<div>Landing</div>
+	<div>
+		<Header />
+	</div>
   )
 }
 export default Landing

@@ -2,7 +2,7 @@ import { Box, CssBaseline } from "@mui/material"
 import { Route, Routes } from "react-router"
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
-import Landing from "./components/pages/Landing"
+import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
 
