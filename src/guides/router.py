@@ -44,3 +44,18 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
     if not user:
         raise invalid_credentials_exception()
     return service.save_guide(db, data, user_id=user.user_id)
+
+
+@router.put("/{guide_id}", dependencies=[ValidToken],
+            description="Update guide",
+            status_code=status.HTTP_201_CREATED,
+            response_model=schemas.GuideReadSchema)
+def create_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
+                 db=DBDependency,
+                 user: User = Depends(get_current_user)):
+    guide = service.get_guide_by_id(db, guide_id)
+    if not guide:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
+    if user.user_id != guide.user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    return service.save_guide(db, data, user_id=user.user_id, guide=guide)
