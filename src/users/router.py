@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Response
-from pydantic import EmailStr
 
 from auth.dependencies import ValidToken
 from auth.exceptions import invalid_credentials_exception
@@ -7,7 +6,7 @@ from auth.service import get_current_user
 from auth.service import perform_user_logout
 from core.dependencies import DBDependency
 from users import service
-from users.models import User
+from core.models import User
 from users.schemas import UserUpdateSchema, UserReadSchema
 
 router = APIRouter()

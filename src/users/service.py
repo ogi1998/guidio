@@ -1,7 +1,6 @@
-from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
-from users.models import User
+from core.models import User
 from users.schemas import UserUpdateSchema
 
 

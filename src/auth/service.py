@@ -13,8 +13,7 @@ from auth.dependencies import has_valid_token
 from auth.exceptions import invalid_credentials_exception, token_exception
 from core.dependencies import DBDependency
 from core.settings import AUTH_TOKEN
-from users import models
-from users.models import User
+from core.models import User
 
 # CONSTANTS
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
