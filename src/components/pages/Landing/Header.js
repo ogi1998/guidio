@@ -6,7 +6,7 @@ import SearchInput from '../../ui/SearchInput';
 const Header = () => {
     return (
         <Box py={10} textAlign="center" minHeight="95vh">
-            <Typography variant="h3" fontWeight="bold" my={2}>
+            <Typography variant="h2" fontWeight="bold" my={7}>
                 Learn Anytime, Anywhere, <br />
                 and Accelerate Future
             </Typography>
@@ -14,12 +14,12 @@ const Header = () => {
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <Search />
+                            <Search sx={{fontSize: '2rem'}} />
                         </InputAdornment>
                     ),
                 }}
                 placeholder="Search..."
-                sx={{ width: '50%' }}
+                sx={{ width: '50%'}}
             />
         </Box>
     );

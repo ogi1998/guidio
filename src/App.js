@@ -6,9 +6,11 @@ import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
 
+import bkg from './assets/background.png';
+
 const App = () => {
 	return (
-		<Box minHeight='100vh' display='flex' flexDirection='column' bgcolor='light.main'>
+		<Box sx={{backgroundImage: `url(${bkg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat'}} minHeight='100vh' display='flex' flexDirection='column' bgcolor='light.main'>
 			<Navbar />
 			<Routes>
 				<Route path="/" element={<Landing />} />
