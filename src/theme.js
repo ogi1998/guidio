@@ -23,6 +23,9 @@ const theme = createTheme({
         },
 		shadow: {
 			main: 'rgba(0,0,0,0.15)'
+		},
+		gray: {
+			main: '#B3B3B3'
 		}
     },
 });

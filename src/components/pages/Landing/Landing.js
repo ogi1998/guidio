@@ -1,14 +1,12 @@
 import { Box } from "@mui/material"
+import Courses from "./Courses"
 import Header from "./Header"
-
-
-import ComboBox from "../../ui/ComboBox";
 
 const Landing = () => {
   return (
-	<Box >
+	<Box px={10}>
 		<Header />
-		<ComboBox />
+		<Courses />
 	</Box>
   )
 }
