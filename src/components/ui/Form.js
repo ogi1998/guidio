@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 
@@ -9,6 +9,7 @@ const Form = (props) => {
 		<Box
 			width="50vw"
 			display="flex"
+			alignItems='flex-start'
 			sx={{
 				background: `url(${bkg})`,
 				backgroundSize: "115%",
@@ -17,9 +18,9 @@ const Form = (props) => {
 			}}
 		>
 			<Grid container display="flex" justifyContent="center" mt={15}>
-				<NavLink to="/">
+				<Link component={NavLink} to="/">
 					<Logo color="primary.main" />
-				</NavLink>
+				</Link>
 			</Grid>
 			<Grid container>
 				{props.children}

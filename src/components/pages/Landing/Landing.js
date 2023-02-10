@@ -3,12 +3,14 @@ import Courses from "./Courses";
 import Header from "./Header";
 
 import bkg from '../../../assets/background.png';
+import { useEffect } from "react";
 
-const Landing = (props) => {
-	props.setShowLayout(true);
+const Landing = ({setShowLayout}) => {
+	useEffect(() => {
+		setShowLayout(true);
+	}, [setShowLayout])
 	return (
 		<Box
-			
 			sx={{
 				backgroundImage: `url(${bkg})`,
 				backgroundSize: "100%",

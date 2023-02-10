@@ -1,11 +1,14 @@
 import { Box, Button, Input, Link, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import bkg from "../../assets/background2.png";
 import Form from "../ui/Form";
 
-const Register = (props) => {
-	props.setShowLayout(false);
+const Register = ({setShowLayout}) => {
+	useEffect(() => {
+		setShowLayout(false);
+	}, [setShowLayout])
 	return (
 		<Box
 			width="100vw"
