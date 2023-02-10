@@ -94,8 +94,8 @@ const Courses = () => {
 						border: (theme) =>
 							`1px solid ${theme.palette.grey.main}`,
 						"& .MuiPaginationItem-root": {
-							margin: 0,
-							borderRadius: "1px",
+							my: 5,
+							borderRadius: "1px"
 						},
 						"& .MuiPaginationItem-root:hover": {
 							color: "light.main",
@@ -104,7 +104,7 @@ const Courses = () => {
 						"& .MuiButtonBase-root.Mui-selected": {
 							color: "light.main",
 							backgroundColor: "secondary.main",
-						},
+						}
 					}}
 				/>
 			</Stack>

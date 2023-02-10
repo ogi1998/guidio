@@ -7,6 +7,7 @@ const theme = createTheme({
         },
         secondary: {
             main: '#727CF5',
+			light: '#A6ADFF85'
         },
         success: {
             main: '#0ACF97',
@@ -25,6 +26,7 @@ const theme = createTheme({
 			main: 'rgba(0,0,0,0.15)'
 		},
 		gray: {
+			dark: '#000000A6',
 			main: '#B3B3B3'
 		}
     },
