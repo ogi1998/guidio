@@ -1,8 +1,16 @@
+from fastapi import HTTPException, status
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from core.models import Guide
 from guides.schemas import GuideCreateUpdateSchema
+
+
+def count_pages(db: Session, page_size: int):
+    count_of_guides: int = db.query(Guide.guide_id).order_by(desc(Guide.last_modified)).count()
+    division: tuple[int, int] = divmod(count_of_guides, page_size)
+    pages: int = division[0] + 1 if division[1] else division[0]
+    return pages
 
 
 def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | None:
