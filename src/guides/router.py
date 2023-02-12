@@ -19,14 +19,14 @@ def get_list_of_guides(db=DBDependency,
                        page: int = Query(default=1, ge=1, description="Page to request"),
                        page_size: int = Query(default=50, ge=1, le=100, description="Page size")):
     total_pages = service.count_pages(db, page_size)
+    guides = service.get_list_of_guides(db, page=page-1, page_size=page_size)
+    if not guides:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guides not found")
     if page > total_pages:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Requested a non-existent page",
         )
-    guides = service.get_list_of_guides(db, page=page-1, page_size=page_size)
-    if not guides:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guides not found")
     return schemas.GuideListReadSchema(pages=total_pages, guides=guides)
 
 
