@@ -4,7 +4,7 @@ from core.schemas import BaseModelSchema
 from users.schemas import UserReadSchema
 
 
-class GuideListReadSchema(BaseModelSchema):
+class GuideListSingleSchema(BaseModelSchema):
     guide_id: int
     title: str
     last_modified: datetime
@@ -12,6 +12,11 @@ class GuideListReadSchema(BaseModelSchema):
 
     class Config:
         orm_mode = True
+
+
+class GuideListReadSchema(BaseModelSchema):
+    pages: int
+    guides: list[GuideListSingleSchema]
 
 
 class GuideCreateUpdateSchema(BaseModelSchema):
