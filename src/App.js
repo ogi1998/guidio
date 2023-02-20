@@ -1,6 +1,11 @@
 import { Box, CssBaseline } from "@mui/material"
-import { useState } from "react"
+
+import { useEffect } from "react"
+
+import { useDispatch, useSelector } from "react-redux";
+import {uiActions} from './store/uiSlice';
 import { Route, Routes } from "react-router"
+
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
 import Landing from "./components/pages/Landing/Landing"
@@ -9,17 +14,26 @@ import Register from "./components/pages/Register"
 
 
 
+
+
 const App = () => {
-	const [showLayout, setShowLayout] = useState(true);
+	const dispatch = useDispatch();
+
+	const shouldShowLayout = useSelector(state => state.ui.shouldShowLayout);
+
+	useEffect(() => {
+		dispatch(uiActions.showLayout());
+	}, [dispatch])
+
 	return (
 		<Box minHeight='100vh' display='flex' flexDirection='column' bgcolor='light.main'>
-			{showLayout && <Navbar />}
+			{shouldShowLayout && <Navbar />}
 			<Routes>
-				<Route path="/" element={<Landing setShowLayout={setShowLayout}/>} />
-				<Route path="/login" element={<Login setShowLayout={setShowLayout} />} />
-				<Route path="/register" element={<Register setShowLayout={setShowLayout} />} />
+				<Route path="/" element={<Landing />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/register" element={<Register />} />
 			</Routes>
-			{showLayout && <Footer />}
+			{shouldShowLayout && <Footer />}
 			<CssBaseline />
 		</Box>
 	)

@@ -1,14 +1,20 @@
 import { Box, Button, Input, Link, Typography } from "@mui/material";
-import { useEffect } from "react";
+import bkg from "../../assets/background2.png";
+
 import { NavLink } from "react-router-dom";
 
-import bkg from "../../assets/background2.png";
+import { useEffect } from "react";
+import { uiActions } from "../../store/uiSlice";
+import { useDispatch } from "react-redux";
+
 import Form from "../ui/Form";
 
-const Register = ({setShowLayout}) => {
+const Register = () => {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		setShowLayout(false);
-	}, [setShowLayout])
+		dispatch(uiActions.hideLayout());
+	}, [dispatch]);
 	return (
 		<Box
 			width="100vw"

@@ -2,13 +2,18 @@ import { Box } from "@mui/material";
 import Courses from "./Courses";
 import Header from "./Header";
 
+import {uiActions} from '../../../store/uiSlice';
+
 import bkg from '../../../assets/background.png';
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const Landing = ({setShowLayout}) => {
+const Landing = () => {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		setShowLayout(true);
-	}, [setShowLayout])
+		dispatch(uiActions.showLayout());
+	}, [dispatch])
 	return (
 		<Box
 			sx={{

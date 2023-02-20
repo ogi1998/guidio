@@ -2,13 +2,18 @@ import { Box, Button, Input, Link, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
+import { uiActions } from "../../store/uiSlice";
+
 import bkg from "../../assets/background2.png";
 import Form from "../ui/Form";
+import { useDispatch } from "react-redux";
 
-const Login = ({setShowLayout}) => {
+const Login = () => {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		setShowLayout(false);
-	}, [setShowLayout]);
+		dispatch(uiActions.hideLayout());
+	}, [dispatch])
 	return (
 		<Box
 			width="100vw"
