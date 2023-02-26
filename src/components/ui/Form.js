@@ -1,6 +1,6 @@
 import { Box, Grid, Link } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Logo from "./Logo";
+import Logo from "../layout/Logo";
 
 import bkg from '../../assets/background2.png';
 

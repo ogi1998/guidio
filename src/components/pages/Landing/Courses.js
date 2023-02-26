@@ -9,82 +9,83 @@ import {
 	ButtonBase
 } from "@mui/material";
 import { Box } from "@mui/system";
-import ComboBox from "../../ui/ComboBox";
+import Dropdown from "../../ui/Dropdown";
 
 import cardImg from "../../../assets/card_item.png";
 import { Favorite, PersonOutline, Visibility } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
+import { FaEye, FaHeart, FaUser } from "react-icons/fa";
 
 const Courses = () => {
+	const dropdownItems = [
+		{
+			title: 'Popular',
+			click: () => console.log('popular')
+		},
+		{
+			title: 'New',
+			click: () => console.log('new')
+		}
+	]
 	return (
-		<Box>
-			<ComboBox />
-			<Grid my={2} container spacing={8}>
-				{[1, 2, 3, 4, 5, 6].map((item) => (
-					<Grid item sm={12} md={4} key={item}>
-						<Card
-							component={ButtonBase}
-							LinkComponent={NavLink}
-							to="/login"
-							sx={{
-								display: "block",
-								maxWidth: "100%",
-								borderRadius: "30px",
-								boxShadow: (theme) =>
-									`0px 1px 10px ${theme.palette.secondary.main}`,
-							}}
-						>
-							<CardMedia
-								sx={{
-									height: 300,
-									background: `url(${cardImg})`,
-									backgroundSize: "cover",
-									":hover": {
-										background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(114, 124, 245, 0.6) 73.44%),
-										linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))
-										, url(${cardImg})`,
-										backgroundSize: "cover",
-									},
-								}}
-								component="div"
-							/>
-
-							<CardContent
-								sx={{
-									display: "flex",
-									justifyContent: "space-between",
-								}}
-							>
-								<Box display="flex" alignItems="center">
-									<PersonOutline
-										sx={{
-											mr: 1,
-											backgroundColor: "success.main",
-											borderRadius: "50%",
-										}}
-									/>
-									<Typography variant="h5">
-										Lorem ipsum dolor sit amet co.
-									</Typography>
-								</Box>
-								<Box display="flex" fontSize={20}>
-									<Box
-										display="flex"
-										alignItems="center"
-										mr={1}
-									>
-										<Favorite /> 132
-									</Box>
-									<Box display="flex" alignItems="center">
-										<Visibility />
-										39k
-									</Box>
-								</Box>
-							</CardContent>
-						</Card>
-					</Grid>
-				))}
-			</Grid>
+		<div>
+			<Dropdown title="Popular" items={dropdownItems} />
+			<div className="flex flex-wrap justify-between w-full">
+				<div className=" w-[30%] mb-10 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+				<div className=" w-[30%] mb-5 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+				<div className=" w-[30%] mb-5 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+				<div className=" w-[30%] mb-5 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+				<div className=" w-[30%] mb-5 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+				<div className=" w-[30%] mb-5 bg-light-main">
+					<img src={cardImg} alt="Card Item" />
+					<div className="flex items-center px-2 py-4 shadow-secondary-main shadow-normal rounded-b-3xl">
+						<FaUser className="rounded-[50%] bg-success-main text-2xl p-1" />
+						<p className="text-2xl">Lorem ipsum dolor sit amet co.</p>
+						<span className="flex items-center text-xl"><FaHeart /> 132</span>
+						<span className="flex items-center text-xl"><FaEye /> 39k</span>
+					</div>
+				</div>
+			</div>
 			<Stack alignItems="center" my={2}>
 				<Pagination
 					count={2}
@@ -108,7 +109,7 @@ const Courses = () => {
 					}}
 				/>
 			</Stack>
-		</Box>
+		</div>
 	);
 };
 export default Courses;
