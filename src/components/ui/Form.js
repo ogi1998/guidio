@@ -1,31 +1,21 @@
-import { Box, Grid, Link } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Logo from "../layout/Logo";
 
-import bkg from '../../assets/background2.png';
+import logo from '../../assets/logo.png';
 
 const Form = (props) => {
 	return (
-		<Box
-			width="50vw"
-			display="flex"
-			alignItems='flex-start'
-			sx={{
-				background: `url(${bkg})`,
-				backgroundSize: "115%",
-				boxShadow: (theme) =>
-					`0px 1px 30px ${theme.palette.secondary.light}`,
-			}}
-		>
-			<Grid container display="flex" justifyContent="center" mt={15}>
-				<Link component={NavLink} to="/">
-					<Logo color="primary.main" />
-				</Link>
-			</Grid>
-			<Grid container>
+		<div className=" w-screen h-screen bg-form bg-cover flex justify-center items-center">
+		<div className="w-1/2 bg-form bg-cover flex shadow-normal-focused shadow-secondary-main">
+			<div className="w-1/2 relative">
+				<NavLink to='/' className="bg-secondary-main p-10 rounded-[50%] absolute left-1/4 top-10">
+					<img src={logo} alt="Guidio logo" />
+				</NavLink>
+			</div>
+			<form className="py-10 mr-10 w-1/2">
 				{props.children}
-			</Grid>
-		</Box>
+			</form>
+		</div>
+	</div>
 	);
 };
 export default Form;

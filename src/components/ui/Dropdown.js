@@ -9,11 +9,9 @@ const Dropdown = ({title, items}) => {
 		function handleDropdown(e) {
 			if (e.target.parentElement === ref.current.dropdown || e.target === ref.current.dropdown) {
 				setIsActive(true);
-				return;
 			}
 			else {
 				setIsActive(false);
-				return;
 			}
 		}
 		document.addEventListener('click', handleDropdown);
@@ -24,6 +22,8 @@ const Dropdown = ({title, items}) => {
 				<h4 className="
 				flex items-center py-2 px-4 font-bold text-xl text-gray-dark
 				shadow-normal shadow-secondary-main
+				transition-all ease duration-300
+				hover:shadow-normal-hover hover:shadow-secondary-main
 				rounded-3xl
 				hover:cursor-pointer"
 				ref={el => ref.current.dropdown = el}

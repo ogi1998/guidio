@@ -32,14 +32,21 @@ module.exports = {
       gray: {
         dark: '#000000A6',
         main: '#B3B3B3'
+      },
+      gradient: {
+        white: '#ffffff00',
+        secondary:'#727cf599'
       }
     },
     extend: {
       backgroundImage: {
         'hero': 'url("./assets/background.png")',
+        'form': 'url("./assets/background2.png")',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
       },
       boxShadow: {
         'normal': '0px 1px 10px',
+        'normal-hover': '0px 1px 20px',
         'normal-focused': '0px 1px 30px'
       }
     },
