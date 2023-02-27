@@ -1,9 +1,7 @@
-import { Box, CssBaseline } from "@mui/material"
-
 import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
-import {uiActions} from './store/uiSlice';
+import { uiActions } from './store/uiSlice';
 import { Route, Routes } from "react-router"
 
 import Footer from "./components/layout/Footer"
@@ -26,7 +24,7 @@ const App = () => {
 	}, [dispatch])
 
 	return (
-		<Box minHeight='100vh' display='flex' flexDirection='column' bgcolor='light.main'>
+		<div className="bg-hero min-h-full flex flex-col">
 			{shouldShowLayout && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Landing />} />
@@ -34,8 +32,7 @@ const App = () => {
 				<Route path="/register" element={<Register />} />
 			</Routes>
 			{shouldShowLayout && <Footer />}
-			<CssBaseline />
-		</Box>
+		</div>
 	)
 }
 export default App

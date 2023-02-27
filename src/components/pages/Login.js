@@ -1,12 +1,9 @@
-import { Box, Button, Input, Link, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import { uiActions } from "../../store/uiSlice";
-
-import bkg from "../../assets/background2.png";
-import Form from "../ui/Form";
 import { useDispatch } from "react-redux";
+import Form from "../ui/Form";
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -15,81 +12,26 @@ const Login = () => {
 		dispatch(uiActions.hideLayout());
 	}, [dispatch])
 	return (
-		<Box
-			width="100vw"
-			height="100vh"
-			display="flex"
-			alignItems="center"
-			justifyContent="center"
-			sx={{
-				background: `url(${bkg})`,
-				backgroundSize: "cover",
-			}}
-		>
-			<Form>
-				<Box component="form" width="100%" p={5}>
-					<Typography variant="h4" fontWeight="bold" pb={5}>
-						Login
-					</Typography>
-					<Box py={2}>
-						<Typography
-							color="gray.dark"
-							display="block"
-							variant="body1"
-							component="label"
-							fontWeight="bold"
-						>
-							Email
-						</Typography>
-						<Input
-							placeholder="Email address..."
-							color="gray"
-							fullWidth
-						/>
-					</Box>
-					<Box py={2}>
-						<Typography
-							color="gray.dark"
-							display="block"
-							variant="body1"
-							component="label"
-							fontWeight="bold"
-						>
-							Password
-						</Typography>
-						<Input
-							placeholder="Password..."
-							color="gray"
-							type="password"
-							fullWidth
-						/>
-					</Box>
-					<Button
-						type="submit"
-						color="secondary"
-						variant="contained"
-						sx={{ borderRadius: "20px", my: 5 }}
-					>
-						Sign In
-					</Button>
-					<Typography
-						color="gray.dark"
-						fontWeight="bold"
-						borderTop="1px solid gray"
-						pt={1}
-					>
-						Need an account?
-						<Link
-							color="gray.dark"
-							component={NavLink}
-							to="/register"
-						>
-							REGISTER
-						</Link>
-					</Typography>
-				</Box>
-			</Form>
-		</Box>
+		<Form>
+			<h1 className="text-4xl font-bold py-2">Login</h1>
+			<div className="w-full py-5">
+				<label className="block pb-1">Username</label>
+				<input className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full" type="text" placeholder="Username..." />
+			</div>
+			<div className="w-full py-5">
+				<label className="block pb-1">Password</label>
+				<input className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full" type="password" placeholder="Password..." />
+			</div>
+			<input type="submit" className="
+				bg-secondary-main text-light-main text-lg
+				my-5 px-10 py-1.5 rounded-2xl shadow-normal shadow-secondary-main
+				transition-all ease duration-300
+				hover:shadow-normal-hover hover:shadow-secondary-main hover:cursor-pointer"
+				value="Sign In" />
+			<p>Don't have an account? <NavLink to="/register" className="text-secondary-main text-xl hover:border-b-2 border-secondary-main">Register</NavLink></p>
+		</Form>
 	);
 };
 export default Login;
+
+
