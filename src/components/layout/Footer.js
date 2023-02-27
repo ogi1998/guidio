@@ -1,25 +1,17 @@
-import { Google, LinkedIn, Telegram } from "@mui/icons-material"
-import { Box, Typography } from "@mui/material"
+import {FaLinkedin, FaGoogle, FaTelegram} from 'react-icons/fa';
 import { Link } from "react-router-dom"
-import Logo from "../ui/Logo"
-
+import Logo from "./Logo"
 const Footer = () => {
 	return (
-		<Box component='footer' mt='auto' p={2} textAlign='center' sx={{ backgroundColor: 'primary.main' }}>
+		<footer className="p-5 bg-primary-main flex flex-col items-center text-light-main">
 			<Logo inFooter={true} />
-			<Box display='flex' justifyContent='center' gap={2} alignSelf="center" my={2}>
-				<Link to='https://linkedin.com' target='_blank'>
-					<LinkedIn color="light" />
-				</Link>
-				<Link to='https://google.com' target='_blank'>
-					<Google color="light" />
-				</Link>
-				<Link to='https://telegram.org' target='_blank'>
-					<Telegram color="light" />
-				</Link>
-			</Box>
-			<Typography color='light.main'>&copy; 2023 Guidio. All rights reserved.</Typography>
-		</Box>
+			<div className="flex justify-center gap-5 text-light-main text-2xl mb-4">
+				<Link to="https://linkedin.com" target="_blank"><FaLinkedin/></Link>
+				<Link to="https://google.com" target="_blank"><FaGoogle/></Link>
+				<Link to="https://telegram.org" target="_blank"><FaTelegram/></Link>
+			</div>
+			<p>&copy; 2023 Guidio. All rights reserved.</p>
+		</footer>
 	)
 }
 export default Footer
