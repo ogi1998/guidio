@@ -11,7 +11,7 @@ const Form = (props) => {
 					<img src={logo} alt="Guidio logo" className=' w-36' />
 				</NavLink>
 			</div>
-			<form className="py-10 mr-10 w-1/2">
+			<form className="py-10 mr-10 w-1/2" onSubmit={props.onSubmit}>
 				{props.children}
 			</form>
 		</div>
