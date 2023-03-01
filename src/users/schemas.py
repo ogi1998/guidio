@@ -1,6 +1,6 @@
 from pydantic import EmailStr
 
-from core.schemas import BaseModelSchema
+from core.schemas import BaseModelSchema, UserPasswordSchema
 
 
 class UserIDSchema(BaseModelSchema):
@@ -32,3 +32,15 @@ class UserReadSchema(UserBaseSchema):
 
     class Config:
         orm_mode = True
+
+
+class UserPasswordUpdateSchema(UserPasswordSchema):
+    current_password: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "current_password": "MyPa$$123!",
+                "password": "MyPa$$123!",
+            }
+        }

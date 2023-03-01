@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post(path="/register",
              status_code=status.HTTP_201_CREATED,
              response_model=UserIDSchema)
-def register_user(data: schemas.RegistrationSchema, db=DBDependency) -> UserIDSchema:
+def register_user(data: schemas.RegistrationSchemaUser, db=DBDependency) -> UserIDSchema:
     try:
         user_id: int = service.create_user(db, data)
         return UserIDSchema(user_id=user_id)
