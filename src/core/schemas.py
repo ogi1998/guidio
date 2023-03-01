@@ -11,7 +11,7 @@ class BaseModelSchema(PydanticBaseModel):
         allow_population_by_field_name = True
 
 
-class PasswordCheckerSchema(BaseModelSchema):
+class UserPasswordSchema(BaseModelSchema):
     password: str = Field(min_length=8)
 
     @validator('password')

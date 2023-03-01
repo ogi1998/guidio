@@ -120,7 +120,7 @@ def authenticate_user(email: str, password: str, db: Session) -> User | bool:
     return user
 
 
-def create_user(db: Session, data: schemas.RegistrationSchema) -> User.user_id:
+def create_user(db: Session, data: schemas.RegistrationSchemaUser) -> User.user_id:
     """Create user in database and return created object
 
     Args:

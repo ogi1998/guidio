@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, status, HTTPException, Response
 
 from auth.dependencies import ValidToken
 from auth.exceptions import invalid_credentials_exception
-from auth.service import get_current_user
+from auth.service import get_current_user, verify_password
 from auth.service import perform_user_logout
 from core.dependencies import DBDependency
 from core.models import User
 from users import service
-from users.schemas import UserUpdateSchema, UserReadSchema
+from users.schemas import UserUpdateSchema, UserReadSchema, UserPasswordUpdateSchema
 
 router = APIRouter()
 
@@ -43,3 +43,21 @@ def delete_user_profile(user_id: int, response: Response, db=DBDependency,
         raise invalid_credentials_exception()
     perform_user_logout(response)
     return service.delete_user_profile(db, user_id)
+
+
+@router.put(path="/{user_id}/update_password",
+            dependencies=[ValidToken],
+            description="Update user password",
+            status_code=status.HTTP_200_OK,
+            response_model=UserReadSchema)
+def update_user_password(user_id: int,
+                         data: UserPasswordUpdateSchema,
+                         db=DBDependency,
+                         user: User = Depends(get_current_user)):
+    if user_id != user.user_id:
+        raise invalid_credentials_exception()
+    if not verify_password(data.current_password, user.password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Invalid password")
+    return service.update_user_password(db, data, user)
+

@@ -1,10 +1,10 @@
 from pydantic import EmailStr
 
-from core.schemas import PasswordCheckerSchema, BaseModelSchema
+from core.schemas import UserPasswordSchema, BaseModelSchema
 from users import schemas
 
 
-class RegistrationSchema(schemas.UserBaseSchema, PasswordCheckerSchema):
+class RegistrationSchemaUser(schemas.UserBaseSchema, UserPasswordSchema):
     pass
 
     class Config:
