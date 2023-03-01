@@ -11,7 +11,7 @@ from guides import service
 router = APIRouter()
 
 
-@router.get("/",
+@router.get("",
             description="Get list of guides",
             status_code=status.HTTP_200_OK,
             response_model=schemas.GuideListReadSchema)
@@ -42,7 +42,8 @@ def get_guide_by_id(guide_id: int, db=DBDependency):
     return guide
 
 
-@router.post("/", dependencies=[ValidToken],
+@router.post(path="",
+             dependencies=[ValidToken],
              description="Create guide",
              status_code=status.HTTP_201_CREATED,
              response_model=schemas.GuideReadSchema)
@@ -54,7 +55,8 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
     return service.save_guide(db, data, user_id=user.user_id)
 
 
-@router.put("/{guide_id}", dependencies=[ValidToken],
+@router.put(path="/{guide_id}",
+            dependencies=[ValidToken],
             description="Update guide",
             status_code=status.HTTP_201_CREATED,
             response_model=schemas.GuideReadSchema)
@@ -69,7 +71,7 @@ def create_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
     return service.save_guide(db, data, user_id=user.user_id, guide=guide)
 
 
-@router.delete("/{guide_id}",
+@router.delete(path="/{guide_id}",
                dependencies=[ValidToken],
                description="Delete guide",
                status_code=status.HTTP_204_NO_CONTENT)

@@ -5,14 +5,16 @@ from auth.exceptions import invalid_credentials_exception
 from auth.service import get_current_user
 from auth.service import perform_user_logout
 from core.dependencies import DBDependency
-from users import service
 from core.models import User
+from users import service
 from users.schemas import UserUpdateSchema, UserReadSchema
 
 router = APIRouter()
 
 
-@router.get("/user/{user_id}", description="Get user profile by id", response_model=UserReadSchema)
+@router.get(path="/{user_id}",
+            description="Get user profile by id",
+            response_model=UserReadSchema)
 def get_user_profile_by_id(user_id: int, db=DBDependency):
     user = service.get_user_profile_by_id(user_id, db)
     if not user:
@@ -20,7 +22,9 @@ def get_user_profile_by_id(user_id: int, db=DBDependency):
     return user
 
 
-@router.put('/user/{user_id}', dependencies=[ValidToken], description="Update user profile",
+@router.put(path='/{user_id}',
+            dependencies=[ValidToken],
+            description="Update user profile",
             response_model=UserReadSchema)
 def update_user_profile(user_id: int, data: UserUpdateSchema, db=DBDependency,
                         user: User = Depends(get_current_user)):
@@ -29,7 +33,9 @@ def update_user_profile(user_id: int, data: UserUpdateSchema, db=DBDependency,
     return service.update_user_profile(data, db, user)
 
 
-@router.delete('/user/{user_id}', dependencies=[ValidToken], description="Delete user profile",
+@router.delete(path='/{user_id}',
+               dependencies=[ValidToken],
+               description="Delete user profile",
                status_code=status.HTTP_204_NO_CONTENT)
 def delete_user_profile(user_id: int, response: Response, db=DBDependency,
                         user: User = Depends(get_current_user)):

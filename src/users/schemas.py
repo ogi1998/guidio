@@ -3,6 +3,10 @@ from pydantic import EmailStr
 from core.schemas import BaseModelSchema
 
 
+class UserIDSchema(BaseModelSchema):
+    user_id: int
+
+
 class UserBaseSchema(BaseModelSchema):
     email: EmailStr
     first_name: str

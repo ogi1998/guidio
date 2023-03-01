@@ -12,8 +12,8 @@ from auth import schemas
 from auth.dependencies import has_valid_token
 from auth.exceptions import invalid_credentials_exception, token_exception
 from core.dependencies import DBDependency
-from core.settings import AUTH_TOKEN
 from core.models import User
+from core.settings import AUTH_TOKEN
 
 # CONSTANTS
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -120,7 +120,7 @@ def authenticate_user(email: str, password: str, db: Session) -> User | bool:
     return user
 
 
-def create_user(db: Session, data: schemas.RegistrationSchema) -> User:
+def create_user(db: Session, data: schemas.RegistrationSchema) -> User.user_id:
     """Create user in database and return created object
 
     Args:
@@ -143,7 +143,7 @@ def create_user(db: Session, data: schemas.RegistrationSchema) -> User:
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return db_user.user_id
 
 
 def perform_user_logout(response: Response):
