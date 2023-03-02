@@ -7,13 +7,13 @@ const Header = () => {
 				Learn Anytime, Anywhere, <br />
 				and Accelerate Future
 			</h2>
-			<div className="flex gap-5 items-center rounded-3xl text-2xl w-1/2 bg-light-main px-5
+			<div className="flex gap-5 items-center rounded-3xl text-2xl w-3/5 bg-light-main px-5
 			shadow-normal shadow-secondary-main focus-within:shadow-normal-focused focus-within:shadow-secondary-main">
 				<FaSearch className="text-dark-main" />
 				<input
 					placeholder="Search..."
 					type="text"
-					className="bg-light-main outline-none w-full text-dark-main placeholder:font-light py-5"
+					className="bg-light-main outline-none w-full text-dark-main placeholder:font-light py-4"
 				/>
 			</div>
 		</div>

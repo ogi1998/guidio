@@ -1,31 +1,36 @@
 import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import {FaExclamationCircle} from 'react-icons/fa';
 
 import { uiActions } from "../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Form from "../ui/Form";
 import { loginUser } from "../../store/userSlice";
 
 const Login = () => {
 	const dispatch = useDispatch();
 	const loginRef = useRef({});
-
-	function loginHandler(event) {
-		event.preventDefault();
-
-		dispatch(loginUser({
-			email: loginRef.current.email.value,
-			password: loginRef.current.password.value
-		}));
-	}
+	const error = useSelector(state => state.ui.errorMsg);
 
 	useEffect(() => {
 		dispatch(uiActions.hideLayout());
 	}, [dispatch]);
+
+	function loginHandler(event) {
+		event.preventDefault();
+
+		const {email, password} = loginRef.current;
+		dispatch(loginUser({
+			email: email.value,
+			password: password.value
+		}));
+	}
+
 	return (
 		<Form onSubmit={loginHandler}>
-			<h1 className="text-4xl font-bold py-2">Login</h1>
-			<div className="w-full py-5">
+			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
+			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${error === "" && "invisible"}`}><FaExclamationCircle className="inline text-xl"/> {error}</div>
+			<div className=" w-[90%]  py-5">
 				<label className="block pb-1">Email</label>
 				<input
 					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
@@ -34,7 +39,7 @@ const Login = () => {
 					ref={el => loginRef.current.email = el}
 				/>
 			</div>
-			<div className="w-full py-5">
+			<div className="w-[90%] py-5">
 				<label className="block pb-1">Password</label>
 				<input
 					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
@@ -43,24 +48,26 @@ const Login = () => {
 					ref={el => loginRef.current.password = el}
 				/>
 			</div>
-			<input
-				type="submit"
-				className="
-				bg-secondary-main text-light-main text-lg
-				my-5 px-10 py-1.5 rounded-2xl shadow-normal shadow-secondary-main
-				transition-all ease duration-300
-				hover:shadow-normal-hover hover:shadow-secondary-main hover:cursor-pointer"
-				value="Sign In"
-			/>
-			<p>
-				Don't have an account?{" "}
-				<NavLink
-					to="/register"
-					className="text-secondary-main text-xl hover:border-b-2 border-secondary-main"
-				>
-					Register
-				</NavLink>
-			</p>
+			<div className=" inline-block mt-10 text-center">
+				<input
+					type="submit"
+					className="
+					bg-secondary-main text-light-main text-lg w-3/4
+					my-5 px-10 py-1.5 rounded-2xl shadow-normal shadow-secondary-main
+					transition-all ease duration-300
+					hover:shadow-normal-hover hover:shadow-secondary-main hover:cursor-pointer"
+					value="Sign In"
+				/>
+				<p className=" border-t-2 mt-3 pt-2">
+					Need an account?{" "}
+					<NavLink
+						to="/register"
+						className="text-secondary-main border-b-2 border-secondary-main"
+					>
+						REGISTER
+					</NavLink>
+				</p>
+			</div>
 		</Form>
 	);
 };

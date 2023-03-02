@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-	shouldShowLayout: true
+	shouldShowLayout: true,
+	errorMsg: ''
 };
 
 const uiSlice = createSlice({
@@ -11,8 +12,17 @@ const uiSlice = createSlice({
 		showLayout(state) {
 			state.shouldShowLayout = true;
 		},
+		
 		hideLayout(state) {
 			state.shouldShowLayout = false;
+		},
+
+		createError(state, action) {
+			state.errorMsg = action.payload;
+		},
+
+		clearErrors(state) {
+			state.errorMsg = '';
 		}
 	}
 });
