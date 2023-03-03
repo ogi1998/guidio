@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import {FaExclamationCircle} from 'react-icons/fa';
+import { FaExclamationCircle } from 'react-icons/fa';
 
 import { uiActions } from "../../store/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,8 +18,15 @@ const Login = () => {
 
 	function loginHandler(event) {
 		event.preventDefault();
+		const { email, password } = loginRef.current;
 
-		const {email, password} = loginRef.current;
+		if (!email.value || !password.value) {
+			dispatch(uiActions.createError("Error! Fields can't be empty."));
+			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
+
+			return false;
+		}
+
 		dispatch(loginUser({
 			email: email.value,
 			password: password.value
@@ -29,7 +36,7 @@ const Login = () => {
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
-			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${error === "" && "invisible"}`}><FaExclamationCircle className="inline text-xl"/> {error}</div>
+			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl" /> {error}</div>
 			<div className=" w-[90%]  py-5">
 				<label className="block pb-1">Email</label>
 				<input

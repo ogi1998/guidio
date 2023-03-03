@@ -2,14 +2,16 @@ import { NavLink } from "react-router-dom";
 
 import { useEffect, useRef } from "react";
 import { uiActions } from "../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Form from "../ui/Form";
 import { registerUser } from "../../store/userSlice";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const Register = () => {
 	const dispatch = useDispatch();
 	const registerRef = useRef({});
+	const error = useSelector(state => state.ui.errorMsg);
 
 	useEffect(() => {
 		dispatch(uiActions.hideLayout());
@@ -20,8 +22,19 @@ const Register = () => {
 
 		const {firstName, lastName, email, password, passwordConfirm} = registerRef.current;
 
-		if (password.value !== passwordConfirm.value)
-			return false; 
+		if (!firstName.value || !lastName.value || !email.value || !password.value || !passwordConfirm.value) {
+			dispatch(uiActions.createError("Error! Fields can't be empty."));
+			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
+
+			return false;
+		}
+
+		if (password.value !== passwordConfirm.value) {
+			dispatch(uiActions.createError("Error! Password don't match."));
+			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
+
+			return false;
+		}
 
 		dispatch(registerUser({
 			first_name: firstName.value,
@@ -33,6 +46,7 @@ const Register = () => {
 	return (
 		<Form onSubmit={registerHandler}>
 			<h1 className="text-5xl font-bold py-2">Register</h1>
+			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl"/> {error}</div>
 			<div className="flex gap-10 mt-7 py-5 w-[90%]">
 				<div className="w-1/2">
 					<label className="block pb-1">First Name</label>

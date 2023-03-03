@@ -1,5 +1,3 @@
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa"
-
 const Pagination = () => {
 	return (
 		<div className="flex justify-center items-center my-10 text-xl">

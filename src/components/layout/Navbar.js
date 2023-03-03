@@ -4,7 +4,7 @@ import Logo from './Logo';
 
 const Navbar = () => {
 	return (
-		<div className='flex bg-primary-main py-4 px-14 mb-2 relative'>
+		<div className='flex bg-primary-main py-4 px-20 mb-2 relative'>
 			<nav className='flex text-light-main w-full gap-10 text-xl items-center'>
 				<NavLink to='/'>Courses</NavLink>
 				<NavLink to='/'>Instructors</NavLink>

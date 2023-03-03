@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from './store/uiSlice';
-import { Route, Routes } from "react-router"
+import { Route, Routes, useLocation } from "react-router"
 
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
@@ -16,12 +16,15 @@ import Register from "./components/pages/Register"
 
 const App = () => {
 	const dispatch = useDispatch();
-
+	const { pathname } = useLocation();
 	const shouldShowLayout = useSelector(state => state.ui.shouldShowLayout);
 
 	useEffect(() => {
-		dispatch(uiActions.showLayout());
-	}, [dispatch])
+		if (pathname === '/login' || pathname === '/register')
+			dispatch(uiActions.hideLayout());
+		else
+			dispatch(uiActions.showLayout());
+	}, [dispatch, pathname])
 
 	return (
 		<div className="bg-hero min-h-full flex flex-col">

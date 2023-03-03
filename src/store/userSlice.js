@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { uiActions } from "./uiSlice";
 
 const initialState = {
-	userId: null,
+	userId: null
 };
 
 const userSlice = createSlice({
@@ -29,7 +29,7 @@ async function sendRequest(url, body) {
 			body: JSON.stringify(body),
 		});
 		const data = await res.json();
-		if (!res.ok) 
+		if (!res.ok)
 			throw data;
 
 		return data;
@@ -43,14 +43,29 @@ export const loginUser = function (formData) {
 		} catch(error) {
 			dispatch(uiActions.createError('Error! A problem has been occurred. Wrong email or password.'));
 
-			setTimeout(() => {dispatch(uiActions.clearErrors())}, 5000);
+			setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
 		}
 	};
 };
 
 export const registerUser = function(formData) {
 	return async dispatch => {
-		const data = await sendRequest('/auth/register', formData);
-		dispatch(userActions.initUser(data.userId));
+		try {
+			const data = await sendRequest('/auth/register', formData);
+			dispatch(userActions.initUser(data.userId));
+		} catch(err) {
+			console.log(err);
+			const {type} = err.detail.at(-1);
+
+			if (type === "value_error.email") {
+				dispatch(uiActions.createError("Error! Invalid email."))
+				setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
+			}
+
+			if (type === "value_error.any_str.min_length") {
+				dispatch(uiActions.createError("Error! Password needs to have at least 8 characters."))
+				setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
+			}
+		}
 	}
 }
