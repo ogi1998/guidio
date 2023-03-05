@@ -55,7 +55,7 @@ export const registerUser = function(formData) {
 			dispatch(userActions.initUser(data.userId));
 		} catch(err) {
 			console.log(err);
-			const {type} = err.detail.at(-1);
+			const {type, msg} = err.detail.at(-1);
 
 			if (type === "value_error.email") {
 				dispatch(uiActions.createError("Error! Invalid email."))
@@ -64,6 +64,16 @@ export const registerUser = function(formData) {
 
 			if (type === "value_error.any_str.min_length") {
 				dispatch(uiActions.createError("Error! Password needs to have at least 8 characters."))
+				setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
+			}
+
+			if (type === 'value_error') {
+				dispatch(uiActions.createError(`Error! ${msg}`));
+				setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
+			}
+
+			if (!type) {
+				dispatch(uiActions.createError(`Error! ${err.detail}`));
 				setTimeout(() => {dispatch(uiActions.clearErrors())}, 3000);
 			}
 		}
