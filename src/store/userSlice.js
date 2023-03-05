@@ -12,6 +12,9 @@ const userSlice = createSlice({
 		initUser(state, action) {
 			state.userId = action.payload;
 		},
+		removeUser(state) {
+			state.userId = null;
+		}
 	},
 });
 
@@ -35,11 +38,12 @@ async function sendRequest(url, body) {
 		return data;
 }
 
-export const loginUser = function (formData) {
+export const loginUser = function (formData, cb) {
 	return async dispatch => {
 		try {
 			const data = await sendRequest("/auth/login", formData);
 			dispatch(userActions.initUser(data.userId));
+			cb();
 		} catch(error) {
 			dispatch(uiActions.createError('Error! A problem has been occurred. Wrong email or password.'));
 
@@ -48,13 +52,25 @@ export const loginUser = function (formData) {
 	};
 };
 
-export const registerUser = function(formData) {
+export const logoutUser = function() {
+	return async dispatch => {
+		fetch('/auth/logout', {
+			method: "POST",
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+			}
+		});
+		dispatch(userActions.removeUser());
+	}
+}
+
+export const registerUser = function(formData, cb) {
 	return async dispatch => {
 		try {
-			const data = await sendRequest('/auth/register', formData);
-			dispatch(userActions.initUser(data.userId));
+			await sendRequest('/auth/register', formData);
+			cb();
 		} catch(err) {
-			console.log(err);
 			const {type, msg} = err.detail.at(-1);
 
 			if (type === "value_error.email") {

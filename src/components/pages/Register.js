@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { useEffect, useRef } from "react";
 import { uiActions } from "../../store/uiSlice";
@@ -10,7 +10,10 @@ import { FaExclamationCircle } from "react-icons/fa";
 
 const Register = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const registerRef = useRef({});
+
 	const error = useSelector(state => state.ui.errorMsg);
 
 	useEffect(() => {
@@ -41,7 +44,8 @@ const Register = () => {
 			last_name: lastName.value,
 			email: email.value,
 			password: password.value
-		}));
+		}, () => {navigate('/login')}));
+		
 	}
 	return (
 		<Form onSubmit={registerHandler}>

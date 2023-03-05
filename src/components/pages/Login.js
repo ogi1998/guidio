@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaExclamationCircle } from 'react-icons/fa';
 
 import { uiActions } from "../../store/uiSlice";
@@ -9,7 +9,10 @@ import { loginUser } from "../../store/userSlice";
 
 const Login = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const loginRef = useRef({});
+
 	const error = useSelector(state => state.ui.errorMsg);
 
 	useEffect(() => {
@@ -30,7 +33,8 @@ const Login = () => {
 		dispatch(loginUser({
 			email: email.value,
 			password: password.value
-		}));
+		}, () => navigate('/')));
+		
 	}
 
 	return (
