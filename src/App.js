@@ -9,6 +9,7 @@ import Navbar from "./components/layout/Navbar"
 import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
+import { getUserByToken } from "./store/userSlice";
 
 
 
@@ -25,6 +26,11 @@ const App = () => {
 		else
 			dispatch(uiActions.showLayout());
 	}, [dispatch, pathname])
+
+	useEffect(() => {
+		if (document.cookie.startsWith('auth_token'))
+			dispatch(getUserByToken());
+	}, [dispatch]);
 
 	return (
 		<div className="bg-hero min-h-full flex flex-col">
