@@ -5,7 +5,7 @@ from auth import schemas, service, exceptions
 from auth.dependencies import ValidToken
 from core.dependencies import DBDependency
 from core.settings import AUTH_TOKEN
-from users.schemas import UserIDSchema
+from users.schemas import UserIDSchema, UserReadSchema
 
 router = APIRouter()
 
@@ -25,14 +25,18 @@ def register_user(data: schemas.RegistrationSchemaUser, db=DBDependency) -> User
 
 
 @router.post(path="/login",
-             response_model=UserIDSchema)
-def login_user(data: schemas.LoginSchema, response: Response, db=DBDependency) -> UserIDSchema:
+             response_model=UserReadSchema)
+def login_user(data: schemas.LoginSchema, response: Response, db=DBDependency) -> UserReadSchema:
     user = service.authenticate_user(data.email, data.password, db)
     if not user:
         raise exceptions.invalid_credentials_exception()
     token = service.create_auth_token(user.user_id)
     response.set_cookie(key=AUTH_TOKEN, value=token)
-    return UserIDSchema(user_id=user.user_id)
+    return UserReadSchema(user_id=user.user_id,
+                          is_active=user.is_active,
+                          email=user.email,
+                          first_name=user.first_name,
+                          last_name=user.last_name)
 
 
 @router.post(path='/logout',
