@@ -119,7 +119,6 @@ export const getUserByToken = function() {
 			const data = await sendRequest('/auth/token', 'GET');
 			dispatch(userActions.initUser(data));
 		} catch(err) {
-			console.log(err);
 		}
 	}
 }

@@ -1,38 +1,40 @@
+import { NavLink } from "react-router-dom"
+
 const Pagination = () => {
 	return (
 		<div className="flex justify-center items-center my-10 text-xl">
-			<div className="
+			<NavLink className="
 				flex items-center justify-center
 				border border-gray-main text-gray-dark
 				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			>
+			to='/'>
 				{"<"}
-			</div>
-			<div className="
+			</NavLink>
+			<NavLink className="
 				flex items-center justify-center
 				border border-gray-main text-gray-dark
-				p-5  h-8 w-8 bg-light-main
+				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			>
+			to='/'>
 				1
-			</div>
-			<div className="
+			</NavLink>
+			<NavLink className="
 				flex items-center justify-center
 				border border-gray-main text-gray-dark
 				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			>
+			to='/2'>
 				2
-			</div>
-			<div className="
+			</NavLink>
+			<NavLink className="
 				flex items-center justify-center
 				border border-gray-main text-gray-dark
 				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			>
+			to='/2'>
 				{">"}
-			</div>
+			</NavLink>
 		</div>
 	)
 }

@@ -37,6 +37,7 @@ const App = () => {
 			{shouldShowLayout && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Landing />} />
+				<Route path="/:id" element={<Landing />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 			</Routes>
