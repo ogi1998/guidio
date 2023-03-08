@@ -7,7 +7,7 @@ import { logoutUser } from "../../store/userSlice";
 const Navbar = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const userId = useSelector(({ user }) => user.user?.userId);
+	const { user } = useSelector(({ user }) => user);
 
 	function logoutHandler() {
 		dispatch(logoutUser());
@@ -21,7 +21,7 @@ const Navbar = () => {
 				<NavLink to="/">Tutorials</NavLink>
 			</nav>
 			<Logo />
-			{!userId ? (
+			{!user?.userId ? (
 				<div className="flex w-full justify-end gap-5 items-center text-light-main">
 					<NavLink
 						to="/register"
@@ -39,14 +39,30 @@ const Navbar = () => {
 			) : (
 				<div className="flex w-full justify-end gap-5 items-center text-light-main relative">
 					<button className="group relative border-x-2 py-3 px-5 rounded-xl text-xl font-semibold">
-						<FaUser className="inline text-primary-main bg-light-main p-1 rounded-[50%] text-3xl mr-2" />Hello, Marco! <FaCaretDown className="inline text-3xl" />
+						<FaUser className="inline text-primary-main bg-light-main p-1 rounded-[50%] text-3xl mr-2" />
+						Hello, {user.firstName}!{" "}
+						<FaCaretDown className="inline text-3xl" />
 						<div className="hidden group-hover:block absolute left-0 border-l-2 mt-3 pl-2 bg-primary-main rounded-md w-full">
-							<NavLink className='flex items-center py-2' to='/profile'><FaCaretRight className="mr-2"/>My profile</NavLink>
-							<NavLink className='flex items-center py-2' to='/profile'><FaCaretRight className="mr-2"/>Edit profile</NavLink>
+							<NavLink
+								className="flex items-center py-2"
+								to="/profile"
+							>
+								<FaCaretRight className="mr-2" />
+								My profile
+							</NavLink>
+							<NavLink
+								className="flex items-center py-2"
+								to="/profile"
+							>
+								<FaCaretRight className="mr-2" />
+								Edit profile
+							</NavLink>
 						</div>
 					</button>
 					<button className="bg-secondary-main py-3 px-6 rounded-bl-[50%] rounded-tl-[40%] rounded-br-[40%] rounded-tr-[50%] -skew-y-6 text-lg font-medium hover:bg-secondary-dark flex items-center">
-						 <div className="skew-y-6 inline-block"><FaPlus className="inline" /> CREATE</div>
+						<div className="skew-y-6 inline-block">
+							<FaPlus className="inline" /> CREATE
+						</div>
 					</button>
 					<button
 						onClick={logoutHandler}

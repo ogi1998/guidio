@@ -8,7 +8,7 @@ const Pagination = () => {
 				border border-gray-main text-gray-dark
 				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			to='/'>
+			to='/1'>
 				{"<"}
 			</NavLink>
 			<NavLink className="
@@ -16,7 +16,7 @@ const Pagination = () => {
 				border border-gray-main text-gray-dark
 				p-5 h-8 w-8 bg-light-main
 				hover:cursor-pointer hover:bg-secondary-main hover:text-light-main"
-			to='/'>
+			to='/1'>
 				1
 			</NavLink>
 			<NavLink className="
