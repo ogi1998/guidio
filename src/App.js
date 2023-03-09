@@ -34,7 +34,7 @@ const App = () => {
 	}, [dispatch]);
 
 	return (
-		<div className="bg-hero min-h-full flex flex-col">
+		<div className="">
 			{shouldShowLayout && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Landing />} />

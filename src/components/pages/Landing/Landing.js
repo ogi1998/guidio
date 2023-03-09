@@ -13,7 +13,7 @@ const Landing = () => {
 		dispatch(uiActions.showLayout());
 	}, [dispatch])
 	return (
-		<div className="px-20">
+		<div className="px-20 bg-hero" style={{backgroundSize: '101% 110%'}}>
 		<Header />
 		<Courses />
 		</div>
