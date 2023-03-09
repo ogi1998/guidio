@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from './store/uiSlice';
-import { Route, Routes, useLocation } from "react-router"
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router"
 
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
@@ -10,7 +10,7 @@ import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
 import { getUserByToken } from "./store/userSlice";
-import Profile from "./components/pages/Profile";
+import Profile from "./components/pages/Profile/Profile";
 
 
 
@@ -19,19 +19,22 @@ import Profile from "./components/pages/Profile";
 const App = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
+	const navigate = useNavigate();
 	const shouldShowLayout = useSelector(state => state.ui.shouldShowLayout);
+	const { activeUser } = useSelector(({ user }) => user);
 
 	useEffect(() => {
 		if (pathname === '/login' || pathname === '/register')
 			dispatch(uiActions.hideLayout());
 		else
 			dispatch(uiActions.showLayout());
+
 	}, [dispatch, pathname])
 
 	useEffect(() => {
 		if (document.cookie.startsWith('auth_token'))
 			dispatch(getUserByToken());
-	}, [dispatch]);
+	}, [dispatch, navigate]);
 
 	return (
 		<div className="">
@@ -41,7 +44,7 @@ const App = () => {
 				<Route path="/:id" element={<Landing />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
-				<Route path="/profile" element={<Profile />} />
+				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
 			</Routes>
 			{shouldShowLayout && <Footer />}
 		</div>
