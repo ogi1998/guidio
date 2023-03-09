@@ -11,7 +11,7 @@ module.exports = {
 				dark: "#A6ADFF85",
 			},
 			success: {
-				main: "#0ACF97",
+				main: "#00E9A3",
 				dark: "#09ba88",
 				contrastText: "#FFF",
 			},
@@ -46,8 +46,10 @@ module.exports = {
 				form: 'url("./assets/background3.png")',
 				"form-blurred": 'url("./assets/background2.png")',
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+				profile: 'url("./assets/user_profile.jpg")'
 			},
 			boxShadow: {
+				small: "0px 0px 7px",
 				normal: "0px 1px 10px",
 				"normal-hover": "0px 1px 20px",
 				"normal-focused": "0px 1px 30px",

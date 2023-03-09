@@ -10,6 +10,7 @@ import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
 import { getUserByToken } from "./store/userSlice";
+import Profile from "./components/pages/Profile";
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
 				<Route path="/:id" element={<Landing />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
+				<Route path="/profile" element={<Profile />} />
 			</Routes>
 			{shouldShowLayout && <Footer />}
 		</div>

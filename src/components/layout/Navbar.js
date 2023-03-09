@@ -14,7 +14,7 @@ const Navbar = () => {
 		navigate("/");
 	}
 	return (
-		<div className="flex bg-primary-main py-4 px-20 mb-2 relative">
+		<div className="flex bg-primary-main py-4 px-20 relative">
 			<nav className="flex text-light-main w-full gap-10 text-xl items-center">
 				<NavLink to="/">Courses</NavLink>
 				<NavLink to="/">Instructors</NavLink>
@@ -42,7 +42,7 @@ const Navbar = () => {
 						<FaUser className="inline text-primary-main bg-light-main p-1 rounded-[50%] text-3xl mr-2" />
 						Hello, {activeUser.firstName}!{" "}
 						<FaCaretDown className="inline text-3xl" />
-						<div className="hidden group-hover:block absolute left-0 border-l-2 mt-3 pl-2 bg-primary-main rounded-md w-full">
+						<div className="hidden group-hover:block absolute left-0 border-l-2 mt-3 pl-2 bg-primary-main rounded-md w-full z-10">
 							<NavLink
 								className="flex items-center py-2"
 								to="/profile"
