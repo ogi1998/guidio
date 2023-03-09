@@ -7,7 +7,7 @@ import { logoutUser } from "../../store/userSlice";
 const Navbar = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const { user } = useSelector(({ user }) => user);
+	const { activeUser } = useSelector(({ user }) => user);
 
 	function logoutHandler() {
 		dispatch(logoutUser());
@@ -21,7 +21,7 @@ const Navbar = () => {
 				<NavLink to="/">Tutorials</NavLink>
 			</nav>
 			<Logo />
-			{!user?.userId ? (
+			{!activeUser?.userId ? (
 				<div className="flex w-full justify-end gap-5 items-center text-light-main">
 					<NavLink
 						to="/register"
@@ -40,7 +40,7 @@ const Navbar = () => {
 				<div className="flex w-full justify-end gap-5 items-center text-light-main relative">
 					<button className="group relative border-x-2 py-3 px-5 rounded-xl text-xl font-semibold">
 						<FaUser className="inline text-primary-main bg-light-main p-1 rounded-[50%] text-3xl mr-2" />
-						Hello, {user.firstName}!{" "}
+						Hello, {activeUser.firstName}!{" "}
 						<FaCaretDown className="inline text-3xl" />
 						<div className="hidden group-hover:block absolute left-0 border-l-2 mt-3 pl-2 bg-primary-main rounded-md w-full">
 							<NavLink

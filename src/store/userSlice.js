@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { uiActions } from "./uiSlice";
 
 const initialState = {
-	user: null,
+	activeUser: null,
 };
 
 const userSlice = createSlice({
@@ -10,10 +10,10 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		initUser(state, action) {
-			state.user = action.payload;
+			state.activeUser = action.payload;
 		},
 		removeUser(state) {
-			state.user = null;
+			state.activeUser = null;
 		},
 	},
 });

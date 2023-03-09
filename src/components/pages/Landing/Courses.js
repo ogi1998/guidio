@@ -24,7 +24,7 @@ const Courses = () => {
 		}
 	]
 
-	const guides = useSelector(state => state.guide.guides);
+	const guides = useSelector(({guide}) => guide.guides);
 
 	useEffect(() => {
 		dispatch(getGuides(id ? id : 1));
@@ -33,7 +33,7 @@ const Courses = () => {
 		<div>
 			<Dropdown title="Popular" items={dropdownItems} />
 			<div className=" grid grid-cols-4 w-full gap-5">
-				{guides.map((guide, idx) =>
+				{guides.length ? guides.map((guide, idx) =>
 				<NavLink to='/' className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={idx}>
 					<div className="relative">
 						<img src={cardImg} alt="Card Item" />
@@ -53,9 +53,9 @@ const Courses = () => {
 						<span className="flex items-center gap-1 text-xl"><FaEye /> 39k</span>
 					</div>
 				</NavLink>
-				)}
+				) : <h1 className="text-danger-light text-3xl py-5">No Guides Available</h1>}
 			</div>
-			<Pagination />
+			{guides.length ? <Pagination />: ''}
 		</div>
 	);
 };
