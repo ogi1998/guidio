@@ -16,7 +16,6 @@ const ProfileData = () => {
 					<input
 						type="text"
 						className="w-full border-2 border-success-main py-1 px-2 text-dark-main"
-						value="Marco"
 					/>
 				</div>
 				<div className="w-full">
@@ -29,7 +28,6 @@ const ProfileData = () => {
 					<input
 						type="text"
 						className="w-full border-2 border-success-main py-1 px-2 text-dark-main"
-						value="Rossi"
 					/>
 				</div>
 			</div>
@@ -43,7 +41,6 @@ const ProfileData = () => {
 				<input
 					type="email"
 					className="w-full border-2 border-success-main py-1 px-2 text-dark-main"
-					value="marcorossi@gmail.com"
 				/>
 			</div>
 			<div className={showPassword ? "visible" : "invisible"}>
