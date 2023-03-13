@@ -4,13 +4,22 @@ from sqlalchemy.orm import relationship
 from src.database import Base
 
 
+# CODEBOOKS
+class Profession(Base):
+    __tablename__ = "profession"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=True, nullable=False)
+
+
+# USERS
 class User(Base):
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
-    email = Column(String, unique=True, index=True)
+    email = Column(String(120), unique=True, index=True, nullable=False)
     password = Column(String)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -21,6 +30,18 @@ class User(Base):
         return f'{self.first_name} {self.last_name}'
 
 
+class UserDetail(Base):
+    __tablename__ = "user_detail"
+
+    id = Column(Integer, primary_key=True)
+    profession_id = Column(Integer, ForeignKey('profession.id'))
+    bio = Column(String(255))
+
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+    user = relationship("User", back_populates="user_details")
+
+
+# GUIDES
 class Guide(Base):
     __tablename__ = "guide"
 
