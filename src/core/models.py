@@ -17,13 +17,14 @@ class User(Base):
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String)
-    last_name = Column(String)
+    first_name = Column(String(100))
+    last_name = Column(String(150))
     email = Column(String(120), unique=True, index=True, nullable=False)
     password = Column(String)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    user_details = relationship("UserDetail", back_populates="user")
     guides = relationship("Guide", back_populates="user")
 
     def __str__(self):
@@ -35,7 +36,7 @@ class UserDetail(Base):
 
     id = Column(Integer, primary_key=True)
     profession_id = Column(Integer, ForeignKey('profession.id'))
-    bio = Column(Text(255))
+    bio = Column(String(255))
 
     user_id = Column(Integer, ForeignKey('user.user_id'))
     user = relationship("User", back_populates="user_details")
@@ -46,7 +47,7 @@ class Guide(Base):
     __tablename__ = "guide"
 
     guide_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
+    title = Column(String(70))
     content = Column(Text)
     last_modified = Column(DateTime(timezone=True), server_default=func.now(),
                            onupdate=func.current_timestamp())

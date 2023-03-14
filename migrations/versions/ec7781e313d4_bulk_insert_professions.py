@@ -1,18 +1,20 @@
-"""Add predefined values to Profession table
+"""bulk insert professions
 
-Revision ID: 96fb625ab2d1
-Revises: 0d2f64d8c0fe
-Create Date: 2023-03-14 11:26:35.322808
+Revision ID: ec7781e313d4
+Revises: 03a51e53f7be
+Create Date: 2023-03-14 20:15:27.115428
 
 """
 from alembic import op
 import sqlalchemy as sa
 
+
 # revision identifiers, used by Alembic.
-revision = '96fb625ab2d1'
-down_revision = '0d2f64d8c0fe'
+revision = 'ec7781e313d4'
+down_revision = '03a51e53f7be'
 branch_labels = None
 depends_on = None
+
 
 PROFESSIONS = [
     'AI Developer',
@@ -58,21 +60,12 @@ PROFESSIONS = [
 ]
 
 
-def upgrade():
-    # Create Profession table
-    profession_table = op.create_table(
+def upgrade() -> None:
+    profession_table = sa.Table(
         'profession',
         sa.MetaData(),
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(100), unique=True, nullable=False)
-    )
-
-    # Create UserDetail table
-    op.create_table(
-        'user_detail',
-        sa.Column('id', sa.Integer(), primary_key=True),
-        sa.Column('profession_id', sa.Integer(), sa.ForeignKey('profession.id'), nullable=True),
-        sa.Column('bio', sa.Text(), nullable=True)
     )
 
     # Insert predefined values into the Profession table
@@ -82,6 +75,6 @@ def upgrade():
     )
 
 
-def downgrade():
-    op.drop_table('profession')
-    op.drop_table('user_detail')
+def downgrade() -> None:
+    op.execute("DELETE FROM professions WHERE name IN (%s)" % ', '.join(
+        f"'{profession}'" for profession in PROFESSIONS))

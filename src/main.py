@@ -2,12 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 
 from auth import router as auth_router
-from core import models
-from database import engine
 from guides import router as guides_router
 from users import router as users_router
-
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
