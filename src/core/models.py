@@ -9,7 +9,7 @@ class Profession(Base):
     __tablename__ = "profession"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True, nullable=False)
+    name = Column(String(100), unique=True, nullable=False)
 
 
 # USERS
@@ -35,7 +35,7 @@ class UserDetail(Base):
 
     id = Column(Integer, primary_key=True)
     profession_id = Column(Integer, ForeignKey('profession.id'))
-    bio = Column(String(255))
+    bio = Column(Text(255))
 
     user_id = Column(Integer, ForeignKey('user.user_id'))
     user = relationship("User", back_populates="user_details")
