@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Response, Depends
 from sqlalchemy import exc
+from starlette.responses import JSONResponse
 
 from auth import schemas, service, exceptions
 from auth.dependencies import ValidToken
@@ -43,8 +44,11 @@ def login_user(data: schemas.LoginSchema, response: Response, db=DBDependency) -
 
 @router.post(path='/logout',
              dependencies=[ValidToken])
-def logout_user(response: Response):
-    return service.perform_user_logout(response)
+def logout_user():
+    response = JSONResponse(content={"message": "User logged out successfully"})
+    response.delete_cookie(AUTH_TOKEN)
+    response.status_code = status.HTTP_200_OK
+    return response
 
 
 @router.get(path="/token",

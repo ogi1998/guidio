@@ -144,9 +144,3 @@ def create_user(db: Session, data: schemas.RegistrationSchemaUser) -> User.user_
     db.commit()
     db.refresh(db_user)
     return db_user.user_id
-
-
-def perform_user_logout(response: Response):
-    response.delete_cookie(key=AUTH_TOKEN)
-    response.status_code = status.HTTP_200_OK
-    return response
