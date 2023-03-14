@@ -59,13 +59,7 @@ export const loginUser = function (formData, cb) {
 
 export const logoutUser = function () {
 	return async (dispatch) => {
-		await fetch("/auth/logout", {
-			method: "POST",
-			headers: {
-				"Accept": "application/json",
-				"Content-Type": "application/json"
-			}
-		});
+		await sendRequest("/auth/logout", "POST");
 		dispatch(userActions.removeUser());
 	};
 };
