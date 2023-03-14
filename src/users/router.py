@@ -3,9 +3,9 @@ from fastapi import APIRouter, Depends, status, HTTPException, Response
 from auth.dependencies import ValidToken
 from auth.exceptions import invalid_credentials_exception
 from auth.service import get_current_user, verify_password
-from auth.service import perform_user_logout
 from core.dependencies import DBDependency
 from core.models import User
+from core.settings import AUTH_TOKEN
 from users import service
 from users.schemas import UserUpdateSchema, UserReadSchema, UserPasswordUpdateSchema
 
@@ -41,7 +41,7 @@ def delete_user_profile(user_id: int, response: Response, db=DBDependency,
                         user: User = Depends(get_current_user)):
     if not user or user_id != user.user_id:
         raise invalid_credentials_exception()
-    perform_user_logout(response)
+    response.delete_cookie(AUTH_TOKEN)
     return service.delete_user_profile(db, user_id)
 
 
