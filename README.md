@@ -36,5 +36,6 @@ This repository contains FastAPI backend and communication with database.
       1) Choose FastAPI
       2) Name your configuration (e.g. Guidio-Backend)
       3) Select *main.py* as Application file
-9) Run server using *Run* button
-10) Access SwaggerUI using: http://127.0.0.1:8000/docs
+9) Run `alembic upgrade head` to apply latest database migrations
+10) Run server using *Run* button
+11) Access SwaggerUI using: http://127.0.0.1:8000/docs
