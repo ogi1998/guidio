@@ -5,6 +5,11 @@ from core.models import User, UserDetail, Profession
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema, UserReadSchema
 
 
+def get_professions_by_name(db: Session, name: str) -> list[Profession]:
+    professions = db.query(Profession).filter(Profession.name.ilike(f'%{name}%')).all()
+    return professions
+
+
 def get_user_profile_by_id(user_id: int, db: Session) -> User | None:
     user = db.query(User).get(user_id)
     return user

@@ -7,9 +7,23 @@ from core.dependencies import DBDependency
 from core.models import User
 from core.settings import AUTH_TOKEN
 from users import service
-from users.schemas import UserProfileUpdateSchema, UserReadSchema, UserPasswordUpdateSchema
+from users.schemas import (
+    UserProfileUpdateSchema,
+    UserReadSchema,
+    UserPasswordUpdateSchema,
+    ProfessionReadSchema)
 
 router = APIRouter()
+
+
+@router.get(path="/professions/",
+            dependencies=[ValidToken],
+            description="Get professions based on search by name",
+            response_model=list[ProfessionReadSchema])
+def get_profession_by_name(name: str,
+                           db=DBDependency):
+    professions = service.get_professions_by_name(db, name)
+    return professions
 
 
 @router.get(path="/{user_id}",
@@ -67,4 +81,3 @@ def update_user_password(user_id: int,
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Invalid password")
     return service.update_user_password(db, data, user)
-
