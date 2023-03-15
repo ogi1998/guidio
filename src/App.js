@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from './store/uiSlice';
+import { uiActions } from './store/slices/uiSlice';
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router"
 
 import Footer from "./components/layout/Footer"
@@ -9,7 +9,7 @@ import Navbar from "./components/layout/Navbar"
 import Landing from "./components/pages/Landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
-import { getUserByToken } from "./store/userSlice";
+import { getUserByToken } from "./store/controllers/authController";
 import Profile from "./components/pages/Profile/Profile";
 
 

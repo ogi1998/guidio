@@ -1,7 +1,7 @@
 import Courses from "./Courses";
 import Header from "./Header";
 
-import {uiActions} from '../../../store/uiSlice';
+import { uiActions } from '../../../store/slices/uiSlice';
 import { useDispatch } from "react-redux";
 
 import { useEffect } from "react";
@@ -13,9 +13,9 @@ const Landing = () => {
 		dispatch(uiActions.showLayout());
 	}, [dispatch])
 	return (
-		<div className="px-20 bg-hero" style={{backgroundSize: '101%'}}>
-		<Header />
-		<Courses />
+		<div className="px-20 bg-hero" style={{ backgroundSize: '101%' }}>
+			<Header />
+			<Courses />
 		</div>
 	);
 };

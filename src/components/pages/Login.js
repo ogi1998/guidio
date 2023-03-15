@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaExclamationCircle } from 'react-icons/fa';
 
-import { uiActions } from "../../store/uiSlice";
+import { uiActions } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Form from "../ui/Form";
-import { loginUser } from "../../store/userSlice";
+import { loginUser } from "../../store/controllers/authController";
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const Login = () => {
 			email: email.value,
 			password: password.value
 		}, () => navigate('/')));
-		
+
 	}
 
 	return (

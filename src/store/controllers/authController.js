@@ -1,41 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { uiActions } from "./uiSlice";
+import { uiActions } from "../slices/uiSlice";
+import { userActions } from "../slices/userSlice";
 
-const initialState = {
-	activeUser: null,
-};
+import sendRequest from './common/sendRequest';
 
-const userSlice = createSlice({
-	name: "user",
-	initialState,
-	reducers: {
-		initUser(state, action) {
-			state.activeUser = action.payload;
-		},
-		removeUser(state) {
-			state.activeUser = null;
-		},
-	},
-});
-
-export default userSlice;
-
-export const userActions = userSlice.actions;
-
-async function sendRequest(url, request, body) {
-	const res = await fetch(url, {
-		method: request,
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json",
-		},
-		body: body ? JSON.stringify(body) : null
-	});
-	const data = await res.json();
-	if (!res.ok) throw data;
-
-	return data;
-}
 
 export const loginUser = function (formData, cb) {
 	return async (dispatch) => {
@@ -107,12 +74,12 @@ export const registerUser = function (formData, cb) {
 	};
 };
 
-export const getUserByToken = function() {
+export const getUserByToken = function () {
 	return async dispatch => {
 		try {
 			const data = await sendRequest('/auth/token', 'GET');
 			dispatch(userActions.initUser(data));
-		} catch(err) {
+		} catch (err) {
 		}
 	}
 }

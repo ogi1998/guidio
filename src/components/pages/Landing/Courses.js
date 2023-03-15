@@ -7,7 +7,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { FaEye, FaHeart, FaUser } from "react-icons/fa";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGuides } from "../../../store/guideSlice";
+import { getGuides } from "../../../store/slices/guideSlice";
 
 const Courses = () => {
 

@@ -1,11 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useEffect, useRef } from "react";
-import { uiActions } from "../../store/uiSlice";
+import { uiActions } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import Form from "../ui/Form";
-import { registerUser } from "../../store/userSlice";
+import { registerUser } from "../../store/controllers/authController";
 import { FaExclamationCircle } from "react-icons/fa";
 
 const Register = () => {
@@ -23,7 +23,7 @@ const Register = () => {
 	function registerHandler(event) {
 		event.preventDefault();
 
-		const {firstName, lastName, email, password, passwordConfirm} = registerRef.current;
+		const { firstName, lastName, email, password, passwordConfirm } = registerRef.current;
 
 		if (!firstName.value || !lastName.value || !email.value || !password.value || !passwordConfirm.value) {
 			dispatch(uiActions.createError("Error! Fields can't be empty."));
@@ -44,13 +44,13 @@ const Register = () => {
 			last_name: lastName.value,
 			email: email.value,
 			password: password.value
-		}, () => {navigate('/login')}));
-		
+		}, () => { navigate('/login') }));
+
 	}
 	return (
 		<Form onSubmit={registerHandler}>
 			<h1 className="text-5xl font-bold py-2">Register</h1>
-			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl"/> {error}</div>
+			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl" /> {error}</div>
 			<div className="flex gap-10 mt-7 py-5 w-[90%]">
 				<div className="w-1/2">
 					<label className="block pb-1">First Name</label>

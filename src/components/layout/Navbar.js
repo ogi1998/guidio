@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaCaretDown, FaCaretRight, FaPlus, FaUser } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { logoutUser } from "../../store/userSlice";
+import { logoutUser } from "../../store/controllers/authController";
 
 const Navbar = () => {
 	const dispatch = useDispatch();
