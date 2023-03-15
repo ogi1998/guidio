@@ -7,7 +7,7 @@ from core.dependencies import DBDependency
 from core.models import User
 from core.settings import AUTH_TOKEN
 from users import service
-from users.schemas import UserUpdateSchema, UserReadSchema, UserPasswordUpdateSchema
+from users.schemas import UserProfileUpdateSchema, UserReadSchema, UserPasswordUpdateSchema
 
 router = APIRouter()
 
@@ -26,11 +26,18 @@ def get_user_profile_by_id(user_id: int, db=DBDependency):
             dependencies=[ValidToken],
             description="Update user profile",
             response_model=UserReadSchema)
-def update_user_profile(user_id: int, data: UserUpdateSchema, db=DBDependency,
+def update_user_profile(user_id: int, data: UserProfileUpdateSchema, db=DBDependency,
                         user: User = Depends(get_current_user)):
     if user_id != user.user_id:
         raise invalid_credentials_exception()
-    return service.update_user_profile(data, db, user)
+    updated_user, updated_details, profession = service.update_user_profile(data, db, user)
+    return UserReadSchema(email=updated_user.email,
+                          first_name=updated_user.first_name,
+                          last_name=updated_user.last_name,
+                          user_id=updated_user.user_id,
+                          is_active=updated_user.is_active,
+                          bio=updated_details.bio,
+                          profession=profession)
 
 
 @router.delete(path='/{user_id}',

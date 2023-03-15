@@ -8,7 +8,7 @@ from src.database import Base
 class Profession(Base):
     __tablename__ = "profession"
 
-    id = Column(Integer, primary_key=True)
+    profession_id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True, nullable=False)
 
 
@@ -34,8 +34,8 @@ class User(Base):
 class UserDetail(Base):
     __tablename__ = "user_detail"
 
-    id = Column(Integer, primary_key=True)
-    profession_id = Column(Integer, ForeignKey('profession.id'))
+    user_detail_id = Column(Integer, primary_key=True)
+    profession_id = Column(Integer, ForeignKey('profession.profession_id'))
     bio = Column(String(255))
 
     user_id = Column(Integer, ForeignKey('user.user_id'))

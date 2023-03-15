@@ -64,7 +64,7 @@ def upgrade() -> None:
     profession_table = sa.Table(
         'profession',
         sa.MetaData(),
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('profession_id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(100), unique=True, nullable=False)
     )
 
