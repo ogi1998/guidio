@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import sendRequest from "../controllers/common/sendRequest";
+import { uiActions } from "./uiSlice";
 const initialState = {
 	guides: [],
 	activeGuide: {}
@@ -20,8 +22,12 @@ export const guideActions = guideSlice.actions;
 
 export const getGuides = function(page) {
 	return async dispatch => {
-		const res = await fetch(`/guides?page=${page}&page_size=12`);
-		const data = await res.json();
-		dispatch(guideActions.getGuides(data.guides));
+		try {
+			const data = await sendRequest(`/guides?page=${page}&page_size=12`, 'GET');
+			dispatch(guideActions.getGuides(data.guides));
+
+		} catch(err) {
+			dispatch(uiActions.createError(err.detail));
+		}
 	}
 }

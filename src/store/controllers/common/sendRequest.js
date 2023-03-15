@@ -7,8 +7,18 @@ export default async function sendRequest(url, request, body) {
 		},
 		body: body ? JSON.stringify(body) : null
 	});
+	if (request === 'DELETE') {
+		if (!res.ok)
+			throw res.statusText;
+
+		if (res.status === 204) 
+			return true;
+	}
+
 	const data = await res.json();
-	if (!res.ok) throw data;
+	if (!res.ok) {
+		throw data;
+	}
 
 	return data;
 }

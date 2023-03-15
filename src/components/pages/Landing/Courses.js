@@ -25,6 +25,7 @@ const Courses = () => {
 	]
 
 	const guides = useSelector(({guide}) => guide.guides);
+	const errorMsg = useSelector(state => state.ui.errorMsg);
 
 	useEffect(() => {
 		dispatch(getGuides(id ? id : 1));
@@ -53,7 +54,7 @@ const Courses = () => {
 						<span className="flex items-center gap-1 text-xl"><FaEye /> 39k</span>
 					</div>
 				</NavLink>
-				) : <h1 className="text-danger-light text-3xl py-5">No Guides Available</h1>}
+				) : <h1 className="text-danger-light text-3xl py-5">{errorMsg}</h1>}
 			</div>
 			{guides?.length ? <Pagination />: ''}
 		</div>
