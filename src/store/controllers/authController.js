@@ -3,7 +3,6 @@ import { userActions } from "../slices/userSlice";
 
 import sendRequest from './common/sendRequest';
 
-
 export const loginUser = function (formData, cb) {
 	return async (dispatch) => {
 		try {

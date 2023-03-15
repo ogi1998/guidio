@@ -7,7 +7,7 @@ const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false }) 
 			</label>
 			{type === "textarea" ?
 				<textarea
-					className={`w-full border-2 border-${color}-main py-1 px-2 text-dark-main`}
+					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
 					rows={8}
 					defaultValue={defaultValue}
 					readOnly={readOnly}>
@@ -15,7 +15,7 @@ const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false }) 
 				:
 				<input
 					type={type}
-					className={`w-full border-2 border-${color}-main py-1 px-2 text-dark-main`}
+					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
 					defaultValue={defaultValue}
 					readOnly={readOnly}
 				/>

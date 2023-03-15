@@ -1,25 +1,11 @@
-const ChangePassword = () => {
+import InputGroup from "./common/InputGroup"
+
+const ChangePassword = ({show}) => {
   return (
-	<div>
-	<div className="w-full mb-10">
-		<label className="block font-semibold mb-2">
-			Current Password
-		</label>
-		<input
-			type="password"
-			className="w-full border-2 border-success-main py-1 px-2 text-dark-main"
-		/>
+	<div className={`${!show && "hidden"} flex gap-20`}>
+		<InputGroup type="password" text="Password" color="success" />
+		<InputGroup type="password" text="Confirm Password" color="success" />
 	</div>
-	<div className="w-full">
-		<label className="block font-semibold mb-2">
-			New Password
-		</label>
-		<input
-			type="password"
-			className="w-full border-2 border-success-main py-1 px-2 text-dark-main"
-		/>
-	</div>
-</div>
   )
 }
 export default ChangePassword
