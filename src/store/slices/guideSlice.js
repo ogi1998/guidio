@@ -27,7 +27,7 @@ export const getGuides = function(page) {
 			dispatch(guideActions.getGuides(data.guides));
 
 		} catch(err) {
-			dispatch(uiActions.createError(err.detail));
+			// dispatch(uiActions.createError(err.detail));
 		}
 	}
 }

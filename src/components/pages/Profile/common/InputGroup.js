@@ -1,4 +1,4 @@
-const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false }) => {
+const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false, value, onChange }) => {
 
 	return (
 		<div className="mb-10 w-full">
@@ -9,14 +9,16 @@ const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false }) 
 				<textarea
 					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
 					rows={8}
-					defaultValue={defaultValue}
+					value={value}
+					onChange={onChange}
 					readOnly={readOnly}>
 				</textarea>
 				:
 				<input
 					type={type}
 					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
-					defaultValue={defaultValue}
+					value={value}
+					onChange={onChange}
 					readOnly={readOnly}
 				/>
 			}
