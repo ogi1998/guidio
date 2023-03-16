@@ -11,6 +11,8 @@ class Profession(Base):
     profession_id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True, nullable=False)
 
+    user_details = relationship("UserDetail", back_populates="profession")
+
 
 # USERS
 class User(Base):
@@ -24,7 +26,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    user_details = relationship("UserDetail", back_populates="user")
+    user_details = relationship("UserDetail", back_populates="user", uselist=False)
     guides = relationship("Guide", back_populates="user")
 
     def __str__(self):
@@ -38,8 +40,9 @@ class UserDetail(Base):
     profession_id = Column(Integer, ForeignKey('profession.profession_id'))
     bio = Column(String(255))
 
-    user_id = Column(Integer, ForeignKey('user.user_id'))
+    user_id = Column(Integer, ForeignKey('user.user_id'), unique=True)
     user = relationship("User", back_populates="user_details")
+    profession = relationship("Profession", back_populates="user_details")
 
 
 # GUIDES

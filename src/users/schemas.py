@@ -11,6 +11,14 @@ class ProfessionReadSchema(BaseModelSchema):
         orm_mode = True
 
 
+class UserDetailSchema(BaseModelSchema):
+    bio: str | None
+    profession: ProfessionReadSchema | None
+
+    class Config:
+        orm_mode = True
+
+
 class UserIDSchema(BaseModelSchema):
     user_id: int
 
@@ -22,6 +30,7 @@ class UserBaseSchema(BaseModelSchema):
 
 
 class UserProfileUpdateSchema(BaseModelSchema):
+    email: EmailStr
     first_name: str
     last_name: str
     bio: str | None
@@ -30,6 +39,7 @@ class UserProfileUpdateSchema(BaseModelSchema):
     class Config:
         schema_extra = {
             "example": {
+                "email": "john@guidio.com",
                 "first_name": "John",
                 "last_name": "Brown",
                 "bio": "This is an example of bio",
@@ -41,8 +51,7 @@ class UserProfileUpdateSchema(BaseModelSchema):
 class UserReadSchema(UserBaseSchema):
     user_id: int
     is_active: bool
-    bio: str | None
-    profession: ProfessionReadSchema | None
+    user_details: UserDetailSchema | None
 
     class Config:
         orm_mode = True
