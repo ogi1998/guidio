@@ -18,6 +18,7 @@ router = APIRouter()
 def get_list_of_guides(db=DBDependency,
                        page: int = Query(default=1, ge=1, description="Page to request"),
                        page_size: int = Query(default=50, ge=1, le=100, description="Page size")):
+    # TODO: include bio and profession for all endpoints
     total_pages = service.count_pages(db, page_size)
     guides = service.get_list_of_guides(db, page=page-1, page_size=page_size)
     if not guides:
@@ -52,7 +53,12 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
                  user: User = Depends(get_current_user)):
     if not user:
         raise invalid_credentials_exception()
-    return service.save_guide(db, data, user_id=user.user_id)
+    guides = service.save_guide(db, data, user_id=user.user_id)
+    return schemas.GuideReadSchema(title=guides.title,
+                                   content=guides.content,
+                                   guide_id=guides.guide_id,
+                                   last_modified=guides.last_modified,
+                                   user=user)
 
 
 @router.put(path="/{guide_id}",
@@ -60,7 +66,7 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
             description="Update guide",
             status_code=status.HTTP_201_CREATED,
             response_model=schemas.GuideReadSchema)
-def create_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
+def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
                  db=DBDependency,
                  user: User = Depends(get_current_user)):
     guide = service.get_guide_by_id(db, guide_id)

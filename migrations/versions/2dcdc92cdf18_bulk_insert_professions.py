@@ -1,8 +1,8 @@
 """bulk insert professions
 
-Revision ID: ec7781e313d4
-Revises: 03a51e53f7be
-Create Date: 2023-03-14 20:15:27.115428
+Revision ID: 2dcdc92cdf18
+Revises: d70fa46aa2b2
+Create Date: 2023-03-15 21:50:01.258573
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ec7781e313d4'
-down_revision = '03a51e53f7be'
+revision = '2dcdc92cdf18'
+down_revision = 'd70fa46aa2b2'
 branch_labels = None
 depends_on = None
 
@@ -64,7 +64,7 @@ def upgrade() -> None:
     profession_table = sa.Table(
         'profession',
         sa.MetaData(),
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('profession_id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(100), unique=True, nullable=False)
     )
 

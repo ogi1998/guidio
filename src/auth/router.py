@@ -6,7 +6,7 @@ from auth import schemas, service, exceptions
 from auth.dependencies import ValidToken
 from auth.service import get_current_user
 from core.dependencies import DBDependency
-from core.models import User
+from core.models import User, UserDetail
 from core.settings import AUTH_TOKEN
 from users.schemas import UserIDSchema, UserReadSchema
 
@@ -35,11 +35,7 @@ def login_user(data: schemas.LoginSchema, response: Response, db=DBDependency) -
         raise exceptions.invalid_credentials_exception()
     token = service.create_auth_token(user.user_id)
     response.set_cookie(key=AUTH_TOKEN, value=token)
-    return UserReadSchema(user_id=user.user_id,
-                          is_active=user.is_active,
-                          email=user.email,
-                          first_name=user.first_name,
-                          last_name=user.last_name)
+    return user
 
 
 @router.post(path='/logout',
@@ -56,8 +52,4 @@ def logout_user():
             description="Get user object from token",
             response_model=UserReadSchema)
 def get_user_from_token(user: User = Depends(get_current_user)) -> UserReadSchema:
-    return UserReadSchema(user_id=user.user_id,
-                          is_active=user.is_active,
-                          email=user.email,
-                          first_name=user.first_name,
-                          last_name=user.last_name)
+    return user

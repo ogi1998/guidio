@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
-from core.models import Guide
+from core.models import Guide, UserDetail
 from guides.schemas import GuideCreateUpdateSchema
 
 
@@ -23,7 +23,10 @@ def get_guide_by_id(db: Session, guide_id: int) -> Guide | None:
     return guide
 
 
-def save_guide(db: Session, data: GuideCreateUpdateSchema, user_id: int, guide=None) -> Guide:
+def save_guide(db: Session,
+               data: GuideCreateUpdateSchema,
+               user_id: int,
+               guide=None) -> Guide:
     if not guide:
         guide = Guide()
     guide.title = data.title
