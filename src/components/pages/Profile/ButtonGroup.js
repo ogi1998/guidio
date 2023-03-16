@@ -8,10 +8,10 @@ const ButtonGroup = ({ onChangePw, showPwBtn, onUpdate }) => {
 	const navigate = useNavigate();
 	function deleteHandler() {
 		dispatch(deleteUser(id, () => navigate('/')));
-	};
+	}
 	return (
 		<div className="flex justify-between items-end absolute bottom-10 w-full">
-			<button className="block bg-danger-dark text-light-main py-2 px-4 rounded-md text-lg font-medium" 
+			<button className="block bg-danger-dark text-light-main py-2 px-4 rounded-md text-lg font-medium"
 			onClick={deleteHandler}>
 				Delete Account
 			</button>

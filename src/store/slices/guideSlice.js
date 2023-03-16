@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import sendRequest from "../controllers/common/sendRequest";
-import { uiActions } from "./uiSlice";
 const initialState = {
 	guides: [],
 	activeGuide: {}
@@ -15,7 +14,7 @@ const guideSlice = createSlice({
 	}
 })
 
-export default guideSlice; 
+export default guideSlice;
 
 export const guideActions = guideSlice.actions;
 
@@ -27,7 +26,7 @@ export const getGuides = function(page) {
 			dispatch(guideActions.getGuides(data.guides));
 
 		} catch(err) {
-			// dispatch(uiActions.createError(err.detail));
+
 		}
 	}
 }

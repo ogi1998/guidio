@@ -11,7 +11,7 @@ export default async function sendRequest(url, request, body) {
 		if (!res.ok)
 			throw res.statusText;
 
-		if (res.status === 204) 
+		if (res.status === 204)
 			return true;
 	}
 

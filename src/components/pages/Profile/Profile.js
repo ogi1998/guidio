@@ -29,14 +29,12 @@ const Profile = () => {
 			return;
 		}
 
-		if (showPw) {
-			if (pw === "" || newPw === "") {
+		if (showPw && (pw === "" || newPw === "")) {
 				dispatch(uiActions.createError("Fields can't be empty!"));
 				setTimeout(() => {
 					dispatch(uiActions.clearErrors());
 				}, 3000);
 				return;
-			}
 		}
 		dispatch(
 			updateUser(

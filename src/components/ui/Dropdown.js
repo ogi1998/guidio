@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
-const Dropdown = ({title, items}) => {
+const Dropdown = ({items}) => {
 	const [isActive, setIsActive] = useState(false);
 	const ref = useRef({});
 

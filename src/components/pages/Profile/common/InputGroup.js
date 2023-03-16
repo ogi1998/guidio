@@ -1,4 +1,4 @@
-const InputGroup = ({ color, text, type, defaultValue = '', readOnly = false, value, onChange }) => {
+const InputGroup = ({ color, text, type, readOnly = false, value, onChange }) => {
 
 	return (
 		<div className="mb-10 w-full">

@@ -12,7 +12,6 @@ const uiSlice = createSlice({
 		showLayout(state) {
 			state.shouldShowLayout = true;
 		},
-		
 		hideLayout(state) {
 			state.shouldShowLayout = false;
 		},
