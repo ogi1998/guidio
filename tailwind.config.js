@@ -9,6 +9,7 @@ module.exports = {
 			secondary: {
 				main: "#727CF5",
 				dark: "#A6ADFF85",
+				light: "#E8E9FF"
 			},
 			success: {
 				main: "#00E9A3",
@@ -57,4 +58,5 @@ module.exports = {
 		},
 	},
 	plugins: [],
+	darkMode: 'class'
 };
