@@ -37,10 +37,14 @@ class UserDetail(Base):
     __tablename__ = "user_detail"
 
     user_detail_id = Column(Integer, primary_key=True)
-    profession_id = Column(Integer, ForeignKey('profession.profession_id'))
+    profession_id = Column(Integer, ForeignKey('profession.profession_id', ondelete="SET NULL"),
+                           nullable=True)
     bio = Column(String(255))
+    linkedin = Column(String(255))
+    github = Column(String(255))
+    website = Column(String(255))
 
-    user_id = Column(Integer, ForeignKey('user.user_id'), unique=True)
+    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True)
     user = relationship("User", back_populates="user_details")
     profession = relationship("Profession", back_populates="user_details")
 
