@@ -7,6 +7,7 @@ from core.dependencies import DBDependency
 from core.models import User
 from guides import schemas
 from guides import service
+from guides.constants import RetrieveOrder
 
 router = APIRouter()
 
@@ -16,10 +17,15 @@ router = APIRouter()
             status_code=status.HTTP_200_OK,
             response_model=schemas.GuideListReadSchema)
 def get_list_of_guides(db=DBDependency,
+                       order: RetrieveOrder = Query(default=RetrieveOrder.descending,
+                                                    description="Retrieve order: asc/desc"),
                        page: int = Query(default=1, ge=1, description="Page to request"),
                        page_size: int = Query(default=50, ge=1, le=100, description="Page size")):
     total_pages = service.count_pages(db, page_size)
-    guides = service.get_list_of_guides(db, page=page - 1, page_size=page_size)
+    if order == RetrieveOrder.ascending:
+        guides = service.get_list_of_guides_ascending(db, page=page - 1, page_size=page_size)
+    else:
+        guides = service.get_list_of_guides(db, page=page - 1, page_size=page_size)
     if not guides:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guides not found")
     if page > total_pages:
