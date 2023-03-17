@@ -1,7 +1,7 @@
-const InputGroup = ({ color, text, type, defaultValue = "", fieldRef, noMargin = false, onChange }) => {
+const InputGroup = ({ color, text, type, defaultValue = "", fieldRef, onChange }) => {
 
 	return (
-		<div className={`${!noMargin && "mb-10"} w-full`}>
+		<div className="w-full mb-5">
 			<label className="block font-semibold mb-2">
 				{text}{" "}
 			</label>
