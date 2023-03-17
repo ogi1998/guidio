@@ -51,7 +51,6 @@ const Profile = () => {
 			firstName.value === "" ||
 			lastName.value === "" ||
 			email.value === "" ||
-			bio.value === "" ||
 			(showPw && (currentPassword.value === "" || password.value === ""))
 		) {
 			dispatch(uiActions.createError("Fields can't be empty!"));
