@@ -1,8 +1,7 @@
-from fastapi import HTTPException, status
-from sqlalchemy import desc
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 
-from core.models import Guide, UserDetail
+from core.models import Guide
 from guides.schemas import GuideCreateUpdateSchema
 
 
@@ -15,6 +14,17 @@ def count_pages(db: Session, page_size: int):
 
 def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | None:
     guides = db.query(Guide).order_by(desc(Guide.last_modified)).offset(page).limit(page_size).all()
+    return guides
+
+
+def get_list_of_guides_ascending(db: Session, page: int, page_size: int) -> list[Guide] | None:
+    guides = db.query(Guide).order_by(asc(Guide.last_modified)).offset(page).limit(page_size).all()
+    return guides
+
+
+def search_guides(db: Session, title: str, page: int, page_size: int) -> list[Guide] | None:
+    guides = db.query(Guide).filter(Guide.title.ilike(f"%{title}%")) \
+        .order_by(desc(Guide.last_modified)).offset(page).limit(page_size).all()
     return guides
 
 
