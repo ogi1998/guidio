@@ -12,6 +12,9 @@ class ProfessionReadSchema(BaseModelSchema):
 
 
 class UserDetailSchema(BaseModelSchema):
+    linkedin: str | None
+    github: str | None
+    website: str | None
     bio: str | None
     profession: ProfessionReadSchema | None
 
@@ -29,12 +32,30 @@ class UserBaseSchema(BaseModelSchema):
     last_name: str
 
 
+class UserDetailUpdateSchema(BaseModelSchema):
+    linkedin: str | None
+    github: str | None
+    website: str | None
+    bio: str | None
+    profession_id: int | None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "linkedin": "linkedin.com",
+                "github": "github.com",
+                "website": "google.com",
+                "bio": "This is an example of bio",
+                "profession_id": 1
+            }
+        }
+
+
 class UserProfileUpdateSchema(BaseModelSchema):
     email: EmailStr
     first_name: str
     last_name: str
-    bio: str | None
-    profession_id: int | None
+    details: UserDetailUpdateSchema
 
     class Config:
         schema_extra = {
@@ -42,8 +63,7 @@ class UserProfileUpdateSchema(BaseModelSchema):
                 "email": "john@guidio.com",
                 "first_name": "John",
                 "last_name": "Brown",
-                "bio": "This is an example of bio",
-                "profession_id": 1
+                "details": UserDetailUpdateSchema.Config.schema_extra['example']
             }
         }
 
