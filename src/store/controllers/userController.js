@@ -36,3 +36,14 @@ export const changePassword = (id, formData) => {
 		}
 	};
 };
+
+export const getProfessionByName = name => {
+	return async dispatch => {
+		try {
+			const data = await sendRequest("/users/professions/?name=" + name, "GET");
+			dispatch(userActions.updateProfessions(data));
+		} catch(err) {
+			console.log(err);
+		}
+	}
+};

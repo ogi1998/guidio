@@ -1,25 +1,24 @@
-const InputGroup = ({ color, text, type, readOnly = false, value, onChange }) => {
+const InputGroup = ({ color, text, type, defaultValue = "", fieldRef, noMargin = false, onChange }) => {
 
 	return (
-		<div className="mb-10 w-full">
+		<div className={`${!noMargin && "mb-10"} w-full`}>
 			<label className="block font-semibold mb-2">
 				{text}{" "}
 			</label>
 			{type === "textarea" ?
 				<textarea
-					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
+					className={`w-full border-2 border-${color}-main p-2 text-dark-main text-xl`}
 					rows={8}
-					value={value}
-					onChange={onChange}
-					readOnly={readOnly}>
-				</textarea>
+					defaultValue={defaultValue}
+					ref={fieldRef} />
+
 				:
 				<input
 					type={type}
-					className={`w-full border-2 border-${color}-main py-2 px-2 text-dark-main text-xl`}
-					value={value}
+					className={`w-full border-2 border-${color}-main p-2 text-dark-main text-xl`}
+					defaultValue={defaultValue}
 					onChange={onChange}
-					readOnly={readOnly}
+					ref={fieldRef}
 				/>
 			}
 		</div>

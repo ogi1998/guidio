@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword, updateUser } from "../../../store/controllers/userController";
@@ -7,29 +7,37 @@ import Avatar from "./Avatar";
 import ButtonGroup from "./ButtonGroup";
 import ChangePassword from "./ChangePassword";
 import InputGroup from "./common/InputGroup";
+import Profession from "./Profession";
 import ProfileHeader from "./ProfileHeader";
 
 const Profile = () => {
 	const dispatch = useDispatch();
+
 	const user = useSelector((state) => state.user.activeUser);
 	const error = useSelector((state) => state.ui.errorMsg);
 
-	const [firstName, setFirstName] = useState(user.firstName);
-	const [lastName, setLastName] = useState(user.lastName);
-	const [pw, setPw] = useState("");
-	const [newPw, setNewPw] = useState("");
+	const formRef = useRef({});
+
 	const [showPw, setShowPw] = useState(false);
+	const [profId, setprofId] = useState(null);
 
 	function updateHandler() {
-		if (firstName === "" || lastName === "") {
+		const {firstName, lastName, email, currentPassword, password, bio} = formRef.current;
+		if (!profId) {
+			dispatch(uiActions.createError("Selected profession doesn't exist!"));
+			setTimeout(() => {
+				dispatch(uiActions.clearErrors());
+			}, 3000);
+			return;
+		}
+		if (firstName.value === "" || lastName.value === "") {
 			dispatch(uiActions.createError("Fields can't be empty!"));
 			setTimeout(() => {
 				dispatch(uiActions.clearErrors());
 			}, 3000);
 			return;
 		}
-
-		if (showPw && (pw === "" || newPw === "")) {
+		if (showPw && (currentPassword.value === "" || password.value === "")) {
 				dispatch(uiActions.createError("Fields can't be empty!"));
 				setTimeout(() => {
 					dispatch(uiActions.clearErrors());
@@ -39,10 +47,10 @@ const Profile = () => {
 		dispatch(
 			updateUser(
 				user.userId,
-				{ first_name: firstName, last_name: lastName },
+				{ first_name: firstName.value, last_name: lastName.value, email: email.value, bio: bio.value, profession_id: profId },
 				() => {
 					if (showPw)
-						dispatch(changePassword(user.userId, {current_password: pw, password: newPw}));
+						dispatch(changePassword(user.userId, {current_password: currentPassword.value, password: password.value}));
 				}
 			)
 		);
@@ -53,12 +61,8 @@ const Profile = () => {
 			<div className="flex justify-center mx-[20%] gap-32 my-36">
 				<div className="flex-auto w-[20%]">
 					<Avatar />
-					<InputGroup
-						text="Profession"
-						color="secondary"
-						type="text"
-					/>
-					<InputGroup text="Bio" color="secondary" type="textarea" />
+					<Profession profRef={val => formRef.current.profession = val} setProfId={setprofId} defaultValue={user.userDetails.profession?.name} />
+					<InputGroup text="Bio" color="secondary" type="textarea" defaultValue={user.userDetails.bio} fieldRef={val => formRef.current.bio = val} />
 				</div>
 				<div className="flex-auto relative">
 					<div
@@ -75,25 +79,25 @@ const Profile = () => {
 							text="First Name"
 							color="success"
 							type="text"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							defaultValue={user.firstName}
+							fieldRef={val => formRef.current.firstName = val}
 						/>
 						<InputGroup
 							text="Last Name"
 							color="success"
 							type="text"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							defaultValue={user.lastName}
+							fieldRef={val => formRef.current.lastName = val}
 						/>
 					</div>
 					<InputGroup
 						text="Email"
 						color="success"
 						type="email"
-						readOnly
-						value={user.email}
+						defaultValue={user.email}
+						fieldRef={val => formRef.current.email = val}
 					/>
-					{showPw && <ChangePassword pw={pw} onChangePw={e => setPw(e.target.value)} newPw={newPw} onChangeNewPw={e => setNewPw(e.target.value)} />}
+					{showPw && <ChangePassword currentPwRef={val => formRef.current.currentPassword = val} pwRef={val => formRef.current.password = val} />}
 					<ButtonGroup
 						onChangePw={() => setShowPw((prev) => !prev)}
 						showPwBtn={showPw}
