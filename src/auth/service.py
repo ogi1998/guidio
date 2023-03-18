@@ -3,7 +3,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Match
 
-from fastapi import Depends, Response, status
+from fastapi import Depends
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
@@ -13,7 +13,6 @@ from auth.dependencies import has_valid_token
 from auth.exceptions import invalid_credentials_exception, token_exception
 from core.dependencies import DBDependency
 from core.models import User
-from core.settings import AUTH_TOKEN
 
 # CONSTANTS
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

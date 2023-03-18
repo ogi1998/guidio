@@ -16,7 +16,7 @@ from users.schemas import (
 router = APIRouter()
 
 
-@router.get(path="/professions/",
+@router.get(path="/professions",
             dependencies=[ValidToken],
             description="Get professions based on search by name",
             response_model=list[ProfessionReadSchema])
@@ -24,6 +24,15 @@ def get_profession_by_name(name: str,
                            db=DBDependency):
     professions = service.get_professions_by_name(db, name)
     return professions
+
+
+@router.get(path="/instructors",
+            dependencies=[ValidToken],
+            description="Get list of users who are instructors",
+            response_model=list[UserReadSchema])
+def get_instructors(db=DBDependency) -> list[UserReadSchema]:
+    instructors = service.get_instructors(db)
+    return instructors
 
 
 @router.get(path="/{user_id}",
@@ -44,10 +53,11 @@ def update_user_profile(user_id: int, data: UserProfileUpdateSchema, db=DBDepend
                         user: User = Depends(get_current_user)):
     if user_id != user.user_id:
         raise invalid_credentials_exception()
-    profession = service.get_profession_by_id(db, data.details.profession_id)
-    if not profession:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                            detail="Profession doesn't exist")
+    if data.details.profession_id:
+        profession = service.get_profession_by_id(db, data.details.profession_id)
+        if not profession:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                detail="Profession doesn't exist")
     service.update_user_profile(data, db, user)
     return user
 

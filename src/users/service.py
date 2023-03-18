@@ -1,8 +1,14 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from auth.service import get_password_hash
 from core.models import User, UserDetail, Profession
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema
+
+
+def get_instructors(db: Session) -> list[User]:
+    instructors = db.query(User).options(joinedload(User.user_details))\
+        .filter(UserDetail.is_instructor.is_(True)).all()
+    return instructors
 
 
 def get_profession_by_id(db: Session, profession_id: int) -> Profession | None:
@@ -31,6 +37,7 @@ def update_user_profile(data: UserProfileUpdateSchema,
         user_detail.linkedin = data.details.linkedin
         user_detail.github = data.details.github
         user_detail.website = data.details.website
+        user_detail.is_instructor = data.details.is_instructor
         user_detail.bio = data.details.bio
         user_detail.profession_id = data.details.profession_id
     else:
@@ -38,6 +45,7 @@ def update_user_profile(data: UserProfileUpdateSchema,
                                      linkedin=data.details.linkedin,
                                      github=data.details.github,
                                      website=data.details.website,
+                                     is_instructor=data.details.is_instructor,
                                      bio=data.details.bio,
                                      profession_id=data.details.profession_id)
         db.add(new_user_detail)
