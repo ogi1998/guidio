@@ -8,6 +8,7 @@ from core.models import User
 from guides import schemas
 from guides import service
 from guides.constants import RetrieveOrder
+from guides.exceptions import not_instructor_exception
 
 router = APIRouter()
 
@@ -46,6 +47,8 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
                  user: User = Depends(get_current_user)):
     if not user:
         raise invalid_credentials_exception()
+    if not user.user_details.is_instructor:
+        raise not_instructor_exception()
     guides = service.save_guide(db, data, user_id=user.user_id)
     return schemas.GuideReadSchema(title=guides.title,
                                    content=guides.content,
@@ -100,6 +103,8 @@ def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
     if user.user_id != guide.user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    if not user.user_details.is_instructor:
+        raise not_instructor_exception()
     return service.save_guide(db, data, user_id=user.user_id, guide=guide)
 
 

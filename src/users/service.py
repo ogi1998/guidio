@@ -37,6 +37,7 @@ def update_user_profile(data: UserProfileUpdateSchema,
         user_detail.linkedin = data.details.linkedin
         user_detail.github = data.details.github
         user_detail.website = data.details.website
+        user_detail.is_instructor = data.details.is_instructor
         user_detail.bio = data.details.bio
         user_detail.profession_id = data.details.profession_id
     else:
@@ -44,6 +45,7 @@ def update_user_profile(data: UserProfileUpdateSchema,
                                      linkedin=data.details.linkedin,
                                      github=data.details.github,
                                      website=data.details.website,
+                                     is_instructor=data.details.is_instructor,
                                      bio=data.details.bio,
                                      profession_id=data.details.profession_id)
         db.add(new_user_detail)
