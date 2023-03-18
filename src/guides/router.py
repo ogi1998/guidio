@@ -5,10 +5,11 @@ from auth.exceptions import invalid_credentials_exception
 from auth.service import get_current_user
 from core.dependencies import DBDependency
 from core.models import User
+from core.exceptions import non_existent_page_exception
 from guides import schemas
 from guides import service
 from guides.constants import RetrieveOrder
-from guides.exceptions import not_instructor_exception
+from guides.exceptions import not_instructor_exception, guides_not_found_exception
 
 router = APIRouter()
 
@@ -28,12 +29,9 @@ def get_list_of_guides(db=DBDependency,
     else:
         guides = service.get_list_of_guides(db, page=page - 1, page_size=page_size)
     if not guides:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guides not found")
+        raise guides_not_found_exception()
     if page > total_pages:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Requested a non-existent page",
-        )
+        raise non_existent_page_exception()
     return schemas.GuideListReadSchema(pages=total_pages, guides=guides)
 
 
@@ -69,12 +67,27 @@ def get_guides_by_title(title: str,
     total_pages = service.count_pages(db, page_size)
     guides = service.search_guides(db, title, page=page - 1, page_size=page_size)
     if not guides:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guides not found")
+        raise guides_not_found_exception()
     if page > total_pages:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Requested a non-existent page",
-        )
+        raise non_existent_page_exception()
+    return schemas.GuideListReadSchema(pages=total_pages, guides=guides)
+
+
+@router.get(path="/{user_id}",
+            dependencies=[ValidToken],
+            description="Get guides by user ID",
+            status_code=status.HTTP_200_OK,
+            response_model=schemas.GuideListReadSchema)
+def get_guides_by_user_id(user_id: int,
+                          page: int = Query(default=1, ge=1, description="Page to request"),
+                          page_size: int = Query(default=50, ge=1, le=100, description="Page size"),
+                          db=DBDependency):
+    total_pages = service.count_pages(db, page_size)
+    guides = service.get_guides_by_user_id(db, user_id, page=page-1, page_size=page_size)
+    if not guides:
+        raise guides_not_found_exception()
+    if page > total_pages:
+        raise non_existent_page_exception()
     return schemas.GuideListReadSchema(pages=total_pages, guides=guides)
 
 

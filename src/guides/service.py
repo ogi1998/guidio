@@ -28,6 +28,11 @@ def search_guides(db: Session, title: str, page: int, page_size: int) -> list[Gu
     return guides
 
 
+def get_guides_by_user_id(db: Session, user_id: int, page: int, page_size: int):
+    guides = db.query(Guide).filter(Guide.user_id == user_id).offset(page).limit(page_size).all()
+    return guides
+
+
 def get_guide_by_id(db: Session, guide_id: int) -> Guide | None:
     guide = db.query(Guide).get(guide_id)
     return guide
