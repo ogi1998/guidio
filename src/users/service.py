@@ -1,8 +1,14 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from auth.service import get_password_hash
 from core.models import User, UserDetail, Profession
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema
+
+
+def get_instructors(db: Session) -> list[User]:
+    instructors = db.query(User).options(joinedload(User.user_details))\
+        .filter(UserDetail.is_instructor.is_(True)).all()
+    return instructors
 
 
 def get_profession_by_id(db: Session, profession_id: int) -> Profession | None:

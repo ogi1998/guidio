@@ -16,7 +16,7 @@ from users.schemas import (
 router = APIRouter()
 
 
-@router.get(path="/professions/",
+@router.get(path="/professions",
             dependencies=[ValidToken],
             description="Get professions based on search by name",
             response_model=list[ProfessionReadSchema])
@@ -24,6 +24,15 @@ def get_profession_by_name(name: str,
                            db=DBDependency):
     professions = service.get_professions_by_name(db, name)
     return professions
+
+
+@router.get(path="/instructors",
+            dependencies=[ValidToken],
+            description="Get list of users who are instructors",
+            response_model=list[UserReadSchema])
+def get_instructors(db=DBDependency) -> list[UserReadSchema]:
+    instructors = service.get_instructors(db)
+    return instructors
 
 
 @router.get(path="/{user_id}",
