@@ -15,6 +15,7 @@ class UserDetailSchema(BaseModelSchema):
     linkedin: str | None
     github: str | None
     website: str | None
+    is_instructor: bool
     bio: str | None
     profession: ProfessionReadSchema | None
 
@@ -36,6 +37,7 @@ class UserDetailUpdateSchema(BaseModelSchema):
     linkedin: str | None
     github: str | None
     website: str | None
+    is_instructor: bool = False
     bio: str | None
     profession_id: int | None
 
@@ -45,6 +47,7 @@ class UserDetailUpdateSchema(BaseModelSchema):
                 "linkedin": "linkedin.com",
                 "github": "github.com",
                 "website": "google.com",
+                "is_instructor": False,
                 "bio": "This is an example of bio",
                 "profession_id": 1
             }

@@ -43,6 +43,7 @@ class UserDetail(Base):
     linkedin = Column(String(255))
     github = Column(String(255))
     website = Column(String(255))
+    is_instructor = Column(Boolean, default=False)
 
     user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True)
     user = relationship("User", back_populates="user_details")

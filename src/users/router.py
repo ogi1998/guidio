@@ -44,10 +44,11 @@ def update_user_profile(user_id: int, data: UserProfileUpdateSchema, db=DBDepend
                         user: User = Depends(get_current_user)):
     if user_id != user.user_id:
         raise invalid_credentials_exception()
-    profession = service.get_profession_by_id(db, data.details.profession_id)
-    if not profession:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                            detail="Profession doesn't exist")
+    if data.details.profession_id:
+        profession = service.get_profession_by_id(db, data.details.profession_id)
+        if not profession:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                detail="Profession doesn't exist")
     service.update_user_profile(data, db, user)
     return user
 

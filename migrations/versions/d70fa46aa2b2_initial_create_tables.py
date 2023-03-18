@@ -26,11 +26,11 @@ def upgrade() -> None:
     )
     op.create_table('user',
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('first_name', sa.String(length=100), nullable=True),
-    sa.Column('last_name', sa.String(length=150), nullable=True),
+    sa.Column('first_name', sa.String(length=100), nullable=False),
+    sa.Column('last_name', sa.String(length=150), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('password', sa.String(), nullable=True),
-    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('password', sa.String(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False, server_default=sa.text('true')),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('user_id')
     )
@@ -38,10 +38,10 @@ def upgrade() -> None:
     op.create_index(op.f('ix_user_user_id'), 'user', ['user_id'], unique=False)
     op.create_table('guide',
     sa.Column('guide_id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(length=70), nullable=True),
-    sa.Column('content', sa.Text(), nullable=True),
-    sa.Column('last_modified', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('title', sa.String(length=70), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('last_modified', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.user_id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('guide_id')
     )
@@ -50,7 +50,7 @@ def upgrade() -> None:
     sa.Column('user_detail_id', sa.Integer(), nullable=False),
     sa.Column('profession_id', sa.Integer(), nullable=True),
     sa.Column('bio', sa.String(length=255), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['profession_id'], ['profession.profession_id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.user_id'], ),
     sa.PrimaryKeyConstraint('user_detail_id')
