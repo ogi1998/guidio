@@ -13,23 +13,33 @@ def count_pages(db: Session, page_size: int):
 
 
 def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | None:
-    guides = db.query(Guide).order_by(desc(Guide.last_modified)).offset(page).limit(page_size).all()
+    offset: int = page * page_size
+    guides: list[Guide] = db.query(Guide).order_by(desc(Guide.last_modified)) \
+        .offset(offset).limit(page_size).all()
     return guides
 
 
 def get_list_of_guides_ascending(db: Session, page: int, page_size: int) -> list[Guide] | None:
-    guides = db.query(Guide).order_by(asc(Guide.last_modified)).offset(page).limit(page_size).all()
+    offset: int = page * page_size
+    guides = db.query(Guide).order_by(asc(Guide.last_modified)) \
+        .offset(offset).limit(page_size).all()
     return guides
 
 
 def search_guides(db: Session, title: str, page: int, page_size: int) -> list[Guide] | None:
+    offset: int = page * page_size
     guides = db.query(Guide).filter(Guide.title.ilike(f"%{title}%")) \
-        .order_by(desc(Guide.last_modified)).offset(page).limit(page_size).all()
+        .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
     return guides
 
 
-def get_guides_by_user_id(db: Session, user_id: int, page: int, page_size: int):
-    guides = db.query(Guide).filter(Guide.user_id == user_id).offset(page).limit(page_size).all()
+def get_guides_by_user_id(db: Session,
+                          user_id: int,
+                          page: int,
+                          page_size: int) -> list[Guide] | None:
+    offset = page * page_size
+    guides = db.query(Guide).filter(Guide.user_id == user_id) \
+        .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
     return guides
 
 
