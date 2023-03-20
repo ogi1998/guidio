@@ -1,12 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { useEffect, useRef } from "react";
-import { uiActions } from "../../store/slices/uiSlice";
+import { useRef } from "react";
+import { showAndHideMsg } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import Form from "../ui/Form";
 import { registerUser } from "../../store/controllers/authController";
-import { FaExclamationCircle } from "react-icons/fa";
+import Alert from "../ui/Alert";
 
 const Register = () => {
 	const dispatch = useDispatch();
@@ -14,43 +14,49 @@ const Register = () => {
 
 	const registerRef = useRef({});
 
-	const error = useSelector(state => state.ui.errorMsg);
-
-	useEffect(() => {
-		dispatch(uiActions.hideLayout());
-	}, [dispatch]);
+	const errorMsg = useSelector((state) => state.ui.errorMsg);
 
 	function registerHandler(event) {
 		event.preventDefault();
 
-		const { firstName, lastName, email, password, passwordConfirm } = registerRef.current;
+		const { firstName, lastName, email, password, passwordConfirm } =
+			registerRef.current;
 
-		if (!firstName.value || !lastName.value || !email.value || !password.value || !passwordConfirm.value) {
-			dispatch(uiActions.createError("Error! Fields can't be empty."));
-			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
-
+		if (
+			!firstName.value ||
+			!lastName.value ||
+			!email.value ||
+			!password.value ||
+			!passwordConfirm.value
+		) {
+			dispatch(showAndHideMsg('error', "Error! Fields can't be empty!"));
 			return false;
 		}
 
 		if (password.value !== passwordConfirm.value) {
-			dispatch(uiActions.createError("Error! Password don't match."));
-			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
-
+			dispatch(showAndHideMsg('error', "Error! Password don't match!"));
 			return false;
 		}
 
-		dispatch(registerUser({
-			first_name: firstName.value,
-			last_name: lastName.value,
-			email: email.value,
-			password: password.value
-		}, () => { navigate('/login') }));
-
+		dispatch(
+			registerUser(
+				{
+					first_name: firstName.value,
+					last_name: lastName.value,
+					email: email.value,
+					password: password.value,
+				},
+				() => {
+					navigate("/login");
+					dispatch(showAndHideMsg("success", "Success! Now you can login!"));
+				}
+			)
+		);
 	}
 	return (
 		<Form onSubmit={registerHandler}>
 			<h1 className="text-5xl font-bold py-2">Register</h1>
-			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl" /> {error}</div>
+			<Alert type="error" msg={errorMsg} />
 			<div className="flex gap-10 mt-7 py-5 w-[90%]">
 				<div className="w-1/2">
 					<label className="block pb-1">First Name</label>

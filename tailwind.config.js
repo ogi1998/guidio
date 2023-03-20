@@ -14,6 +14,7 @@ module.exports = {
 			success: {
 				main: "#00E9A3",
 				dark: "#09ba88",
+				darker: "#0b4a0b",
 				contrastText: "#FFF",
 			},
 			danger: {

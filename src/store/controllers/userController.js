@@ -1,4 +1,4 @@
-import { uiActions } from "../slices/uiSlice";
+import { showAndHideMsg } from "../slices/uiSlice";
 import { userActions } from "../slices/userSlice";
 import { logoutUser } from "./authController";
 import sendRequest from "./common/sendRequest";
@@ -29,21 +29,21 @@ export const changePassword = (id, formData) => {
 			await sendRequest(`/users/${id}/update_password`, "PUT", formData);
 			dispatch(logoutUser());
 		} catch (err) {
-			dispatch(uiActions.createError(err.detail[0].msg));
-			setTimeout(() => {
-				dispatch(uiActions.clearErrors());
-			}, 3000);
+			dispatch(showAndHideMsg('error', err.detail[0].msg));
 		}
 	};
 };
 
-export const getProfessionByName = name => {
-	return async dispatch => {
+export const getProfessionByName = (name) => {
+	return async (dispatch) => {
 		try {
-			const data = await sendRequest("/users/professions/?name=" + name, "GET");
+			const data = await sendRequest(
+				"/users/professions/?name=" + name,
+				"GET"
+			);
 			dispatch(userActions.updateProfessions(data));
-		} catch(err) {
+		} catch (err) {
 			console.log(err);
 		}
-	}
+	};
 };

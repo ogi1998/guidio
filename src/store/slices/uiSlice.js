@@ -1,27 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-	shouldShowLayout: true,
-	errorMsg: ''
+	showLayout: true,
+	errorMsg: '',
+	successMsg: ''
 };
 
 const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		showLayout(state) {
-			state.shouldShowLayout = true;
+		setShowLayout(state, action) {
+			state.showLayout = action.payload;
 		},
-		hideLayout(state) {
-			state.shouldShowLayout = false;
-		},
-
-		createError(state, action) {
+		setError(state, action) {
 			state.errorMsg = action.payload;
 		},
-
-		clearErrors(state) {
-			state.errorMsg = '';
+		setSuccess(state, action) {
+			state.successMsg = action.payload;
 		}
 	}
 });
@@ -29,3 +25,16 @@ const uiSlice = createSlice({
 export const uiActions = uiSlice.actions;
 
 export default uiSlice;
+
+export const showAndHideMsg = (type, msg) => {
+	return async dispatch => {
+		if (type === 'error') {
+			dispatch(uiActions.setError(msg));
+			setTimeout(() => {dispatch(uiActions.setError(''))}, 4000);
+		}
+		if (type === 'success') {
+			dispatch(uiActions.setSuccess(msg));
+			setTimeout(() => {dispatch(uiActions.setSuccess(''))}, 4000);
+		}
+	};
+};

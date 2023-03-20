@@ -21,14 +21,14 @@ const App = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
-	const shouldShowLayout = useSelector(state => state.ui.shouldShowLayout);
+	const showLayout = useSelector(state => state.ui.showLayout);
 	const { activeUser } = useSelector(({ user }) => user);
 
 	useEffect(() => {
 		if (pathname === '/login' || pathname === '/register')
-			dispatch(uiActions.hideLayout());
+			dispatch(uiActions.setShowLayout(false));
 		else
-			dispatch(uiActions.showLayout());
+			dispatch(uiActions.setShowLayout(true));
 
 	}, [dispatch, pathname])
 
@@ -39,7 +39,7 @@ const App = () => {
 
 	return (
 		<div className="">
-			{shouldShowLayout && <Navbar />}
+			{showLayout && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/:id" element={<Landing />} />
@@ -48,7 +48,7 @@ const App = () => {
 				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
 				<Route path="/create" element={<Create />} />
 			</Routes>
-			{shouldShowLayout && <Footer />}
+			{showLayout && <Footer />}
 		</div>
 	)
 }

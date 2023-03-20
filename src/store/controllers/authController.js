@@ -1,7 +1,7 @@
-import { uiActions } from "../slices/uiSlice";
+import { showAndHideMsg } from "../slices/uiSlice";
 import { userActions } from "../slices/userSlice";
 
-import sendRequest from './common/sendRequest';
+import sendRequest from "./common/sendRequest";
 
 export const loginUser = function (formData, cb) {
 	return async (dispatch) => {
@@ -11,14 +11,10 @@ export const loginUser = function (formData, cb) {
 			cb();
 		} catch (error) {
 			dispatch(
-				uiActions.createError(
-					"Error! A problem has been occurred. Wrong email or password."
+				showAndHideMsg(
+					'error', "Error! A problem has been occurred. Wrong email or password."
 				)
 			);
-
-			setTimeout(() => {
-				dispatch(uiActions.clearErrors());
-			}, 3000);
 		}
 	};
 };
@@ -38,47 +34,29 @@ export const registerUser = function (formData, cb) {
 		} catch (err) {
 			const { type, msg } = err.detail.at(-1);
 
-			if (type === "value_error.email") {
-				dispatch(uiActions.createError("Error! Invalid email."));
-				setTimeout(() => {
-					dispatch(uiActions.clearErrors());
-				}, 3000);
-			}
+			if (type === "value_error.email")
+				dispatch(showAndHideMsg('error', "Error! Invalid email."));
 
-			if (type === "value_error.any_str.min_length") {
+			if (type === "value_error.any_str.min_length")
 				dispatch(
-					uiActions.createError(
-						"Error! Password needs to have at least 8 characters."
+					showAndHideMsg(
+						'error', "Error! Password needs to have at least 8 characters."
 					)
 				);
-				setTimeout(() => {
-					dispatch(uiActions.clearErrors());
-				}, 3000);
-			}
 
-			if (type === "value_error") {
-				dispatch(uiActions.createError(`Error! ${msg}`));
-				setTimeout(() => {
-					dispatch(uiActions.clearErrors());
-				}, 3000);
-			}
+			if (type === "value_error")
+				dispatch(showAndHideMsg('error', `Error! ${msg}`));
 
-			if (!type) {
-				dispatch(uiActions.createError(`Error! ${err.detail}`));
-				setTimeout(() => {
-					dispatch(uiActions.clearErrors());
-				}, 3000);
-			}
+			if (!type) dispatch(showAndHideMsg('error', `Error! ${err.detail}`));
 		}
 	};
 };
 
 export const getUserByToken = function () {
-	return async dispatch => {
+	return async (dispatch) => {
 		try {
-			const data = await sendRequest('/auth/token', 'GET');
+			const data = await sendRequest("/auth/token", "GET");
 			dispatch(userActions.initUser(data));
-		} catch (err) {
-		}
-	}
-}
+		} catch (err) {}
+	};
+};

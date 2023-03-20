@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaExclamationCircle } from 'react-icons/fa';
 
-import { uiActions } from "../../store/slices/uiSlice";
+import { showAndHideMsg } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Form from "../ui/Form";
 import { loginUser } from "../../store/controllers/authController";
+import Alert from "../ui/Alert";
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -13,41 +13,48 @@ const Login = () => {
 
 	const loginRef = useRef({});
 
-	const error = useSelector(state => state.ui.errorMsg);
-
-	useEffect(() => {
-		dispatch(uiActions.hideLayout());
-	}, [dispatch]);
+	const { errorMsg, successMsg } = useSelector((state) => state.ui);
 
 	function loginHandler(event) {
 		event.preventDefault();
 		const { email, password } = loginRef.current;
 
 		if (!email.value || !password.value) {
-			dispatch(uiActions.createError("Error! Fields can't be empty."));
-			setTimeout(() => { dispatch(uiActions.clearErrors()); }, 3000);
-
+			dispatch(showAndHideMsg("error", "Error! Fields can't be empty."));
 			return false;
 		}
 
-		dispatch(loginUser({
-			email: email.value,
-			password: password.value
-		}, () => navigate('/')));
-
+		dispatch(
+			loginUser(
+				{
+					email: email.value,
+					password: password.value,
+				},
+				() => {
+					navigate("/");
+					dispatch(
+						showAndHideMsg(
+							"success",
+							"Success! Successfully logged in!"
+						)
+					);
+				}
+			)
+		);
 	}
 
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
-			<div className={`text-danger-dark border border-dan bg-danger-light font-bold capitalize p-2 rounded text-lg w-[90%] ${!error && "invisible"}`}><FaExclamationCircle className="inline text-xl" /> {error}</div>
+			<Alert type="error" msg={errorMsg} />
+			<Alert type="success" msg={successMsg} />
 			<div className=" w-[90%]  py-5">
 				<label className="block pb-1">Email</label>
 				<input
 					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
 					type="text"
 					placeholder="Email..."
-					ref={el => loginRef.current.email = el}
+					ref={(el) => (loginRef.current.email = el)}
 				/>
 			</div>
 			<div className="w-[90%] py-5">
@@ -56,7 +63,7 @@ const Login = () => {
 					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
 					type="password"
 					placeholder="Password..."
-					ref={el => loginRef.current.password = el}
+					ref={(el) => (loginRef.current.password = el)}
 				/>
 			</div>
 			<div className=" inline-block mt-10 text-center">

@@ -5,7 +5,7 @@ import {
 	changePassword,
 	updateUser,
 } from "../../../store/controllers/userController";
-import { uiActions } from "../../../store/slices/uiSlice";
+import { showAndHideMsg } from "../../../store/slices/uiSlice";
 import Avatar from "./Avatar";
 import ButtonGroup from "./ButtonGroup";
 import ChangePassword from "./ChangePassword";
@@ -22,7 +22,9 @@ const Profile = () => {
 	const formRef = useRef({});
 
 	const [showPw, setShowPw] = useState(false);
-	const [profId, setprofId] = useState(user.userDetails?.profession?.professionId);
+	const [profId, setprofId] = useState(
+		user.userDetails?.profession?.professionId
+	);
 
 	function updateHandler() {
 		const {
@@ -38,12 +40,7 @@ const Profile = () => {
 		} = formRef.current;
 
 		if (!profId) {
-			dispatch(
-				uiActions.createError("Selected profession doesn't exist!")
-			);
-			setTimeout(() => {
-				dispatch(uiActions.clearErrors());
-			}, 3000);
+			dispatch(showAndHideMsg('error', "Selected profession doesn't exist!"));
 			return;
 		}
 
@@ -53,13 +50,10 @@ const Profile = () => {
 			email.value === "" ||
 			(showPw && (currentPassword.value === "" || password.value === ""))
 		) {
-			dispatch(uiActions.createError("Fields can't be empty!"));
-			setTimeout(() => {
-				dispatch(uiActions.clearErrors());
-			}, 3000);
+			dispatch(showAndHideMsg('error', "Fields can't be empty!"));
 			return;
 		}
-		
+
 		dispatch(
 			updateUser(
 				user.userId,

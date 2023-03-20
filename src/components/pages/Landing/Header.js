@@ -1,8 +1,12 @@
 import { FaSearch } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import Alert from '../../ui/Alert';
 
 const Header = () => {
+	const successMsg = useSelector(state => state.ui.successMsg);
 	return (
-		<div className="py-16 text-center min-h-screen flex flex-col items-center">
+		<div className="py-16 text-center min-h-screen flex flex-col items-center pt-24">
+			<Alert type="success" size='half' msg={successMsg} />
 			<h2 className=" font-bold my-[4.5rem] text-6xl">
 				Learn Anytime, Anywhere, <br />
 				and Accelerate Future

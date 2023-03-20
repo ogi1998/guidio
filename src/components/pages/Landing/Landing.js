@@ -10,7 +10,7 @@ const Landing = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(uiActions.showLayout());
+		dispatch(uiActions.setShowLayout(true));
 	}, [dispatch])
 	return (
 		<div className="px-20 bg-hero" style={{ backgroundSize: '101%' }}>
