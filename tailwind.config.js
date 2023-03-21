@@ -19,10 +19,11 @@ module.exports = {
 			},
 			danger: {
 				dark: "#A00000",
-				light: "#FF9999",
+				light: "#FF9999"
 			},
 			dark: {
 				main: "#6C757D",
+				black: "#000"
 			},
 			light: {
 				main: "#FFF",

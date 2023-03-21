@@ -21,8 +21,13 @@ export const loginUser = function (formData, cb) {
 
 export const logoutUser = function () {
 	return async (dispatch) => {
-		await sendRequest("/auth/logout", "POST");
-		dispatch(userActions.removeUser());
+		try {
+			await sendRequest("/auth/logout", "POST");
+			dispatch(userActions.removeUser());
+			dispatch(showAndHideMsg('success', 'Success! Successfully logged out!'));
+		} catch(error) {
+			dispatch(showAndHideMsg('error', "Error! Can't logout!"));
+		}
 	};
 };
 

@@ -6,6 +6,7 @@ import {
 	updateUser,
 } from "../../../store/controllers/userController";
 import { showAndHideMsg } from "../../../store/slices/uiSlice";
+import Toggle from "../../ui/Toggle";
 import Avatar from "./Avatar";
 import ButtonGroup from "./ButtonGroup";
 import ChangePassword from "./ChangePassword";
@@ -92,6 +93,7 @@ const Profile = () => {
 						setProfId={setprofId}
 						defaultValue={user.userDetails?.profession?.name}
 					/>
+					<Toggle />
 					<InputGroup
 						text="Bio"
 						color="secondary"

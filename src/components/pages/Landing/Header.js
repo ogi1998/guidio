@@ -6,7 +6,7 @@ const Header = () => {
 	const successMsg = useSelector(state => state.ui.successMsg);
 	return (
 		<div className="py-16 text-center min-h-screen flex flex-col items-center pt-24">
-			<Alert type="success" size='half' msg={successMsg} />
+			<Alert type="success" size='fit' msg={successMsg} />
 			<h2 className=" font-bold my-[4.5rem] text-6xl">
 				Learn Anytime, Anywhere, <br />
 				and Accelerate Future
