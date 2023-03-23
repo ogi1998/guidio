@@ -23,7 +23,7 @@ const Profession = ({ defaultValue, setProfId }) => {
 
 		timeout = setTimeout(() => {
 			dispatch(getProfessionByName(event.target.value.trim()));
-			if (event.target.value === professions[0].name && professions.length === 1) 
+			if (event.target.value === professions[0].name && professions.length === 1)
 				setProfId(professions[0].professionId)
 			timeout = null;
 		}, 500);
@@ -45,7 +45,7 @@ const Profession = ({ defaultValue, setProfId }) => {
 				className="w-full border-2
 				border-secondary-main text-dark-main
 				text-lg text-center h-fit max-h-52 overflow-auto
-				absolute bg-light-main"
+				absolute bg-light-main z-10"
 				>
 					{professions.map((profession) => (
 						<li

@@ -8,7 +8,7 @@ const InputGroup = ({ color, text, type, defaultValue = "", fieldRef, onChange }
 			{type === "textarea" ?
 				<textarea
 					className={`w-full border-2 border-${color}-main p-2 text-dark-main text-xl`}
-					rows={8}
+					rows={4}
 					defaultValue={defaultValue}
 					ref={fieldRef} />
 

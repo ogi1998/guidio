@@ -16,7 +16,8 @@ export const updateUser = (id, formData, cb) => {
 		try {
 			const newUser = await sendRequest(`/users/${id}`, "PUT", formData);
 			dispatch(userActions.initUser(newUser));
-			cb();
+			if (cb)
+				cb();
 		} catch (err) {
 			console.log(err);
 		}
@@ -38,7 +39,7 @@ export const getProfessionByName = (name) => {
 	return async (dispatch) => {
 		try {
 			const data = await sendRequest(
-				"/users/professions/?name=" + name,
+				"/users/professions?name=" + name,
 				"GET"
 			);
 			dispatch(userActions.updateProfessions(data));
