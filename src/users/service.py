@@ -1,12 +1,71 @@
+import os
+import shutil
+from datetime import datetime
+from pathlib import Path
+
+from fastapi import UploadFile
 from sqlalchemy.orm import Session, joinedload
 
 from auth.service import get_password_hash
+from core.constants import MEDIA_ROOT
 from core.models import User, UserDetail, Profession
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema
 
 
+def avatar_upload_path(first_name: str, last_name: str, filename: str):
+    user_name = first_name + "_" + last_name
+    directory = f"{MEDIA_ROOT}/users/{user_name}/avatar/"
+
+    if not os.path.exists(directory):
+        Path(directory).mkdir(parents=True, exist_ok=True)
+    if not os.path.exists(directory + filename):
+        filename_parts = filename.split(".")
+        timestamp = str(int(datetime.now().timestamp()))
+        filename = "".join(filename_parts[:-1]) + "_" + timestamp + "." + filename_parts[-1]
+    open(f'{directory}{filename}', 'wb').close()
+    return directory + filename
+
+
+def get_avatar(user: User) -> str | None:
+    return user.user_details.avatar
+
+
+def save_avatar(file: UploadFile, db: Session, user: User) -> User:
+    """Check if avatar exists and create it if not. If it exists then do the update"""
+
+    old_user_avatar = user.user_details.avatar
+
+    file_path = avatar_upload_path(user.first_name, user.last_name, file.filename)
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    finally:
+        file.file.close()
+
+    user.user_details.avatar = file_path
+
+    db.add(user)
+    db.commit()
+
+    if old_user_avatar and os.path.exists(old_user_avatar):
+        os.remove(old_user_avatar)
+
+    return user
+
+
+def delete_avatar(db: Session, user: User):
+    avatar = user.user_details.avatar
+
+    if os.path.exists(avatar):
+        os.remove(avatar)
+    user.user_details.avatar = None
+    db.add(user)
+    db.commit()
+    return None
+
+
 def get_instructors(db: Session) -> list[User]:
-    instructors = db.query(User).options(joinedload(User.user_details))\
+    instructors = db.query(User).options(joinedload(User.user_details)) \
         .filter(UserDetail.is_instructor.is_(True)).all()
     return instructors
 
