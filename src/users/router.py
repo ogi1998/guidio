@@ -40,7 +40,7 @@ def get_avatar(user: User = Depends(get_current_user)):
     if avatar is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Avatar not found")
-    return {"avatar": avatar}
+    return schemas.UserAvatarSchema(avatar=avatar)
 
 
 @router.post(path="/avatar",
@@ -73,6 +73,52 @@ def delete_avatar(db=DBDependency, user: User = Depends(get_current_user)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Avatar not found")
     service.delete_avatar(db, user)
+    return None
+
+
+@router.get(path="/cover_image",
+            dependencies=[ValidToken],
+            description="Get user cover image",
+            response_model=schemas.UserCoverImageSchema,
+            status_code=status.HTTP_200_OK)
+def get_cover_image(user: User = Depends(get_current_user)):
+    image = service.get_cover_image(user)
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Cover image not found")
+    return schemas.UserCoverImageSchema(cover_image=image)
+
+
+@router.post(path="/cover_image",
+             dependencies=[ValidToken],
+             description="Create user cover image",
+             response_model=schemas.UserReadSchema,
+             status_code=status.HTTP_201_CREATED)
+def create_cover_image(file: UploadFile, db=DBDependency, user: User = Depends(get_current_user)):
+    saved = service.save_cover_image(file, db, user)
+    return saved
+
+
+@router.put(path="/cover_image",
+            dependencies=[ValidToken],
+            description="Update user cover image",
+            response_model=schemas.UserReadSchema,
+            status_code=status.HTTP_200_OK)
+def update_cover_image(file: UploadFile, db=DBDependency, user: User = Depends(get_current_user)):
+    updated = service.save_cover_image(file, db, user)
+    return updated
+
+
+@router.delete(path="/cover_image",
+               dependencies=[ValidToken],
+               description="Delete user cover image",
+               status_code=status.HTTP_204_NO_CONTENT)
+def delete_cover_image(db=DBDependency, user: User = Depends(get_current_user)):
+    image = user.user_details.cover_image
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Cover image not found")
+    service.delete_cover_image(db, user)
     return None
 
 
