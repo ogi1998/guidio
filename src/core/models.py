@@ -19,11 +19,11 @@ class User(Base):
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String(100))
-    last_name = Column(String(150))
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(150), nullable=False)
     email = Column(String(120), unique=True, index=True, nullable=False)
-    password = Column(String)
-    is_active = Column(Boolean, default=True)
+    password = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user_details = relationship("UserDetail", back_populates="user", uselist=False)
@@ -43,9 +43,12 @@ class UserDetail(Base):
     linkedin = Column(String(255))
     github = Column(String(255))
     website = Column(String(255))
-    is_instructor = Column(Boolean, default=False)
+    is_instructor = Column(Boolean, default=False, nullable=False)
+    avatar = Column(String(255), nullable=True)
+    cover_image = Column(String(255), nullable=True)
 
-    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True)
+    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True,
+                     nullable=False)
     user = relationship("User", back_populates="user_details")
     profession = relationship("Profession", back_populates="user_details")
 
@@ -55,12 +58,12 @@ class Guide(Base):
     __tablename__ = "guide"
 
     guide_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(70))
-    content = Column(Text)
+    title = Column(String(70), nullable=False)
+    content = Column(Text, nullable=False)
     last_modified = Column(DateTime(timezone=True), server_default=func.now(),
-                           onupdate=func.current_timestamp())
+                           onupdate=func.current_timestamp(), nullable=False)
 
-    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
 
     user = relationship("User", back_populates="guides")
 

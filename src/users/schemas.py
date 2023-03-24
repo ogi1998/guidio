@@ -17,10 +17,27 @@ class UserDetailSchema(BaseModelSchema):
     website: str | None
     is_instructor: bool
     bio: str | None
+    avatar: str | None
+    cover_image: str | None
     profession: ProfessionReadSchema | None
 
     class Config:
         orm_mode = True
+
+
+class UserAvatarSchema(BaseModelSchema):
+    avatar: str | None
+
+    class Config:
+        orm_mode = True
+
+
+class UserCoverImageSchema(BaseModelSchema):
+    cover_image: str | None
+
+    class Config:
+        orm_mode = True
+
 
 
 class UserIDSchema(BaseModelSchema):
