@@ -45,6 +45,7 @@ class UserDetail(Base):
     website = Column(String(255))
     is_instructor = Column(Boolean, default=False, nullable=False)
     avatar = Column(String(255), nullable=True)
+    cover_image = Column(String(255), nullable=True)
 
     user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True,
                      nullable=False)
