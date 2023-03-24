@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import sendRequest from "../controllers/common/sendRequest";
+import { showAndHideMsg } from "./uiSlice";
 const initialState = {
 	guides: [],
 	activeGuide: {}
@@ -27,6 +28,17 @@ export const getGuides = function(page) {
 
 		} catch(err) {
 
+		}
+	}
+}
+
+export const createGuide = function(title, content) {
+	return async dispatch => {
+		try {
+			await sendRequest('/guides', 'POST', {title, content});
+		} catch(err) {
+			console.log(err);
+			dispatch(showAndHideMsg('error', 'Error creating a guide'));
 		}
 	}
 }
