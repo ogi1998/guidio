@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from './store/slices/uiSlice';
+import { clearMessages, uiActions } from './store/slices/uiSlice';
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router"
 
 import Footer from "./components/layout/Footer"
@@ -29,6 +29,10 @@ const App = () => {
 			dispatch(uiActions.setShowLayout(false));
 		else
 			dispatch(uiActions.setShowLayout(true));
+
+		if (pathname === '/login' || pathname === '/register' || pathname === '/profile' || pathname === '/create') {
+			dispatch(clearMessages());
+		}
 
 	}, [dispatch, pathname])
 

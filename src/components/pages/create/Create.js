@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createGuide } from "../../../store/slices/guideSlice";
+import { createGuide } from "../../../store/controllers/guideController";
+import { showAndHideMsg } from "../../../store/slices/uiSlice";
 
 import Alert from '../../ui/Alert';
 import Cover from "./Cover";
@@ -9,17 +10,23 @@ import Preview from "./Preview";
 
 const Create = () => {
 	const dispatch = useDispatch();
-	const {errorMsg} = useSelector(state => state.ui);
+	const {errorMsg, successMsg} = useSelector(state => state.ui);
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 
 	function createGuideHandler() {
-		dispatch(createGuide(title, content));
+		if (title === '' || content === '') {
+			dispatch(showAndHideMsg('error', 'Fields cant be empty!'));
+			return;
+		}
+		dispatch(createGuide(title, content, () => dispatch(showAndHideMsg('success', 'Guide successfully created!'))));
 	};
 	return (
 		<div className="bg-secondary-light">
 			<Cover />
-			<Alert type='error' msg={errorMsg} />
+			<div className="flex justify-center">
+				<Alert type={(errorMsg && 'error') || (successMsg && 'success')} msg={errorMsg || successMsg} size="half" />
+			</div>
 			<div className="flex justify-center">
 				<Editor
 					setTitle={e => setTitle(e.target.value)}

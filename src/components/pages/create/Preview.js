@@ -10,7 +10,7 @@ const Preview = ({ title, content, onCreate }) => {
 	content = `# ${title}\n` + content;
 	return (
 		<div className="w-[40%] m-5">
-			<div className="flex flex-col gap-5 w-full h-[80vh] p-2 rounded bg-primary-main overflow-auto">
+			<div className="flex flex-col gap-5 w-full h-[70vh] p-2 rounded bg-primary-main overflow-auto">
 				<ReactMarkdown remarkPlugins={[[remarkGfm]]} rehypePlugins={[[rehypeRaw, rehypeSanitize]]}
 					className="w-full h-full p-4 rounded bg-light-main markdown overflow-auto"
 					components={{

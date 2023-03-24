@@ -1,6 +1,6 @@
-const Editor = ({ setContent, setTitle, createGuideHandler }) => {
+const Editor = ({ setContent, setTitle, onCreate }) => {
 	return (
-		<div className="w-[40%] h-[80vh] m-5">
+		<div className="w-[40%] h-[70vh] m-5">
 			<div className="flex flex-col gap-5 h-full p-2 rounded bg-secondary-main overflow-auto">
 				<input
 					type="text"
@@ -15,7 +15,7 @@ const Editor = ({ setContent, setTitle, createGuideHandler }) => {
 				/>
 			</div>
 			<div className="text-right">
-				<button className="inline-block py-2 px-4 mt-10 rounded-md bg-secondary-main text-light-main text-lg font-medium" onClick={createGuideHandler}>
+				<button className="inline-block py-2 px-4 mt-10 rounded-md bg-secondary-main text-light-main text-lg font-medium" onClick={onCreate}>
 					Save Changes
 				</button>
 			</div>

@@ -10,6 +10,7 @@ import ProfileInformation from "./ProfileInformation";
 const Profile = () => {
 	const {errorMsg, successMsg} = useSelector(state => state.ui);
 	const [activeTab, setActiveTab] = useState(0);
+	
 	return (
 		<main>
 			<ProfileHeader />

@@ -43,11 +43,12 @@ const Login = () => {
 		);
 	}
 
+
+
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
-			<Alert type="error" msg={errorMsg} />
-			<Alert type="success" msg={successMsg} />
+			<Alert type={(errorMsg && 'error') || (successMsg && 'success')}msg={errorMsg || successMsg} />
 			<div className=" w-[90%]  py-5">
 				<label className="block pb-1">Email</label>
 				<input
