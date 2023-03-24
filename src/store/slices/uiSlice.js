@@ -29,10 +29,12 @@ export default uiSlice;
 export const showAndHideMsg = (type, msg) => {
 	return async dispatch => {
 		if (type === 'error') {
+			dispatch(uiActions.setSuccess(''));
 			dispatch(uiActions.setError(msg));
 			setTimeout(() => {dispatch(uiActions.setError(''))}, 4000);
 		}
 		if (type === 'success') {
+			dispatch(uiActions.setError(''));
 			dispatch(uiActions.setSuccess(msg));
 			setTimeout(() => {dispatch(uiActions.setSuccess(''))}, 4000);
 		}

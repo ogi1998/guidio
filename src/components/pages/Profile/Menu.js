@@ -4,7 +4,7 @@ const Menu = ({ setActiveTab, activeTab }) => {
 	return (
 		<ul className="flex border-b-2 border-secondary-main mb-5">
 			<li
-			className={` px-5 pb-10 border-b-8 text-gray-dark font-bold
+			className={` px-5 border-b-8 text-gray-dark font-bold
 			hover:border-secondary-main hover:cursor-pointer
 			${!activeTab ? "border-secondary-main" : "border-[transparent]"}`}
 				onClick={() => setActiveTab(0)}>

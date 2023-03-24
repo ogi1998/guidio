@@ -16,8 +16,7 @@ export const updateUser = (id, formData, cb) => {
 		try {
 			const newUser = await sendRequest(`/users/${id}`, "PUT", formData);
 			dispatch(userActions.initUser(newUser));
-			if (cb)
-				cb();
+			cb();
 		} catch (err) {
 			console.log(err);
 		}

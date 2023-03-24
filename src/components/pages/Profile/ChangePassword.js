@@ -18,8 +18,7 @@ const ChangePassword = () => {
 		);
 	}
   return (
-	<div className="py-10">
-		<h2 className="text-4xl mb-10">Change Password</h2>
+	<div className="pb-5 pt-2 min-h-[70vh]">
 		<div className="px-[25%] flex flex-col">
 			<InputGroup type="password" text="Password" color="secondary" defaultValue="" fieldRef={el => pwRef.current.currentPassword = el} />
 			<InputGroup type="password" text="New Password" color="secondary" defaultValue="" fieldRef={el => pwRef.current.password = el} />

@@ -8,7 +8,7 @@ import ChangePassword from "./ChangePassword";
 import ProfileInformation from "./ProfileInformation";
 
 const Profile = () => {
-	const error = useSelector((state) => state.ui.errorMsg);
+	const {errorMsg, successMsg} = useSelector(state => state.ui);
 	const [activeTab, setActiveTab] = useState(0);
 	return (
 		<main>
@@ -16,7 +16,7 @@ const Profile = () => {
 			<div className="px-[20%]">
 				<Menu setActiveTab={setActiveTab} activeTab={activeTab} />
 				<div className="flex justify-center">
-					<Alert type="error" msg={error} size="half" />
+					<Alert type={((errorMsg && 'error') || (successMsg && 'success'))} msg={successMsg || errorMsg} size="half" />
 				</div>
 				{!activeTab ? <ProfileInformation /> : <ChangePassword />}
 			</div>

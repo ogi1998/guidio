@@ -10,19 +10,19 @@ import Toggle from "../../ui/Toggle";
 import InputGroup from "./common/InputGroup";
 import ButtonGroup from "./ButtonGroup";
 
-
 const ProfileInformation = () => {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state) => state.user.activeUser);
 	const formRef = useRef({});
+
 	const [profId, setprofId] = useState(user.userDetails?.profession?.professionId);
+	const [isInstructor, setIsInstructor] = useState(user.userDetails?.isInstructor);
 
 	function updateHandler() {
 		const fields = formRef.current;
-
 		if (!profId) {
-			dispatch(showAndHideMsg('error', "Selected profession doesn't exist!"));
+			dispatch(showAndHideMsg('error', "Select a valid profession!"));
 			return;
 		}
 
@@ -42,9 +42,10 @@ const ProfileInformation = () => {
 					linkedin: fields.linkedin.value,
 					github: fields.github.value,
 					website: fields.website.value,
+					is_instructor: isInstructor,
 					profession_id: profId,
 				},
-			})
+			}, dispatch(showAndHideMsg('success', 'User successfully updated!')))
 		);
 	}
 	return (
@@ -56,7 +57,7 @@ const ProfileInformation = () => {
 					setProfId={setprofId}
 					defaultValue={user.userDetails?.profession?.name}
 				/>
-				<Toggle />
+				<Toggle isChecked={isInstructor} setChecked={() => setIsInstructor(prev => !prev)} />
 				<InputGroup
 					text="Bio"
 					color="secondary"
@@ -99,22 +100,20 @@ const ProfileInformation = () => {
 					defaultValue={user.userDetails?.website}
 					fieldRef={(val) => (formRef.current.website = val)}
 				/>
-				<div className="flex gap-20">
-					<InputGroup
-						text="LinkedIn"
-						color="success"
-						type="text"
-						defaultValue={user.userDetails?.linkedin}
-						fieldRef={(val) => (formRef.current.linkedin = val)}
-					/>
-					<InputGroup
-						text="Github"
-						color="success"
-						type="text"
-						defaultValue={user.userDetails?.github}
-						fieldRef={(val) => (formRef.current.github = val)}
-					/>
-				</div>
+				<InputGroup
+					text="LinkedIn"
+					color="success"
+					type="text"
+					defaultValue={user.userDetails?.linkedin}
+					fieldRef={(val) => (formRef.current.linkedin = val)}
+				/>
+				<InputGroup
+					text="Github"
+					color="success"
+					type="text"
+					defaultValue={user.userDetails?.github}
+					fieldRef={(val) => (formRef.current.github = val)}
+				/>
 				<ButtonGroup
 					onUpdate={updateHandler}
 				/>
