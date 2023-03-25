@@ -140,8 +140,8 @@ def update_user_profile(user_id: int, data: schemas.UserProfileUpdateSchema, db=
                         user: User = Depends(get_current_user)):
     if user_id != user.user_id:
         raise invalid_credentials_exception()
-    if data.details.profession_id:
-        profession = service.get_profession_by_id(db, data.details.profession_id)
+    if data.user_details.profession_id:
+        profession = service.get_profession_by_id(db, data.user_details.profession_id)
         if not profession:
             raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                                 detail="Profession doesn't exist")
@@ -175,10 +175,5 @@ def update_user_password(user_id: int,
     if not verify_password(data.current_password, user.password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Invalid password")
-    updated_user, updated_details = service.update_user_password(db, data, user)
-    return schemas.UserReadSchema(email=updated_user.email,
-                                  first_name=updated_user.first_name,
-                                  last_name=updated_user.last_name,
-                                  user_id=updated_user.user_id,
-                                  is_active=updated_user.is_active,
-                                  user_details=updated_details)
+    updated_user = service.update_user_password(db, data, user)
+    return updated_user

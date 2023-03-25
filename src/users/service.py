@@ -144,20 +144,20 @@ def update_user_profile(data: UserProfileUpdateSchema,
     user_detail: UserDetail = db.query(UserDetail) \
         .filter(UserDetail.user_id == db_user.user_id).first()
     if user_detail:
-        user_detail.linkedin = data.details.linkedin
-        user_detail.github = data.details.github
-        user_detail.website = data.details.website
-        user_detail.is_instructor = data.details.is_instructor
-        user_detail.bio = data.details.bio
-        user_detail.profession_id = data.details.profession_id
+        user_detail.linkedin = data.user_details.linkedin
+        user_detail.github = data.user_details.github
+        user_detail.website = data.user_details.website
+        user_detail.is_instructor = data.user_details.is_instructor
+        user_detail.bio = data.user_details.bio
+        user_detail.profession_id = data.user_details.profession_id
     else:
         new_user_detail = UserDetail(user_id=db_user.user_id,
-                                     linkedin=data.details.linkedin,
-                                     github=data.details.github,
-                                     website=data.details.website,
-                                     is_instructor=data.details.is_instructor,
-                                     bio=data.details.bio,
-                                     profession_id=data.details.profession_id)
+                                     linkedin=data.user_details.linkedin,
+                                     github=data.user_details.github,
+                                     website=data.user_details.website,
+                                     is_instructor=data.user_details.is_instructor,
+                                     bio=data.user_details.bio,
+                                     profession_id=data.user_details.profession_id)
         db.add(new_user_detail)
     db.commit()
     db.refresh(db_user)
@@ -178,5 +178,4 @@ def update_user_password(db: Session,
     user.password = hashed_password
     db.commit()
     db.refresh(user)
-    user_details = db.query(UserDetail).filter(UserDetail.user_id == user.user_id).first()
-    return user, user_details
+    return user

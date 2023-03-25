@@ -91,7 +91,7 @@ def get_guides_by_user_id(user_id: int,
     return schemas.GuideListReadSchema(pages=total_pages, guides=guides)
 
 
-@router.get("/{guide_id}",
+@router.get("/guide/{guide_id}",
             dependencies=[ValidToken],
             description="Get single guide by ID",
             status_code=status.HTTP_200_OK,
