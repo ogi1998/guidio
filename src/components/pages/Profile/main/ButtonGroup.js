@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteUser } from "../../../store/controllers/userController";
+import { deleteUser } from "../../../../store/controllers/userController";
 
 const ButtonGroup = ({ onUpdate }) => {
 	const dispatch = useDispatch();

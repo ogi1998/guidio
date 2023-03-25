@@ -7,7 +7,7 @@ export const loginUser = function (formData, cb) {
 	return async (dispatch) => {
 		try {
 			const data = await sendRequest("/auth/login", "POST", formData);
-			dispatch(userActions.initUser(data));
+			dispatch(userActions.setUser(data));
 			cb();
 		} catch (error) {
 			dispatch(
@@ -25,7 +25,7 @@ export const logoutUser = function () {
 			await sendRequest("/auth/logout", "POST");
 			dispatch(userActions.removeUser());
 			dispatch(showAndHideMsg('success', 'Success! Successfully logged out!'));
-		} catch(error) {
+		} catch (error) {
 			dispatch(showAndHideMsg('error', "Error! Can't logout!"));
 		}
 	};
@@ -61,7 +61,7 @@ export const getUserByToken = function () {
 	return async (dispatch) => {
 		try {
 			const data = await sendRequest("/auth/token", "GET");
-			dispatch(userActions.initUser(data));
-		} catch (err) {}
+			dispatch(userActions.setUser(data));
+		} catch (err) { }
 	};
 };

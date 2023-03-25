@@ -33,8 +33,8 @@ const Courses = () => {
 		<div>
 			<Dropdown title="Popular" items={dropdownItems} />
 			<div className=" grid grid-cols-4 w-full gap-5">
-				{guides?.length ? guides.map((guide, idx) =>
-				<NavLink to='/' className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={idx}>
+				{guides?.length ? guides.map(guide =>
+				<NavLink to='/' className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
 					<div className="relative">
 						<img src={cardImg} alt="Card Item" />
 						<div className="

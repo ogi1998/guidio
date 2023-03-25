@@ -1,13 +1,13 @@
 import { useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
-import { updateUser } from "../../../store/controllers/userController";
-import { showAndHideMsg } from "../../../store/slices/uiSlice";
+import { updateUser } from "../../../../store/controllers/userController";
+import { showAndHideMsg } from "../../../../store/slices/uiSlice";
 
 import Avatar from "./Avatar";
 import Profession from "./Profession";
-import Toggle from "../../ui/Toggle";
-import InputGroup from "./common/InputGroup";
+import Toggle from "../../../ui/Toggle";
+import InputGroup from "../common/InputGroup";
 import ButtonGroup from "./ButtonGroup";
 
 const ProfileInformation = () => {
@@ -37,7 +37,7 @@ const ProfileInformation = () => {
 				first_name: fields.firstName.value,
 				last_name: fields.lastName.value,
 				email: fields.email.value,
-				details: {
+				userDetails: {
 					bio: fields.bio.value,
 					linkedin: fields.linkedin.value,
 					github: fields.github.value,
@@ -45,7 +45,7 @@ const ProfileInformation = () => {
 					is_instructor: isInstructor,
 					profession_id: profId,
 				},
-			}, dispatch(showAndHideMsg('success', 'User successfully updated!')))
+			}, () => dispatch(showAndHideMsg('success', 'User successfully updated!')))
 		);
 	}
 	return (

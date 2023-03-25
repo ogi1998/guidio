@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changePassword } from "../../../store/controllers/userController";
-import InputGroup from "./common/InputGroup"
+import { changePassword } from "../../../../store/controllers/userController";
+import InputGroup from "../common/InputGroup"
 
 const ChangePassword = () => {
 	const dispatch = useDispatch();

@@ -9,7 +9,7 @@ const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		initUser(state, action) {
+		setUser(state, action) {
 			state.activeUser = action.payload;
 		},
 		removeUser(state) {
@@ -17,6 +17,12 @@ const userSlice = createSlice({
 		},
 		updateProfessions(state, action) {
 			state.professions = action.payload;
+		},
+		removeCoverImage(state) {
+			state.activeUser.userDetails.coverImage = null;
+		},
+		removeAvatarImage(state) {
+			state.activeUser.userDetails.avatar = null;
 		}
 	},
 });

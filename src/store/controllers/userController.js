@@ -15,7 +15,7 @@ export const updateUser = (id, formData, cb) => {
 	return async (dispatch) => {
 		try {
 			const newUser = await sendRequest(`/users/${id}`, "PUT", formData);
-			dispatch(userActions.initUser(newUser));
+			dispatch(userActions.setUser(newUser));
 			cb();
 		} catch (err) {
 			console.log(err);
@@ -47,3 +47,29 @@ export const getProfessionByName = (name) => {
 		}
 	};
 };
+
+export const uploadImage = (file, type) => {
+	return async dispatch => {
+		try {
+			const data = await sendRequest(`/users/${type}`, 'POST', file, true);
+			dispatch(userActions.setUser(data));
+		} catch (err) {
+			console.log(err);
+		}
+	}
+}
+
+export const deleteImage = (type, cb) => {
+	return async dispatch => {
+		try {
+			await sendRequest(`/users/${type}`, 'DELETE');
+			cb();
+			if (type === 'avatar')
+				dispatch(userActions.removeAvatarImage());
+			else
+				dispatch(userActions.removeCoverImage());
+		} catch(err) {
+			console.log(err);
+		}
+	}
+}

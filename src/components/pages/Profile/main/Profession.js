@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfessionByName } from "../../../store/controllers/userController";
-import { userActions } from "../../../store/slices/userSlice";
-import InputGroup from "./common/InputGroup";
+import { getProfessionByName } from "../../../../store/controllers/userController";
+import { userActions } from "../../../../store/slices/userSlice";
+import InputGroup from "../common/InputGroup";
 
 let timeout;
 const Profession = ({ defaultValue, setProfId }) => {
