@@ -14,6 +14,17 @@ export const getGuides = function(page) {
 	}
 }
 
+export const guidesByUserId = (id, page) => {
+	return async dispatch => {
+		try {
+			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=12`, 'GET');
+			dispatch(guideActions.getGuides(data.guides));
+		} catch(err) {
+			console.log(err);
+		}
+	}
+}
+
 export const createGuide = function(title, content, cb) {
 	return async dispatch => {
 		try {

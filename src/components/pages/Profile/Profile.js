@@ -6,6 +6,7 @@ import Menu from "./main/Menu";
 import Alert from "../../ui/Alert";
 import ChangePassword from "./main/ChangePassword";
 import ProfileInformation from "./main/ProfileInformation";
+import Courses from "../landing/Courses";
 
 const Profile = () => {
 	const { errorMsg, successMsg } = useSelector((state) => state.ui);
@@ -25,7 +26,9 @@ const Profile = () => {
 						size="half"
 					/>
 				</div>
-				{!activeTab ? <ProfileInformation /> : <ChangePassword />}
+				{activeTab === 0 && <ProfileInformation />}
+				{activeTab === 1 && <ChangePassword />}
+				{activeTab === 2 && <Courses type="single" cols="3" />}
 			</div>
 		</main>
 	);

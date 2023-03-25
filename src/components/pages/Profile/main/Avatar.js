@@ -22,7 +22,7 @@ const Avatar = () => {
 	}
 	return (
 		<div className="flex justify-between h-40 mb-10">
-			{user.userDetails.avatar ?
+			{user.userDetails?.avatar ?
 			 <img src={user.userDetails?.avatar} alt="Avatar" className="object-cover rounded-[50%]" /> : 
 			  <FaUser className="inline-block bg-success-main p-8 text-[8rem] rounded-[50%] shadow-normal shadow-secondary-main mr-5" />}
 

@@ -13,7 +13,7 @@ const HeaderInfo = ({ user }) => {
 				<h3 className="text-3xl font-semibold w-[80%] max-w-[80%] flex items-center flex-wrap">
 					{user.firstName} {user.lastName}
 					<span className="text-lg">
-						|{user.userDetails?.profession?.name}|
+						{user.userDetails?.profession?.name && `| ${user.userDetails.profession.name} |`}
 					</span>
 				</h3>
 			</div>
