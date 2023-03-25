@@ -71,7 +71,7 @@ class UserDetailUpdateSchema(BaseModelSchema):
 
 
 class UserProfileUpdateSchema(UserBaseSchema):
-    details: UserDetailUpdateSchema
+    user_details: UserDetailUpdateSchema
 
     class Config:
         schema_extra = {
@@ -79,7 +79,7 @@ class UserProfileUpdateSchema(UserBaseSchema):
                 "email": "john@guidio.com",
                 "first_name": "John",
                 "last_name": "Brown",
-                "details": UserDetailUpdateSchema.Config.schema_extra['example']
+                "user_details": UserDetailUpdateSchema.Config.schema_extra['example']
             }
         }
 
