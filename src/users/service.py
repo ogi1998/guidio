@@ -28,7 +28,9 @@ def avatar_upload_path(first_name: str, last_name: str, filename: str):
     directory = f"{MEDIA_ROOT}/users/{user_name}/avatar/"
 
     path = create_upload_path(directory, filename)
-    return path
+    path_to_save = 'media' + path.split('media')[1]
+
+    return path_to_save
 
 
 def cover_image_upload_path(first_name: str, last_name: str, filename: str):
@@ -36,7 +38,8 @@ def cover_image_upload_path(first_name: str, last_name: str, filename: str):
     directory = f"{MEDIA_ROOT}/users/{user_name}/cover_image/"
 
     path = create_upload_path(directory, filename)
-    return path
+    path_to_save = 'media' + path.split('media')[1]
+    return path_to_save
 
 
 def get_avatar(user: User) -> str | None:
