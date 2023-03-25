@@ -1,4 +1,4 @@
-from pydantic import EmailStr
+from pydantic import EmailStr, Field
 
 from core.schemas import BaseModelSchema, UserPasswordSchema
 
@@ -39,23 +39,22 @@ class UserCoverImageSchema(BaseModelSchema):
         orm_mode = True
 
 
-
 class UserIDSchema(BaseModelSchema):
     user_id: int
 
 
 class UserBaseSchema(BaseModelSchema):
     email: EmailStr
-    first_name: str
-    last_name: str
+    first_name: str = Field(max_length=100)
+    last_name: str = Field(max_length=150)
 
 
 class UserDetailUpdateSchema(BaseModelSchema):
-    linkedin: str | None
-    github: str | None
-    website: str | None
+    linkedin: str = Field(max_length=255)
+    github: str = Field(max_length=255)
+    website: str = Field(max_length=255)
     is_instructor: bool = False
-    bio: str | None
+    bio: str = Field(None, min_length=1, max_length=255)
     profession_id: int | None
 
     class Config:
@@ -71,10 +70,7 @@ class UserDetailUpdateSchema(BaseModelSchema):
         }
 
 
-class UserProfileUpdateSchema(BaseModelSchema):
-    email: EmailStr
-    first_name: str
-    last_name: str
+class UserProfileUpdateSchema(UserBaseSchema):
     details: UserDetailUpdateSchema
 
     class Config:

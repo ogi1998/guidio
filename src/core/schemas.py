@@ -21,5 +21,6 @@ class UserPasswordSchema(BaseModelSchema):
         elif re.search('[A-Z]', password) is None:
             raise ValueError("Make sure password contains a capital letter")
         elif re.search('[@$!%*?&]', password) is None:
-            raise ValueError("Password must contain at least one of these special characters: @$!%*?&")
+            raise ValueError("Password must contain at least one of these special characters: "
+                             "@$!%*?&")
         return password

@@ -1,3 +1,4 @@
+from pydantic import Field
 from datetime import datetime
 
 from core.schemas import BaseModelSchema
@@ -20,7 +21,7 @@ class GuideListReadSchema(BaseModelSchema):
 
 
 class GuideCreateUpdateSchema(BaseModelSchema):
-    title: str
+    title: str = Field(max_length=70)
     content: str
 
 
