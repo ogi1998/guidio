@@ -1,6 +1,6 @@
-import Dropdown from "../../ui/Dropdown";
+import Dropdown from "../../common/Dropdown";
 
-import Pagination from '../../ui/Pagination';
+import Pagination from '../../common/Pagination';
 
 import cardImg from "../../../assets/card_item.png";
 import { NavLink } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
 
-const Courses = ({type = "all"}) => {
+const Courses = ({ type = "all" }) => {
 
 	const dispatch = useDispatch();
 	const dropdownItems = [

@@ -12,36 +12,31 @@ input, textarea {
 .markdown h1, h2, h3, h4, h5 {
 	font-weight: bold;
 }
+
 .markdown h1 {
-	font-size: 2.5rem;
+	font-size: 2.25rem;
 	margin: 1rem 0;
 }
 .markdown h2 {
-	font-size: 2.25rem;
+	font-size: 1.5rem;
+	margin: 1rem 0;
 }
 .markdown h3 {
-	font-size: 2rem;
+	font-size: 1.25rem;
+	margin: 1rem 0;
 }
 
 .markdown h4 {
-	font-size: 1.75rem;
-}
-
-.markdown h5 {
-	font-size: 1.5rem;
-}
-
-.markdown h6 {
-	font-size: 1.25rem;
+	font-size: 1rem;
 }
 
 .markdown ul {
 	list-style-type: disc;
-	margin: 2rem;
+	margin: 1rem;
 }
 
 .markdown p, .markdown li {
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 	font-size: 1.25rem;
 	letter-spacing: 1px;
 }

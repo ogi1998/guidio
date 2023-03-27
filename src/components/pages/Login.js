@@ -3,9 +3,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { showAndHideMsg } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Form from "../ui/Form";
+import Form from "../common/Form";
 import { loginUser } from "../../store/controllers/authController";
-import Alert from "../ui/Alert";
+import Alert from "../common/Alert";
 
 const Login = () => {
 	const dispatch = useDispatch();

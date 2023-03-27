@@ -1,6 +1,6 @@
 import { FaSearch } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import Alert from '../../ui/Alert';
+import Alert from '../../common/Alert';
 
 const Header = () => {
 	const successMsg = useSelector(state => state.ui.successMsg);

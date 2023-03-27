@@ -4,9 +4,9 @@ import { useRef } from "react";
 import { showAndHideMsg } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import Form from "../ui/Form";
+import Form from "../common/Form";
 import { registerUser } from "../../store/controllers/authController";
-import Alert from "../ui/Alert";
+import Alert from "../common/Alert";
 
 const Register = () => {
 	const dispatch = useDispatch();

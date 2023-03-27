@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createGuide } from "../../../store/controllers/guideController";
 import { showAndHideMsg } from "../../../store/slices/uiSlice";
 
-import Alert from '../../ui/Alert';
+import Alert from '../../common/Alert';
 import Cover from "./Cover";
 import Editor from "./Editor";
 import Preview from "./Preview";

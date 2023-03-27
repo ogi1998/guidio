@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import UploadButton from "../../../ui/UploadButton";
+import UploadButton from "../../../common/UploadButton";
 import HeaderInfo from "./HeaderInfo";
 
 import img from '../../../../assets/user_profile.jpg';
