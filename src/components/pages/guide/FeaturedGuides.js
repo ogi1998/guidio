@@ -1,0 +1,40 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { guidesByUserId } from "../../../store/controllers/guideController";
+
+import cardImg from '../../../assets/card_item.png';
+import { NavLink } from "react-router-dom";
+import { guideActions } from "../../../store/slices/guideSlice";
+
+const FeaturedGuides = ({userId, guideId}) => {
+	const dispatch = useDispatch();
+	const guides = useSelector(state => state.guide.guides.guides);
+	useEffect(() => {
+		if (userId)
+			dispatch(guidesByUserId(userId, 4, 1));
+	}, [userId]);
+
+  return (
+	<div className="w-[40%] bg-light-main p-5 rounded h-fit">
+		<h2 className=" text-2xl my-5">More from the author</h2>
+		{guides.map(guide =>
+			<NavLink to={`/guides/${guide.guideId}`} key={guide.guideId} className="flex mb-5 h-fit">
+				<img src={cardImg} alt="Preview" className="w-[30%] mr-5 rounded" />
+				<div>
+					<h1 className="text-secondary-main font-bold underline">{guide.title}</h1>
+					<p className=" font-light text-dark-main">
+						Creation date:{" "}
+						{new Date(guide.lastModified).getDate()}
+						-
+						{new Date(guide.lastModified).getMonth() + 1}
+						-
+						{new Date(guide.lastModified).getFullYear()}
+						
+					</p>
+				</div>
+			</NavLink>
+		)}
+	</div>
+  )
+}
+export default FeaturedGuides

@@ -53,8 +53,8 @@ const App = () => {
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
-				<Route path="/create" element={<Create />} />
-				<Route path="/guide/:id" element={ <Guide />} />
+				<Route path="/create" element={activeUser?.userDetails?.isInstructor ?<Create /> : <Navigate replace to='/' />} />
+				<Route path="/guides/:id" element={ activeUser ? <Guide /> : <Navigate replace to='/' />} />
 			</Routes>
 			{showLayout && <Footer />}
 		</div>

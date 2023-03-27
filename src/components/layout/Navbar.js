@@ -59,11 +59,11 @@ const Navbar = () => {
 							</NavLink>
 						</div>
 					</button>
-					<NavLink to='/create' className="bg-secondary-main py-3 px-6 rounded-bl-[50%] rounded-tl-[40%] rounded-br-[40%] rounded-tr-[50%] -skew-y-6 text-lg font-medium hover:bg-secondary-dark flex items-center">
+					{activeUser.userDetails.isInstructor && <NavLink to='/create' className="bg-secondary-main py-3 px-6 rounded-bl-[50%] rounded-tl-[40%] rounded-br-[40%] rounded-tr-[50%] -skew-y-6 text-lg font-medium hover:bg-secondary-dark flex items-center">
 						<div className="skew-y-6 inline-block">
 							<FaPlus className="inline" /> CREATE
 						</div>
-					</NavLink>
+					</NavLink>}
 					<button
 						onClick={logoutHandler}
 						className="bg-success-main py-3 px-5 rounded-md text-lg font-medium hover:bg-success-dark"

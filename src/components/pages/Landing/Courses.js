@@ -28,19 +28,15 @@ const Courses = ({ type = "all" }) => {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, [activePage, pages]);
 	useEffect(() => {
-		type === 'all' && dispatch(getGuides(activePage));
-		type === 'single' && dispatch(guidesByUserId(userId, activePage));
+		type === 'all' && dispatch(getGuides(12, activePage));
+		type === 'single' && dispatch(guidesByUserId(userId, 12, activePage));
 	}, [dispatch, type, userId, activePage])
-
-	useEffect(() => {
-		console.log(activePage);
-	}, [activePage]);
 	return (
 		<div>
 			<Dropdown title="Popular" items={['New', 'Popular']} />
 			<div className={`grid ${type === 'all' && 'grid-cols-4'} ${type === 'single' && 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
-					<NavLink to={`/guide/${guide.guideId}`} className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
+					<NavLink to={`/guides/${guide.guideId}`} className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
 						<div className="relative">
 							<img src={cardImg} alt="Card Item" />
 							<div className="

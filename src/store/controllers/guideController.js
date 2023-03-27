@@ -2,10 +2,10 @@ import sendRequest from "../controllers/common/sendRequest";
 import { guideActions } from "../slices/guideSlice";
 import { showAndHideMsg } from "../slices/uiSlice";
 
-export const getGuides = function (page) {
+export const getGuides = function (pageSize, page) {
 	return async dispatch => {
 		try {
-			const data = await sendRequest(`/guides?page=${page}&page_size=12`, 'GET');
+			const data = await sendRequest(`/guides?page=${page}&page_size=${pageSize}`, 'GET');
 			if (page === 1)
 				dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 			if (page > 1)
@@ -17,10 +17,10 @@ export const getGuides = function (page) {
 	}
 }
 
-export const guidesByUserId = (id, page) => {
+export const guidesByUserId = (id, pageSize, page) => {
 	return async dispatch => {
 		try {
-			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=12`, 'GET');
+			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=${pageSize}`, 'GET');
 			if (page === 1)
 				dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 			if (page > 1)
@@ -46,8 +46,8 @@ export const createGuide = function (title, content, cb) {
 export const getGuideById = function (id) {
 	return async dispatch => {
 		try {
-			const { title, content, guideId } = await sendRequest(`/guides/guide/${id}`, 'GET');
-			dispatch(guideActions.setActiveGuide({ title: `# ${title}`, content, guideId }));
+			const { title, content, guideId, user } = await sendRequest(`/guides/guide/${id}`, 'GET');
+			dispatch(guideActions.setActiveGuide({ title: `# ${title}`, content, guideId, userId: user.userId }));
 		} catch (err) {
 			console.log(err);
 		}

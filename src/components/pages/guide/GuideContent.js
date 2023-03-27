@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getGuideById } from "../../../store/controllers/guideController";
+import { guideActions } from "../../../store/slices/guideSlice";
 import MarkdownContent from "../../common/MarkdownContent"
+import FeaturedGuides from "./FeaturedGuides";
 
 const GuideContent = () => {
 	const dispatch = useDispatch();
@@ -13,10 +15,12 @@ const GuideContent = () => {
 
 	useEffect(() => {
 		dispatch(getGuideById(id));
+
 	}, [dispatch, id]);
   return (
-	<div className="bg-secondary-light p-20 flex">
-		<MarkdownContent content={content} className="w-[65%] h-fit" />
+	<div className="bg-secondary-light p-20 flex gap-10">
+		<MarkdownContent content={content} className="h-fit" />
+		<FeaturedGuides userId={activeGuide?.userId} guideId={id} />
 	</div>
   )
 }
