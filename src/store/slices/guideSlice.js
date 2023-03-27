@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-	guides: [],
+	guides: {},
 	activeGuide: {}
 }
 const guideSlice = createSlice({
@@ -9,6 +9,9 @@ const guideSlice = createSlice({
 	reducers: {
 		setGuides(state ,action) {
 			state.guides = action.payload;
+		},
+		updateGuides(state, action) {
+			state.guides.guides = [...state.guides.guides, ...action.payload];
 		},
 		setActiveGuide(state, action) {
 			state.activeGuide = action.payload;

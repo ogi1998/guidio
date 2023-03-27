@@ -35,7 +35,7 @@ const Dropdown = ({items}) => {
 					text-gray-dark text-lg`}
 					ref={el => ref.current.dropdownList = el}>
 						{items.map((item, idx) => (
-							<li className="py-2 px-4 border-solid border-b-secondary-main border-b hover:text-secondary-main cursor-pointer" key={idx} onClick={item.click}>{item.title}</li>
+							<li className="py-2 px-4 border-solid border-b-secondary-main border-b hover:text-secondary-main cursor-pointer" key={idx}>{item}</li>
 						))}
 				</ul>
 			</div>

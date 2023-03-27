@@ -1,38 +1,43 @@
 import Dropdown from "../../common/Dropdown";
 
-import Pagination from '../../common/Pagination';
 
 import cardImg from "../../../assets/card_item.png";
 import { NavLink } from "react-router-dom";
 import { FaEye, FaHeart, FaUser } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
 
 const Courses = ({ type = "all" }) => {
+	const [activePage, setActivePage] = useState(1);
 
 	const dispatch = useDispatch();
-	const dropdownItems = [
-		{
-			title: 'Popular',
-			click: () => console.log('popular')
-		},
-		{
-			title: 'New',
-			click: () => console.log('new')
-		}
-	]
 
-	const guides = useSelector(({ guide }) => guide.guides);
+	const { guides, pages } = useSelector(state => state.guide.guides);
 	const userId = useSelector(state => state.user.activeUser?.userId);
 
 	useEffect(() => {
-		type === 'all' && dispatch(getGuides(1));
-		type === 'single' && dispatch(guidesByUserId(userId, 1));
-	}, [dispatch, type, userId])
+		function handleScroll() {
+			const scrolled = document.body.scrollHeight - window.innerHeight;
+			if (scrolled === window.scrollY && pages > activePage) 
+				setActivePage(activePage + 1);
+		}
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, [activePage, pages]);
+	useEffect(() => {
+		type === 'all' && dispatch(getGuides(activePage));
+		type === 'single' && dispatch(guidesByUserId(userId, activePage));
+	}, [dispatch, type, userId, activePage])
+
+	useEffect(() => {
+		console.log(activePage);
+	}, [activePage]);
 	return (
 		<div>
-			<Dropdown title="Popular" items={dropdownItems} />
+			<Dropdown title="Popular" items={['New', 'Popular']} />
 			<div className={`grid ${type === 'all' && 'grid-cols-4'} ${type === 'single' && 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
 					<NavLink to={`/guide/${guide.guideId}`} className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
@@ -58,7 +63,6 @@ const Courses = ({ type = "all" }) => {
 					</NavLink>
 				) : <h1 className="text-danger-dark text-3xl py-5">No Guides found!</h1>}
 			</div>
-			{guides?.length ? <Pagination /> : ''}
 		</div>
 	);
 };

@@ -15,8 +15,8 @@ const GuideContent = () => {
 		dispatch(getGuideById(id));
 	}, [dispatch, id]);
   return (
-	<div className=" bg-secondary-light p-20 border">
-		<MarkdownContent content={content} className="w-[70%] h-fit" />
+	<div className="bg-secondary-light p-20 flex">
+		<MarkdownContent content={content} className="w-[65%] h-fit" />
 	</div>
   )
 }

@@ -16,16 +16,16 @@ import Profile from "./components/pages/profile/Profile";
 import Create from "./components/pages/create/Create";
 import Guide from './components/pages/guide/Guide';
 
-
-
-
-
 const App = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const showLayout = useSelector(state => state.ui.showLayout);
 	const { activeUser } = useSelector(({ user }) => user);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname])
 
 	useEffect(() => {
 		if (pathname === '/login' || pathname === '/register')
