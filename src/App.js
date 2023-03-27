@@ -2,16 +2,19 @@ import { useEffect } from "react"
 
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, uiActions } from './store/slices/uiSlice';
+import { getUserByToken } from "./store/controllers/authController";
+
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router"
 
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
+
 import Landing from "./components/pages/landing/Landing"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
-import { getUserByToken } from "./store/controllers/authController";
 import Profile from "./components/pages/profile/Profile";
 import Create from "./components/pages/create/Create";
+import Guide from './components/pages/guide/Guide';
 
 
 
@@ -51,6 +54,7 @@ const App = () => {
 				<Route path="/register" element={<Register />} />
 				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
 				<Route path="/create" element={<Create />} />
+				<Route path="/guide/:id" element={ <Guide />} />
 			</Routes>
 			{showLayout && <Footer />}
 		</div>

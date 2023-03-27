@@ -2,7 +2,7 @@ import { useRef } from "react"
 import { FaUser } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux";
 import { deleteImage, uploadImage } from "../../../../store/controllers/userController";
-import UploadButton from "../../../ui/UploadButton";
+import UploadButton from "../../../common/UploadButton";
 
 const Avatar = () => {
 	const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Avatar = () => {
 	return (
 		<div className="flex justify-between h-40 mb-10">
 			{user.userDetails?.avatar ?
-			 <img src={user.userDetails?.avatar} alt="Avatar" className="object-cover rounded-[50%]" /> : 
+			 <img src={user.userDetails?.avatar} alt="Avatar" className="object-cover rounded-[50%]" /> :
 			  <FaUser className="inline-block bg-success-main p-8 text-[8rem] rounded-[50%] shadow-normal shadow-secondary-main mr-5" />}
 
 			<div>

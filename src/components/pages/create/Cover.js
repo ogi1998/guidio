@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import UploadButton from "../../ui/UploadButton";
+import UploadButton from "../../common/UploadButton";
 
 const Cover = () => {
 	const fileRef = useRef();

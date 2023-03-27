@@ -7,8 +7,11 @@ const guideSlice = createSlice({
 	name: 'guide',
 	initialState,
 	reducers: {
-		getGuides(state ,action) {
+		setGuides(state ,action) {
 			state.guides = action.payload;
+		},
+		setActiveGuide(state, action) {
+			state.activeGuide = action.payload;
 		}
 	}
 })

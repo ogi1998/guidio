@@ -8,6 +8,8 @@ import Cover from "./Cover";
 import Editor from "./Editor";
 import Preview from "./Preview";
 
+import DOMPurify from "dompurify";
+
 const Create = () => {
 	const dispatch = useDispatch();
 	const {errorMsg, successMsg} = useSelector(state => state.ui);
@@ -31,7 +33,7 @@ const Create = () => {
 				<Editor
 					setTitle={e => setTitle(e.target.value)}
 					value={content}
-					setContent={e => setContent(e.target.value)}
+					setContent={e => setContent(DOMPurify.sanitize(e.target.value))}
 					onCreate={createGuideHandler}
 				/>
 				<Preview title={title} content={content} onCreate={createGuideHandler} />

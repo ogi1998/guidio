@@ -35,7 +35,7 @@ const Courses = ({ type = "all" }) => {
 			<Dropdown title="Popular" items={dropdownItems} />
 			<div className={`grid ${type === 'all' && 'grid-cols-4'} ${type === 'single' && 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
-					<NavLink to='/' className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
+					<NavLink to={`/guide/${guide.guideId}`} className="group w-full mb-10 bg-light-main hover:cursor-pointer" key={guide.guideId}>
 						<div className="relative">
 							<img src={cardImg} alt="Card Item" />
 							<div className="

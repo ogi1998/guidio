@@ -1,3 +1,5 @@
+
+
 const Editor = ({ setContent, setTitle, onCreate }) => {
 	return (
 		<div className="w-[40%] h-[70vh] m-5">

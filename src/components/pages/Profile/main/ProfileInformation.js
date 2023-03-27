@@ -6,7 +6,7 @@ import { showAndHideMsg } from "../../../../store/slices/uiSlice";
 
 import Avatar from "./Avatar";
 import Profession from "./Profession";
-import Toggle from "../../../ui/Toggle";
+import Toggle from "../../../common/Toggle";
 import InputGroup from "../common/InputGroup";
 import ButtonGroup from "./ButtonGroup";
 
