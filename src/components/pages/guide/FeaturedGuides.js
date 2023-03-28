@@ -16,7 +16,7 @@ const FeaturedGuides = ({userId}) => {
 	}, [userId, dispatch]);
 
   return (
-	<div className="w-[40%] bg-light-main p-5 rounded h-fit">
+	<div className="w-[40%] bg-light-main p-5 rounded">
 		<h2 className=" text-2xl my-5">More from the author</h2>
 		{guides.map(guide =>
 			<NavLink to={`/guides/${guide.guideId}`} key={guide.guideId} className="flex mb-5 h-fit">
