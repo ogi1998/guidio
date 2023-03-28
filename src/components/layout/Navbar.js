@@ -16,9 +16,8 @@ const Navbar = () => {
 	return (
 		<div className="flex bg-primary-main py-4 px-20 relative">
 			<nav className="flex text-light-main w-full gap-10 text-xl items-center">
-				<NavLink to="/">Courses</NavLink>
+				<NavLink to="/">Guides</NavLink>
 				<NavLink to="/">Instructors</NavLink>
-				<NavLink to="/">Tutorials</NavLink>
 			</nav>
 			<Logo />
 			{!activeUser?.userId ? (

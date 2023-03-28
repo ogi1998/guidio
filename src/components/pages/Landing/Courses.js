@@ -13,7 +13,7 @@ const Courses = ({ type = "all" }) => {
 
 	const dispatch = useDispatch();
 
-	const { guides, pages } = useSelector(state => state.guide.guides);
+	const { guides, pages } = useSelector(state => state.guide.guidesData);
 	const userId = useSelector(state => state.user.activeUser?.userId);
 
 	useEffect(() => {

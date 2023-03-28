@@ -6,13 +6,14 @@ import cardImg from '../../../assets/card_item.png';
 import { NavLink } from "react-router-dom";
 import { guideActions } from "../../../store/slices/guideSlice";
 
-const FeaturedGuides = ({userId, guideId}) => {
+const FeaturedGuides = ({userId}) => {
 	const dispatch = useDispatch();
-	const guides = useSelector(state => state.guide.guides.guides);
+	const guides = useSelector(state => state.guide.guidesData.guides);
 	useEffect(() => {
-		if (userId)
-			dispatch(guidesByUserId(userId, 4, 1));
-	}, [userId]);
+		if (userId) {
+			dispatch(guidesByUserId(userId, 5, 1, () => dispatch(guideActions.filterActiveGuide())));
+		}
+	}, [userId, dispatch]);
 
   return (
 	<div className="w-[40%] bg-light-main p-5 rounded h-fit">

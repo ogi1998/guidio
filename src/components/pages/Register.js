@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { showAndHideMsg } from "../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -53,6 +53,8 @@ const Register = () => {
 			)
 		);
 	}
+
+	useEffect(() => registerRef.current.firstName.focus(), []);
 	return (
 		<Form onSubmit={registerHandler}>
 			<h1 className="text-5xl font-bold py-2">Register</h1>

@@ -17,7 +17,7 @@ export const getGuides = function (pageSize, page) {
 	}
 }
 
-export const guidesByUserId = (id, pageSize, page) => {
+export const guidesByUserId = (id, pageSize, page, cb) => {
 	return async dispatch => {
 		try {
 			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=${pageSize}`, 'GET');
@@ -25,6 +25,8 @@ export const guidesByUserId = (id, pageSize, page) => {
 				dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 			if (page > 1)
 				dispatch(guideActions.updateGuides(data.guides));
+			if (cb)
+				cb();
 		} catch (err) {
 			console.log(err);
 		}

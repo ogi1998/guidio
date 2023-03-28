@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { showAndHideMsg } from "../../store/slices/uiSlice";
@@ -42,6 +42,8 @@ const Login = () => {
 			)
 		);
 	}
+
+	useEffect(() => loginRef.current.email.focus(), []);
 
 
 
