@@ -7,10 +7,6 @@ const GuideHeader = () => {
   function onUpload() {
 
   }
-
-  function onDelete() {
-
-  }
   return (
     <header className="h-[40vh] relative bg-fixed flex justify-center items-center">
       <img src={img} alt="Cover" className="absolute w-full h-full object-cover z-1" />

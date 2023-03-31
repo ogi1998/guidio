@@ -2,35 +2,58 @@ import cardImg from "../../../assets/card_item.png";
 
 import { NavLink } from "react-router-dom";
 import { FaSearch, FaUser } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
+import { getGuides, guidesByUserId, searchGuides } from "../../../store/controllers/guideController";
 
 import Dropdown from '../../common/Dropdown';
 
+let timeout;
 const Courses = ({ type = "all" }) => {
+	const searchRef = useRef();
 	const [activePage, setActivePage] = useState(1);
 
 	const dispatch = useDispatch();
 
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
+	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
 	const userId = useSelector(state => state.user.activeUser?.userId);
+
+	function handleSearch(event) {
+		clearTimeout(timeout);
+
+		timeout = setTimeout(() => {
+			if (event.target.value)
+				dispatch(searchGuides(event.target.value));
+			else
+				dispatch(getGuides(12, activePage));
+			timeout = null;
+		}, 500);
+	}
 
 	useEffect(() => {
 		function handleScroll() {
+			if (searchRef.current.value)
+				return;
+
 			const scrolled = document.body.scrollHeight - window.innerHeight;
 			if (scrolled === window.scrollY && pages > activePage)
 				setActivePage(activePage + 1);
+
+			if (window.scrollY === 0)
+				setActivePage(1);
 		}
 
 		window.addEventListener('scroll', handleScroll);
 
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, [activePage, pages]);
+
 	useEffect(() => {
 		type === 'all' && dispatch(getGuides(12, activePage));
 		type === 'single' && dispatch(guidesByUserId(userId, 12, activePage));
-	}, [dispatch, type, userId, activePage])
+	}, [dispatch, type, userId, activePage]);
+
 	return (
 		<div className={`px-20 ${(userId && type === "all") && "pt-48 bg-secondary-light"}`}>
 		{(userId && type === "all") &&
@@ -43,6 +66,8 @@ const Courses = ({ type = "all" }) => {
 					placeholder="Search..."
 					type="text"
 					className="bg-light-main outline-none w-full text-dark-main placeholder:font-light py-5"
+					onChange={handleSearch}
+					ref={searchRef}
 				/>
 			</div>
 			</div>}
@@ -67,7 +92,7 @@ const Courses = ({ type = "all" }) => {
 							<span className="italic">{guide.user.userDetails?.profession?.name}</span>
 						</div>
 					</NavLink>
-				) : <h1 className="text-danger-dark text-3xl py-5">No Guides found!</h1>}
+				) : <h1 className="text-danger-dark text-3xl py-5">{guideErrorMsg}</h1>}
 			</div>
 		</div>
 	);

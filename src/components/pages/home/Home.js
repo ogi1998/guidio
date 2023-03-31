@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 import { useEffect } from "react";
 
-const Landing = () => {
+const Home = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -19,4 +19,4 @@ const Landing = () => {
 		</div>
 	);
 };
-export default Landing;
+export default Home;

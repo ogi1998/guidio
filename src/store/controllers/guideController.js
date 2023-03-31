@@ -12,7 +12,20 @@ export const getGuides = function (pageSize, page) {
 				dispatch(guideActions.updateGuides(data.guides));
 
 		} catch (err) {
-			console.log(err);
+			dispatch(guideActions.setGuides({}));
+			dispatch(guideActions.setGuideErrorMsg(err.detail));
+		}
+	}
+}
+
+export const searchGuides = function(title) {
+	return async dispatch => {
+		try {
+			const data = await sendRequest(`/guides/search?title=${title}&page=1&page_size=12`, 'GET');
+			dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
+		} catch(err) {
+			dispatch(guideActions.setGuides({}));
+			dispatch(guideActions.setGuideErrorMsg(err.detail));
 		}
 	}
 }
