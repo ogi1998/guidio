@@ -9,7 +9,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router"
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
 
-import Landing from "./components/pages/landing/Landing"
+import Home from "./components/pages/home/Home"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
 import Profile from "./components/pages/profile/Profile";
@@ -48,8 +48,7 @@ const App = () => {
 		<div className="">
 			{showLayout && <Navbar />}
 			<Routes>
-				<Route path="/" element={<Landing />} />
-				<Route path="/:id" element={<Landing />} />
+				<Route path="/" element={<Home />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />

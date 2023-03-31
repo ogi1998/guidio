@@ -6,7 +6,7 @@ import Menu from "./main/Menu";
 import Alert from "../../common/Alert";
 import ChangePassword from "./main/ChangePassword";
 import ProfileInformation from "./main/ProfileInformation";
-import Courses from "../landing/Courses";
+import Courses from "../home/Courses";
 
 const Profile = () => {
 	const { errorMsg, successMsg } = useSelector((state) => state.ui);

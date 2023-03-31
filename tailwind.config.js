@@ -4,20 +4,19 @@ module.exports = {
 	theme: {
 		colors: {
 			primary: {
-				main: "#000461",
+				main: "#000461"
 			},
 			secondary: {
 				main: "#727CF5",
 				dark: "#A6ADFF85",
 				light: "#E8E9FF",
 				dark2: "#4E55AC"
-
 			},
 			success: {
 				main: "#00E9A3",
 				dark: "#09ba88",
 				darker: "#0b4a0b",
-				contrastText: "#FFF",
+				contrastText: "#FFF"
 			},
 			danger: {
 				dark: "#A00000",
@@ -28,39 +27,39 @@ module.exports = {
 				black: "#000"
 			},
 			light: {
-				main: "#FFF",
+				main: "#FFF"
 			},
 			shadow: {
-				main: "rgba(0,0,0,0.15)",
+				main: "rgba(0,0,0,0.15)"
 			},
 			gray: {
 				dark: "#000000A6",
-				main: "#B3B3B3",
+				main: "#B3B3B3"
 			},
 			gradient: {
 				white: "#ffffff00",
-				secondary: "#727cf599",
-			},
+				secondary: "#727cf599"
+			}
 		},
 		extend: {
 			backgroundSize: {
 				"full": "100% 100%"
 			},
 			backgroundImage: {
-				hero: 'url("./assets/background.png")',
-				form: 'url("./assets/background3.png")',
+				"home": 'url("./assets/background.png")',
+				"hero": 'url("./assets/hero.png")',
+				"form": 'url("./assets/background3.png")',
 				"form-blurred": 'url("./assets/background2.png")',
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-				profile: 'url("./assets/user_profile.jpg")'
+				"profile": 'url("./assets/user_profile.jpg")'
 			},
 			boxShadow: {
-				small: "0px 0px 7px",
-				normal: "0px 1px 10px",
+				"small": "0px 0px 7px",
+				"normal": "0px 1px 10px",
 				"normal-hover": "0px 1px 20px",
-				"normal-focused": "0px 1px 30px",
+				"normal-focused": "0px 1px 30px"
 			},
-		},
+		}
 	},
-	plugins: [],
-	darkMode: 'class'
+	plugins: []
 };
