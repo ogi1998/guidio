@@ -14,7 +14,7 @@ const Search = ({ inputRef, activePage }) => {
 			else
 				dispatch(getGuides(12, activePage));
 			timeout = null;
-		}, 1000);
+		}, 500);
 	}
 	return (
 		<div className="flex gap-5 items-center rounded-3xl text-2xl w-1/2 bg-light-main px-5
