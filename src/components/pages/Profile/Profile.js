@@ -28,7 +28,7 @@ const Profile = () => {
 				</div>
 				{activeTab === 0 && <ProfileInformation />}
 				{activeTab === 1 && <ChangePassword />}
-				{activeTab === 2 && <Courses type="single" cols="3" />}
+				{activeTab === 2 && <Courses showSingleUserGuides={true} cols="3" />}
 			</div>
 		</main>
 	);

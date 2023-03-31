@@ -1,35 +1,22 @@
 import cardImg from "../../../assets/card_item.png";
+import { FaUser } from "react-icons/fa";
 
-import { NavLink } from "react-router-dom";
-import { FaSearch, FaUser } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getGuides, guidesByUserId, searchGuides } from "../../../store/controllers/guideController";
+import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
 
-import Dropdown from '../../common/Dropdown';
+import Search from "./Search";
 
-let timeout;
-const Courses = ({ type = "all" }) => {
+const Courses = ({ showSingleUserGuides = false }) => {
+	const dispatch = useDispatch();
 	const searchRef = useRef();
 	const [activePage, setActivePage] = useState(1);
 
-	const dispatch = useDispatch();
 
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
 	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
 	const userId = useSelector(state => state.user.activeUser?.userId);
-
-	function handleSearch(event) {
-		clearTimeout(timeout);
-
-		timeout = setTimeout(() => {
-			if (event.target.value)
-				dispatch(searchGuides(event.target.value));
-			else
-				dispatch(getGuides(12, activePage));
-			timeout = null;
-		}, 500);
-	}
 
 	useEffect(() => {
 		function handleScroll() {
@@ -39,42 +26,32 @@ const Courses = ({ type = "all" }) => {
 			const scrolled = document.body.scrollHeight - window.innerHeight;
 			if (scrolled === window.scrollY && pages > activePage)
 				setActivePage(activePage + 1);
-
-			if (window.scrollY === 0)
+			
+			if (window.scrollY < 100)
 				setActivePage(1);
-		}
 
-		window.addEventListener('scroll', handleScroll);
+		}
+		if (!showSingleUserGuides)
+			window.addEventListener('scroll', handleScroll);
 
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, [activePage, pages]);
+	}, [activePage, pages, showSingleUserGuides]);
 
 	useEffect(() => {
-		type === 'all' && dispatch(getGuides(12, activePage));
-		type === 'single' && dispatch(guidesByUserId(userId, 12, activePage));
-	}, [dispatch, type, userId, activePage]);
+		showSingleUserGuides ? dispatch(guidesByUserId(userId, 12, activePage)) : dispatch(getGuides(12, activePage))
+	}, [dispatch, showSingleUserGuides, userId, activePage]);
 
 	return (
-		<div className={`px-20 ${(userId && type === "all") && "pt-48 bg-secondary-light"}`}>
-		{(userId && type === "all") &&
-		<div className="flex justify-center">
-			<Dropdown title="Popular" items={['New', 'Popular']} />
-		<div className="flex gap-5 items-center rounded-3xl text-2xl w-1/2 bg-light-main px-5
-			shadow-normal shadow-secondary-main focus-within:shadow-normal-focused focus-within:shadow-secondary-main m-auto">
-				<FaSearch className="text-dark-main" />
-				<input
-					placeholder="Search..."
-					type="text"
-					className="bg-light-main outline-none w-full text-dark-main placeholder:font-light py-5"
-					onChange={handleSearch}
-					ref={searchRef}
-				/>
-			</div>
-			</div>}
+		<div className={`px-20 ${(userId && !showSingleUserGuides) && "pt-48 bg-secondary-light"}`}>
+			{(userId && !showSingleUserGuides) &&
+				<div className="flex justify-center">
+					{/* <Dropdown title="Popular" items={['New', 'Popular']} /> */}
+					<Search inputRef={searchRef} activePage={activePage} />
+				</div>}
 			<h2 className="text-5xl py-10">Recent Guides</h2>
-			<div className={`grid ${type === 'all' && 'grid-cols-4'} ${type === 'single' && 'grid-cols-3'} w-full gap-5`}>
+			<div className={`grid ${!showSingleUserGuides && 'grid-cols-4'} ${showSingleUserGuides && 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
-					<NavLink to={`/guides/${guide.guideId}`} className="group w-full mb-10  hover:cursor-pointer" key={guide.guideId}>
+					<NavLink to={`/guides/${guide.guideId}`} className="group w-full mb-10  hover:cursor-pointer" key={`${guide.guideId} - ${guide.title}`}>
 						<div className="relative">
 							<img src={cardImg} alt="Card Item" />
 							<div className="
@@ -93,6 +70,7 @@ const Courses = ({ type = "all" }) => {
 						</div>
 					</NavLink>
 				) : <h1 className="text-danger-dark text-3xl py-5">{guideErrorMsg}</h1>}
+			
 			</div>
 		</div>
 	);
