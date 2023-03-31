@@ -14,7 +14,7 @@ const Navbar = () => {
 		navigate("/");
 	}
 	return (
-		<div className="flex bg-primary-main py-4 px-20 relative">
+		<div className="flex bg-primary-main py-4 px-20 relative shadow-2xl">
 			<nav className="flex text-light-main w-full gap-10 text-xl items-center">
 				<NavLink to="/">Guides</NavLink>
 				<NavLink to="/">Instructors</NavLink>

@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import Alert from '../../common/Alert';
 import hero from '../../../assets/hero-img.png';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
 	const successMsg = useSelector(state => state.ui.successMsg);
@@ -22,9 +23,9 @@ const Header = () => {
 						Unlock Your Potential and Inspire Others to Learn.<br />
 						Join our platform to educate and share your expertise.
 						</h3>
-						<button className='
-						bg-success-main font-bold text-4xl py-8 bg text-primary-main rounded-3xl w-1/2 self-center mt-20
-						hover:text-light-main hover:shadow-normal-hover hover:shadow-success-main'>Start Creating!</button>
+						<NavLink to='/register' className='bg-success-main text-primary-main text-center font-bold text-4xl
+						py-8 rounded-3xl w-1/2 self-center mt-20
+						hover:text-light-main hover:shadow-normal-hover hover:shadow-success-main'>Start Creating!</NavLink>
 					</div>
 					<div className='self-center'>
 						<img className="block" src={hero} alt="Hero" />

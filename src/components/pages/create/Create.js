@@ -22,7 +22,7 @@ const Create = () => {
 			return;
 		}
 		dispatch(createGuide(title, content, () => dispatch(showAndHideMsg('success', 'Guide successfully created!'))));
-	};
+	}
 	return (
 		<div className="bg-secondary-light">
 			<Cover />

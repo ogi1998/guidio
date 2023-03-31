@@ -1,7 +1,7 @@
 import cardImg from "../../../assets/card_item.png";
 
 import { NavLink } from "react-router-dom";
-import { FaEye, FaHeart, FaSearch, FaUser } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
@@ -32,8 +32,8 @@ const Courses = ({ type = "all" }) => {
 		type === 'single' && dispatch(guidesByUserId(userId, 12, activePage));
 	}, [dispatch, type, userId, activePage])
 	return (
-		<div className="pt-40 px-20 bg-secondary-light">
-		{userId &&
+		<div className={`px-20 ${(userId && type === "all") && "pt-48 bg-secondary-light"}`}>
+		{(userId && type === "all") &&
 		<div className="flex justify-center">
 			<Dropdown title="Popular" items={['New', 'Popular']} />
 		<div className="flex gap-5 items-center rounded-3xl text-2xl w-1/2 bg-light-main px-5
@@ -56,17 +56,15 @@ const Courses = ({ type = "all" }) => {
 						absolute top-0 w-full h-full p-4 text-light-main
 						flex items-end gap-2
 						group-hover:bg-gradient-to-b from-gradient-white to-gradient-secondary">
-								<h3 className="text-2xl">{`${guide.user.firstName} ${guide.user.lastName}`} |</h3>
-								<span className="text-lg">programmer</span>
+								<h3 className="text-xl">{guide.title}</h3>
 							</div>
 						</div>
 						<div className="flex items-center gap-2 px-2 py-4 shadow-secondary-main shadow-normal bg-light-main rounded-b-3xl">
 							{guide.user.userDetails?.avatar ?
 								<img src={guide.user.userDetails.avatar} className="w-16 rounded-[50%]" alt="Avatar" /> :
 								<FaUser className="rounded-[50%] bg-success-main text-6xl p-1" />}
-							<p className="text-lg">{guide.title}</p>
-							<span className="flex items-center gap-1 text-xl"><FaHeart /> 132</span>
-							<span className="flex items-center gap-1 text-xl"><FaEye /> 39k</span>
+							<p className="text-lg font-semibold">{`${guide.user.firstName} ${guide.user.lastName}`} |</p>
+							<span className="italic">{guide.user.userDetails?.profession?.name}</span>
 						</div>
 					</NavLink>
 				) : <h1 className="text-danger-dark text-3xl py-5">No Guides found!</h1>}
