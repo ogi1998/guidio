@@ -2,21 +2,23 @@ import cardImg from "../../../assets/card_item.png";
 import { FaUser } from "react-icons/fa";
 
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
 
 import Search from "./Search";
 
-const Courses = ({ showSingleUserGuides = false }) => {
+const Courses = ({ user = null }) => {
 	const dispatch = useDispatch();
 	const searchRef = useRef();
+
+	const { pathname } = useLocation();
+
 	const [activePage, setActivePage] = useState(1);
 
 
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
 	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
-	const userId = useSelector(state => state.user.activeUser?.userId);
 
 	useEffect(() => {
 		function handleScroll() {
@@ -31,25 +33,25 @@ const Courses = ({ showSingleUserGuides = false }) => {
 				setActivePage(1);
 
 		}
-		if (!showSingleUserGuides)
+		if (!user)
 			window.addEventListener('scroll', handleScroll);
 
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, [activePage, pages, showSingleUserGuides]);
+	}, [activePage, pages, user]);
 
 	useEffect(() => {
-		showSingleUserGuides ? dispatch(guidesByUserId(userId, 12, activePage)) : dispatch(getGuides(12, activePage))
-	}, [dispatch, showSingleUserGuides, userId, activePage]);
+		user ? dispatch(guidesByUserId(user.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
+	}, [dispatch, user, activePage]);
 
 	return (
-		<div className={`px-20 ${(userId && !showSingleUserGuides) && "pt-48 bg-secondary-light"}`}>
-			{(userId && !showSingleUserGuides) &&
+		<div className={`px-20 ${pathname === '/' && "pt-48 bg-secondary-light"}`}>
+			{pathname === '/' &&
 				<div className="flex justify-center">
 					{/* <Dropdown title="Popular" items={['New', 'Popular']} /> */}
 					<Search inputRef={searchRef} activePage={activePage} />
 				</div>}
 			<h2 className="text-5xl py-10">Recent Guides</h2>
-			<div className={`grid ${!showSingleUserGuides && 'grid-cols-4'} ${showSingleUserGuides && 'grid-cols-3'} w-full gap-5`}>
+			<div className={`grid ${!user ? 'grid-cols-4' : 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
 					<NavLink to={`/guides/${guide.guideId}`} className="group w-full mb-10  hover:cursor-pointer" key={`${guide.guideId} - ${guide.title}`}>
 						<div className="relative">

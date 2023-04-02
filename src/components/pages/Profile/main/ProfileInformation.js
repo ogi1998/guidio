@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { updateUser } from "../../../../store/controllers/userController";
 import { showAndHideMsg } from "../../../../store/slices/uiSlice";
@@ -10,10 +10,9 @@ import Toggle from "../../../common/Toggle";
 import InputGroup from "../common/InputGroup";
 import ButtonGroup from "./ButtonGroup";
 
-const ProfileInformation = () => {
+const ProfileInformation = ({user}) => {
 	const dispatch = useDispatch();
 
-	const user = useSelector((state) => state.user.activeUser);
 	const formRef = useRef({});
 
 	const [profId, setprofId] = useState(user.userDetails?.profession?.professionId);

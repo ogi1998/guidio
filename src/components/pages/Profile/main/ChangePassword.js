@@ -1,12 +1,11 @@
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changePassword } from "../../../../store/controllers/userController";
 import InputGroup from "../common/InputGroup"
 
-const ChangePassword = () => {
+const ChangePassword = ({user}) => {
 	const dispatch = useDispatch();
 	const pwRef = useRef({});
-	const user = useSelector((state) => state.user.activeUser);
 
 	function changePwHandler() {
 		const {currentPassword, password} = pwRef.current;

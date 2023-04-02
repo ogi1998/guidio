@@ -73,3 +73,25 @@ export const deleteImage = (type, cb) => {
 		}
 	}
 }
+
+export const getInstructors = () => {
+	return async dispatch => {
+		try {
+			const data = await sendRequest('/users/instructors', 'GET');
+			dispatch(userActions.setInstructors(data));
+		} catch(err) {
+			console.log(err);
+		}
+	}
+}
+
+export const getUserById = id => {
+	return async dispatch => {
+		try {
+			const data = await sendRequest(`/users/${id}`, 'GET');
+			dispatch(userActions.setPreviewedUser(data));
+		} catch(err) {
+			console.log(err);
+		}
+	}
+}

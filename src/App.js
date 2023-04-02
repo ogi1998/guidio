@@ -15,6 +15,7 @@ import Register from "./components/pages/Register"
 import Profile from "./components/pages/profile/Profile";
 import Create from "./components/pages/create/Create";
 import Guide from './components/pages/guide/Guide';
+import Instructors from "./components/pages/instructors/Instructors";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -54,6 +55,8 @@ const App = () => {
 				<Route path="/profile" element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
 				<Route path="/create" element={activeUser?.userDetails?.isInstructor ?<Create /> : <Navigate replace to='/' />} />
 				<Route path="/guides/:id" element={ activeUser ? <Guide /> : <Navigate replace to='/' />} />
+				<Route path="/instructors" element={activeUser ? <Instructors /> : <Navigate replace to='/' />} />
+				<Route path='/instructors/:id' element={activeUser ? <Profile /> : <Navigate replace to='/' />} />
 			</Routes>
 			{showLayout && <Footer />}
 		</div>
