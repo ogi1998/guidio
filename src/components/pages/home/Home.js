@@ -2,12 +2,13 @@ import Courses from "./Courses";
 import Header from "./Header";
 
 import { uiActions } from '../../../store/slices/uiSlice';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect } from "react";
 
 const Home = () => {
 	const dispatch = useDispatch();
+	const user = useSelector(state => state.user.activeUser);
 
 	useEffect(() => {
 		dispatch(uiActions.setShowLayout(true));
@@ -15,7 +16,7 @@ const Home = () => {
 	return (
 		<div>
 			<Header />
-			<Courses />
+			<Courses user={user} />
 		</div>
 	);
 };

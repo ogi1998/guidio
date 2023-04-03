@@ -20,6 +20,7 @@ const Courses = ({ user = null }) => {
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
 	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
 
+
 	useEffect(() => {
 		function handleScroll() {
 			if (searchRef.current.value)
@@ -45,7 +46,7 @@ const Courses = ({ user = null }) => {
 
 	return (
 		<div className={`px-20 ${pathname === '/' && "pt-48 bg-secondary-light"}`}>
-			{pathname === '/' &&
+			{(pathname === '/' && user) &&
 				<div className="flex justify-center">
 					{/* <Dropdown title="Popular" items={['New', 'Popular']} /> */}
 					<Search inputRef={searchRef} activePage={activePage} />

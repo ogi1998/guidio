@@ -23,6 +23,7 @@ const userSlice = createSlice({
 		},
 		removeUser(state) {
 			state.activeUser = null;
+			state.previewedUser = null;
 		},
 		updateProfessions(state, action) {
 			state.professions = action.payload;

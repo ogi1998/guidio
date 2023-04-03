@@ -12,9 +12,12 @@ import { getUserById } from "../../../store/controllers/userController";
 
 const Profile = () => {
 	const {id} = useParams();
+
 	const dispatch = useDispatch();
+
 	const { errorMsg, successMsg } = useSelector((state) => state.ui);
 	const user = useSelector(state => id ? state.user.previewedUser: state.user.activeUser);
+
 	const [activeTab, setActiveTab] = useState(0);
 
 	useEffect(() => {
@@ -22,7 +25,7 @@ const Profile = () => {
 			dispatch(getUserById(id));
 			setActiveTab(2);
 		}
-	}, [dispatch, activeTab, id]);
+	}, [dispatch, id]);
 	return (
 		<main>
 			<ProfileHeader user={user} isPublicProfile={id} />
