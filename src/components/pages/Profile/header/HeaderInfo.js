@@ -2,13 +2,12 @@ import { FaGithub, FaGlobe, FaLinkedin, FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const HeaderInfo = ({ user }) => {
-	console.log(user);
 	return (
 		<div className="bg-light-main rounded-t-3xl z-10 h-fit absolute bottom-0 left-16 ml-10 w-1/3">
 			<div className="absolute left-[2%] top-[4%] w-[95%] h-full border-2 -z-10 border-success-main rounded-t-3xl shadow-small shadow-success-main"></div>
 			<div className="flex items-center ml-5 h-28 mt-2">
 				{user?.userDetails?.avatar ?
-					<img src={user?.userDetails?.avatar} alt="Avatar" className="rounded-[50%] w-20 mr-5" /> :
+					<img src={`/${user?.userDetails?.avatar}`} alt="Avatar" className="rounded-[50%] w-20 mr-5" /> :
 					<FaUser className="inline-block bg-success-main p-5 text-[5rem] rounded-[50%] shadow-normal shadow-secondary-main mr-5" />}
 
 				<h3 className="text-3xl font-semibold w-[80%] max-w-[80%] flex items-center flex-wrap">

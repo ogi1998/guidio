@@ -23,7 +23,6 @@ const Profile = () => {
 			setActiveTab(2);
 		}
 	}, [dispatch, activeTab, id]);
-
 	return (
 		<main>
 			<ProfileHeader user={user} isPublicProfile={id} />
