@@ -16,7 +16,6 @@ const userSlice = createSlice({
 		},
 		setPreviewedUser(state, action) {
 			state.previewedUser = action.payload;
-			console.log(state.previewedUser);
 		},
 		setInstructors(state, action) {
 			state.instructors = action.payload;

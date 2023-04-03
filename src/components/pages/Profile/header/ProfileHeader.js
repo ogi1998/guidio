@@ -6,7 +6,7 @@ import HeaderInfo from "./HeaderInfo";
 import img from '../../../../assets/user_profile.jpg';
 import { deleteImage, uploadImage } from "../../../../store/controllers/userController";
 
-const ProfileHeader = ({user, isPublicProfile}) => {
+const ProfileHeader = ({user, isEditable}) => {
 	const dispatch = useDispatch();
 	const fileRef = useRef();
 	function onUpload() {
@@ -21,7 +21,7 @@ const ProfileHeader = ({user, isPublicProfile}) => {
 	return (
 		<header className="h-[65vh] relative mb-10 bg-fixed flex justify-center items-center">
 			<img src={user?.userDetails?.coverImage ? `/${user?.userDetails?.coverImage}` : img} alt="Cover" className="absolute w-full h-full object-cover z-1" />
-			{!isPublicProfile &&
+			{!isEditable &&
 			<div className="z-20 flex flex-col gap-5">
 				<UploadButton uploadRef={fileRef} text="Upload Cover Image" onUpload={onUpload} color="light" />
 				{user?.userDetails?.coverImage && <button

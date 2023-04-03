@@ -16,7 +16,7 @@ const Home = () => {
 	return (
 		<div>
 			<Header />
-			<Courses user={user} />
+			<Courses user={user}  isSingleuser={false} />
 		</div>
 	);
 };

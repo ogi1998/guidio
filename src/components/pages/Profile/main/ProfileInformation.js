@@ -15,8 +15,8 @@ const ProfileInformation = ({user}) => {
 
 	const formRef = useRef({});
 
-	const [profId, setprofId] = useState(user.userDetails?.profession?.professionId);
-	const [isInstructor, setIsInstructor] = useState(user.userDetails?.isInstructor);
+	const [profId, setprofId] = useState(user?.userDetails?.profession?.professionId);
+	const [isInstructor, setIsInstructor] = useState(user?.userDetails?.isInstructor);
 
 	function updateHandler() {
 		const fields = formRef.current;

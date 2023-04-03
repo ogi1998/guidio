@@ -11,12 +11,12 @@ import { useParams } from "react-router-dom";
 import { getUserById } from "../../../store/controllers/userController";
 
 const Profile = () => {
-	const {id} = useParams();
+	const id = Number(useParams().id);
 
 	const dispatch = useDispatch();
 
 	const { errorMsg, successMsg } = useSelector((state) => state.ui);
-	const user = useSelector(state => id ? state.user.previewedUser: state.user.activeUser);
+	const user = useSelector(state => id ? state.user.previewedUser : state.user.activeUser);
 
 	const [activeTab, setActiveTab] = useState(0);
 
@@ -28,10 +28,10 @@ const Profile = () => {
 	}, [dispatch, id]);
 	return (
 		<main>
-			<ProfileHeader user={user} isPublicProfile={id} />
+			{user && <ProfileHeader user={user} isEditable={id} />}
 			<div className="px-[20%]">
 				{!id ?
-				<Menu setActiveTab={setActiveTab} activeTab={activeTab} /> : ''
+					<Menu setActiveTab={setActiveTab} activeTab={activeTab} /> : ''
 				}
 				<div className="flex justify-center">
 					<Alert
@@ -44,7 +44,7 @@ const Profile = () => {
 				</div>
 				{(!id && activeTab === 0) && <ProfileInformation user={user} />}
 				{(!id && activeTab === 1) && <ChangePassword user={user} />}
-				{activeTab === 2 && <Courses showSingleUserGuides={true} cols="3" user={user} />}
+				{(user && activeTab === 2) && <Courses isSingleUser={true} user={user} />}
 			</div>
 		</main>
 	);

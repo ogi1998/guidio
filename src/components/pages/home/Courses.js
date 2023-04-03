@@ -2,17 +2,15 @@ import cardImg from "../../../assets/card_item.png";
 import { FaUser } from "react-icons/fa";
 
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
 
 import Search from "./Search";
 
-const Courses = ({ user = null }) => {
+const Courses = ({ user, isSingleUser}) => {
 	const dispatch = useDispatch();
 	const searchRef = useRef();
-
-	const { pathname } = useLocation();
 
 	const [activePage, setActivePage] = useState(1);
 
@@ -20,39 +18,42 @@ const Courses = ({ user = null }) => {
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
 	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
 
-
 	useEffect(() => {
 		function handleScroll() {
-			if (searchRef.current.value)
+			if (searchRef.current?.value)
 				return;
 
 			const scrolled = document.body.scrollHeight - window.innerHeight;
-			if (scrolled === window.scrollY && pages > activePage)
+			if (scrolled === window.scrollY && pages > activePage) {
 				setActivePage(activePage + 1);
+			}
 			
 			if (window.scrollY < 100)
 				setActivePage(1);
 
 		}
-		if (!user)
+		if (user) {
 			window.addEventListener('scroll', handleScroll);
 
-		return () => window.removeEventListener('scroll', handleScroll);
+			if (activePage === pages) {
+				window.removeEventListener('scroll', handleScroll);
+			}
+			return () => window.removeEventListener('scroll', handleScroll);
+		}
 	}, [activePage, pages, user]);
-
 	useEffect(() => {
-		user ? dispatch(guidesByUserId(user.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
-	}, [dispatch, user, activePage]);
+		isSingleUser ? dispatch(guidesByUserId(user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
+	}, [dispatch, isSingleUser, activePage, user?.userId]);
 
 	return (
-		<div className={`px-20 ${pathname === '/' && "pt-48 bg-secondary-light"}`}>
-			{(pathname === '/' && user) &&
+		<div className={`px-20 ${(!isSingleUser && user) && "pt-48 bg-secondary-light"}`}>
+			{(!isSingleUser && user) &&
 				<div className="flex justify-center">
 					{/* <Dropdown title="Popular" items={['New', 'Popular']} /> */}
 					<Search inputRef={searchRef} activePage={activePage} />
 				</div>}
 			<h2 className="text-5xl py-10">Recent Guides</h2>
-			<div className={`grid ${!user ? 'grid-cols-4' : 'grid-cols-3'} w-full gap-5`}>
+			<div className={`grid ${!isSingleUser ? 'grid-cols-4' : 'grid-cols-3'} w-full gap-5`}>
 				{guides?.length ? guides.map(guide =>
 					<NavLink to={`/guides/${guide.guideId}`} className="group w-full mb-10  hover:cursor-pointer" key={`${guide.guideId} - ${guide.title}`}>
 						<div className="relative">
