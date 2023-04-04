@@ -26,8 +26,15 @@ class User(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    user_details = relationship("UserDetail", back_populates="user", uselist=False)
-    guides = relationship("Guide", back_populates="user")
+    user_details = relationship("UserDetail",
+                                back_populates="user",
+                                uselist=False,
+                                cascade="all, delete",
+                                passive_deletes=True)
+    guides = relationship("Guide",
+                          back_populates="user",
+                          cascade="all, delete",
+                          passive_deletes=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -47,8 +54,7 @@ class UserDetail(Base):
     avatar = Column(String(255), nullable=True)
     cover_image = Column(String(255), nullable=True)
 
-    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True,
-                     nullable=False)
+    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), unique=True)
     user = relationship("User", back_populates="user_details")
     profession = relationship("Profession", back_populates="user_details")
 
@@ -63,7 +69,7 @@ class Guide(Base):
     last_modified = Column(DateTime(timezone=True), server_default=func.now(),
                            onupdate=func.current_timestamp(), nullable=False)
 
-    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"))
 
     user = relationship("User", back_populates="guides")
 
