@@ -81,9 +81,14 @@ def get_guides_by_title(title: str,
 def get_guides_by_user_id(user_id: int,
                           page: int = Query(default=1, ge=1, description="Page to request"),
                           page_size: int = Query(default=50, ge=1, le=100, description="Page size"),
-                          db=DBDependency):
+                          db=DBDependency,
+                          user: User = Depends(get_current_user)):
     total_pages = service.count_pages(db, page_size)
-    guides = service.get_guides_by_user_id(db, user_id, page=page-1, page_size=page_size)
+    guides = service.get_guides_by_user_id(db=db,
+                                           user_id=user_id,
+                                           page=page-1,
+                                           page_size=page_size,
+                                           user=user)
     if not guides:
         raise guides_not_found_exception()
     if page > total_pages:

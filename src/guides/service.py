@@ -1,7 +1,7 @@
 from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 
-from core.models import Guide
+from core.models import Guide, User
 from guides.schemas import GuideCreateUpdateSchema
 
 
@@ -36,10 +36,18 @@ def search_guides(db: Session, title: str, page: int, page_size: int) -> list[Gu
 def get_guides_by_user_id(db: Session,
                           user_id: int,
                           page: int,
-                          page_size: int) -> list[Guide] | None:
+                          page_size: int,
+                          user: User) -> list[Guide] | None:
     offset = page * page_size
-    guides = db.query(Guide).filter(Guide.user_id == user_id) \
-        .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
+    if user.user_id == user_id:
+        guides = db.query(Guide) \
+            .filter(Guide.user_id == user_id) \
+            .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
+    else:
+        guides = db.query(Guide) \
+            .filter(Guide.user_id == user_id) \
+            .filter(Guide.published) \
+            .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
     return guides
 
 
@@ -56,6 +64,8 @@ def save_guide(db: Session,
         guide = Guide()
     guide.title = data.title
     guide.content = data.content
+    guide.note = data.note
+    guide.published = data.published
     guide.user_id = user_id
     db.add(guide)
     db.commit()
