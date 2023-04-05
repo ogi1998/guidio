@@ -47,12 +47,8 @@ def create_guide(data: schemas.GuideCreateUpdateSchema,
         raise invalid_credentials_exception()
     if not user.user_details.is_instructor:
         raise not_instructor_exception()
-    guides = service.save_guide(db, data, user_id=user.user_id)
-    return schemas.GuideReadSchema(title=guides.title,
-                                   content=guides.content,
-                                   guide_id=guides.guide_id,
-                                   last_modified=guides.last_modified,
-                                   user=user)
+    guide = service.save_guide(db, data, user_id=user.user_id)
+    return guide
 
 
 @router.get(path="/search",
@@ -101,8 +97,10 @@ def get_guides_by_user_id(user_id: int,
             description="Get single guide by ID",
             status_code=status.HTTP_200_OK,
             response_model=schemas.GuideReadSchema)
-def get_guide_by_id(guide_id: int, db=DBDependency):
-    guide = service.get_guide_by_id(db, guide_id)
+def get_guide_by_id(guide_id: int,
+                    db=DBDependency,
+                    user: User = Depends(get_current_user)):
+    guide = service.get_guide_by_id(db, guide_id, user)
     if not guide:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
     return guide
@@ -116,11 +114,9 @@ def get_guide_by_id(guide_id: int, db=DBDependency):
 def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
                  db=DBDependency,
                  user: User = Depends(get_current_user)):
-    guide = service.get_guide_by_id(db, guide_id)
+    guide = service.get_guide_by_id(db, guide_id, user)
     if not guide:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
-    if user.user_id != guide.user_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     if not user.user_details.is_instructor:
         raise not_instructor_exception()
     return service.save_guide(db, data, user_id=user.user_id, guide=guide)
@@ -133,7 +129,7 @@ def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
 def delete_guide(guide_id: int,
                  db=DBDependency,
                  user: User = Depends(get_current_user)):
-    guide = service.get_guide_by_id(db, guide_id)
+    guide = service.get_guide_by_id(db, guide_id, user)
     if not guide:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Guide not found")
     if user.user_id != guide.user_id:
