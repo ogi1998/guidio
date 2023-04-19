@@ -15,7 +15,7 @@
   - `HTML`, `CSS` and `Javascript` with `React.js` library
   - `Redux.js` for state management inside `React.js`
   - `Tailwind.js` for utility `CSS` classes
-  - I used rehype and remark libraries for parsing between `Markdown` and `HTML` 
+  - I used `rehyp`e and `remark` libraries for parsing between `Markdown` and `HTML` 
   
 **Installation:**
 1. Install [Node.js](https://nodejs.org/en/download/) LTS available on: 
