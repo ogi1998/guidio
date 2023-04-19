@@ -8,13 +8,15 @@ const Search = ({ inputRef, activePage, setActivePage }) => {
 	function handleSearch(event) {
 		clearTimeout(timeout);
 
-		setActivePage(1);
+
 
 		timeout = setTimeout(() => {
 			if (event.target.value)
 				dispatch(searchGuides(event.target.value));
-			else
+			else {
+				setActivePage(1);
 				dispatch(getGuides(12, activePage));
+			}
 			timeout = null;
 		}, 500);
 	}

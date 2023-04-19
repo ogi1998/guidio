@@ -29,14 +29,21 @@ const Create = () => {
 			<div className="flex justify-center">
 				<Alert type={(errorMsg && 'error') || (successMsg && 'success')} msg={errorMsg || successMsg} size="half" />
 			</div>
-			<div className="flex justify-center">
-				<Editor
-					setTitle={e => setTitle(e.target.value)}
-					value={content}
-					setContent={e => setContent(DOMPurify.sanitize(e.target.value))}
-					onCreate={createGuideHandler}
-				/>
-				<Preview title={title} content={content} onCreate={createGuideHandler} />
+			<div className="mx-10">
+				<div className="flex justify-between gap-10">
+					<div className="w-[50%] flex flex-col">
+						<Editor
+							title={title}
+							setTitle={e => setTitle(e.target.value)}
+							value={content}
+							setContent={e => setContent(DOMPurify.sanitize(e.target.value))}
+						/>
+						<button className="inline-block py-2 px-4 my-5 rounded-md bg-secondary-main text-light-main text-lg font-medium self-end" onClick={createGuideHandler}>
+								Publish a guide
+						</button>
+					</div>
+					<Preview title={title} content={content} />
+				</div>
 			</div>
 		</div>
 	);

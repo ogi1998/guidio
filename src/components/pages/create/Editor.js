@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import {FaBold, FaCode, FaHeading, FaImage, FaItalic, FaLink, FaListOl, FaListUl, FaStrikethrough} from 'react-icons/fa';
 
-const Editor = ({ setContent, setTitle, onCreate }) => {
+const Editor = ({ setContent, setTitle, title, value }) => {
 	const elsRef = useRef({});
 	const contentRef = useRef();
 
@@ -10,13 +10,14 @@ const Editor = ({ setContent, setTitle, onCreate }) => {
 		contentRef.current.value += elsRef.current[el].value;
 	}
 	return (
-		<div className="w-[40%] h-[70vh] m-5">
+		<div className="w-full h-[70vh]">
 			<div className="flex flex-col gap-5 h-full p-6 rounded bg-secondary-dark2 border-4 border-secondary-main overflow-auto">
 				<input
 					type="text"
 					className="rounded bg-light-main p-2 text-lg border-4 border-secondary-main"
 					placeholder="Title"
 					onChange={setTitle}
+					value={title}
 				/>
 				<div className='flex justify-start gap-5 py-2 px-2 bg-secondary-main rounded'>
 					<span ref={el => elsRef.current.heading = {el, value: "## "}} onClick={handleEl.bind(this, "heading")}>
@@ -52,12 +53,8 @@ const Editor = ({ setContent, setTitle, onCreate }) => {
 					className="resize-none h-[100%] rounded bg-light-main p-2 border-4 border-secondary-main"
 					onChange={setContent}
 					ref={contentRef}
+					defaultValue={value}
 				/>
-			</div>
-			<div className="text-right">
-				<button className="inline-block py-2 px-4 mt-10 rounded-md bg-secondary-main text-light-main text-lg font-medium" onClick={onCreate}>
-					Save Changes
-				</button>
 			</div>
 		</div>
 	);
