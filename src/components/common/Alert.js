@@ -4,7 +4,7 @@ const Alert = ({ type, msg, size = "full" }) => {
 	return (
 		<div
 			className={`
-			flex items-center justify-center border font-bold capitalize px-2 py-4 rounded text-xl
+			flex items-center justify-center border font-bold capitalize px-2 py-4 mb-5 rounded text-xl
 			${size === "full" && "w-full"}
 			${size === "half" && "w-1/2"}
 			${size === "fit" && "w-fit"}

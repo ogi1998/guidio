@@ -12,7 +12,7 @@ import Navbar from "./components/layout/Navbar"
 import Home from "./components/pages/home/Home"
 import Login from "./components/pages/Login"
 import Register from "./components/pages/Register"
-import Profile from "./components/pages/profile/Profile";
+import Profile from "./components/pages/Profile/Profile";
 import Create from "./components/pages/create/Create";
 import Guide from './components/pages/guide/Guide';
 import Instructors from "./components/pages/instructors/Instructors";

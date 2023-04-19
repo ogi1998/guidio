@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getGuideById } from "../../../store/controllers/guideController";
 import MarkdownContent from "../../common/MarkdownContent"
 import FeaturedGuides from "./FeaturedGuides";
+import UpdateGuide from "./UpdateGuide";
 
 const GuideContent = () => {
 	const [isUpdating, setIsUpdating] = useState(false);
@@ -17,11 +18,11 @@ const GuideContent = () => {
 
 	useEffect(() => {
 		dispatch(getGuideById(id));
-	}, [dispatch, id]);
+	}, [dispatch, id, isUpdating]);
   return (
 	<div className="p-20 bg-secondary-light">
-		{(activeUser.userId === activeGuide.userId && !isUpdating) && <button className="my-5 bg-primary-main text-light-main" onClick={() => setIsUpdating(true)}>Update Guide</button>}
-		{isUpdating ? 'xd' :
+		{(activeUser.userId === activeGuide.userId && !isUpdating) && <button className="inline-block py-2 px-4 my-5 rounded-md bg-secondary-main text-light-main text-lg font-medium" onClick={() => setIsUpdating(true)}>Edit Guide</button>}
+		{isUpdating ? <UpdateGuide id={id} guideContent={activeGuide.content} guideTitle={activeGuide.title} setIsUpdating={setIsUpdating} /> :
 		<div className="flex gap-10">
 			<MarkdownContent content={content} className="h-fit" />
 			<FeaturedGuides userId={activeGuide?.userId} guideId={id} />

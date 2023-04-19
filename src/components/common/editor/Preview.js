@@ -1,4 +1,4 @@
-import MarkdownContent from "../../common/MarkdownContent";
+import MarkdownContent from "../MarkdownContent";
 
 const Preview = ({ title, content, onCreate }) => {
 

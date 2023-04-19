@@ -52,8 +52,18 @@ export const createGuide = function (title, content, cb) {
 			await sendRequest('/guides', 'POST', { title, content });
 			cb();
 		} catch (err) {
-			console.log(err);
 			dispatch(showAndHideMsg('error', 'Error creating a guide'));
+		}
+	}
+}
+
+export const updateGuide = function (title, content, id, cb) {
+	return async dispatch => {
+		try {
+			await sendRequest(`/guides/${id}`, 'PUT', { title, content });
+			cb();
+		} catch (err) {
+			dispatch(showAndHideMsg('error', 'Error updating a guide'));
 		}
 	}
 }
@@ -68,3 +78,10 @@ export const getGuideById = function (id) {
 		}
 	}
 }
+
+export const deleteGuide = (id, cb) => {
+	return async () => {
+		await sendRequest(`/guides/${id}`, "DELETE");
+		cb();
+	};
+};
