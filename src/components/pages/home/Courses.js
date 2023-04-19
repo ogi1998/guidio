@@ -27,7 +27,7 @@ const Courses = ({ user, isSingleUser}) => {
 			if (scrolled === window.scrollY && pages > activePage) {
 				setActivePage(activePage + 1);
 			}
-			
+
 			if (window.scrollY < 100)
 				setActivePage(1);
 
@@ -41,6 +41,7 @@ const Courses = ({ user, isSingleUser}) => {
 			return () => window.removeEventListener('scroll', handleScroll);
 		}
 	}, [activePage, pages, user]);
+
 	useEffect(() => {
 		isSingleUser ? dispatch(guidesByUserId(user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
 	}, [dispatch, isSingleUser, activePage, user?.userId]);
@@ -50,7 +51,7 @@ const Courses = ({ user, isSingleUser}) => {
 			{(!isSingleUser && user) &&
 				<div className="flex justify-center">
 					{/* <Dropdown title="Popular" items={['New', 'Popular']} /> */}
-					<Search inputRef={searchRef} activePage={activePage} />
+					<Search inputRef={searchRef} activePage={activePage} setActivePage={setActivePage} />
 				</div>}
 			<h2 className="text-5xl py-10">Recent Guides</h2>
 			<div className={`grid ${!isSingleUser ? 'grid-cols-4' : 'grid-cols-3'} w-full gap-5`}>
@@ -74,7 +75,7 @@ const Courses = ({ user, isSingleUser}) => {
 						</div>
 					</NavLink>
 				) : <h1 className="text-danger-dark text-3xl py-5">{guideErrorMsg}</h1>}
-			
+
 			</div>
 		</div>
 	);

@@ -46,7 +46,7 @@ const App = () => {
 	}, [dispatch, navigate]);
 
 	return (
-		<div className="">
+		<div>
 			{showLayout && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Home />} />

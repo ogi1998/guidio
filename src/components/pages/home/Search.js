@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { getGuides, searchGuides } from "../../../store/controllers/guideController";
 
 let timeout;
-const Search = ({ inputRef, activePage }) => {
+const Search = ({ inputRef, activePage, setActivePage }) => {
 	const dispatch = useDispatch();
 	function handleSearch(event) {
 		clearTimeout(timeout);
+
+		setActivePage(1);
 
 		timeout = setTimeout(() => {
 			if (event.target.value)
