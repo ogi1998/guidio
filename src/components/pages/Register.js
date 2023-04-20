@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Form from "../common/Form";
 import { registerUser } from "../../store/controllers/authController";
 import Alert from "../common/Alert";
+import { MESSAGE_ERROR_FIELDS, MESSAGE_ERROR_PASSWORDS, MESSAGE_TYPE_ERROR } from "../../store/constants";
 
 const Register = () => {
 	const dispatch = useDispatch();
@@ -29,12 +30,12 @@ const Register = () => {
 			!password.value ||
 			!passwordConfirm.value
 		) {
-			dispatch(showAndHideMsg('error', "Error! Fields can't be empty!"));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_FIELDS));
 			return false;
 		}
 
 		if (password.value !== passwordConfirm.value) {
-			dispatch(showAndHideMsg('error', "Error! Password don't match!"));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_PASSWORDS));
 			return false;
 		}
 
@@ -46,19 +47,14 @@ const Register = () => {
 					email: email.value,
 					password: password.value,
 				},
-				() => {
-					navigate("/login");
-					dispatch(showAndHideMsg("success", "Success! Now you can login!"));
-				}
-			)
-		);
+				() => navigate("/login")));
 	}
 
 	useEffect(() => registerRef.current.firstName.focus(), []);
 	return (
 		<Form onSubmit={registerHandler}>
 			<h1 className="text-5xl font-bold py-2">Register</h1>
-			<Alert type="error" msg={errorMsg} />
+			<Alert type={MESSAGE_TYPE_ERROR} msg={errorMsg} />
 			<div className="flex gap-10 mt-7 py-5 w-[90%]">
 				<div className="w-1/2">
 					<label className="block pb-1">First Name</label>

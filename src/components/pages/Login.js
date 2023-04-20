@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Form from "../common/Form";
 import { loginUser } from "../../store/controllers/authController";
 import Alert from "../common/Alert";
+import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../../store/constants";
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Login = () => {
 		const { email, password } = loginRef.current;
 
 		if (!email.value || !password.value) {
-			dispatch(showAndHideMsg("error", "Error! Fields can't be empty."));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_FIELDS));
 			return false;
 		}
 
@@ -30,17 +31,7 @@ const Login = () => {
 					email: email.value,
 					password: password.value,
 				},
-				() => {
-					navigate("/");
-					dispatch(
-						showAndHideMsg(
-							"success",
-							"Success! Successfully logged in!"
-						)
-					);
-				}
-			)
-		);
+				() => navigate("/")));
 	}
 
 	useEffect(() => loginRef.current.email.focus(), []);
@@ -50,7 +41,7 @@ const Login = () => {
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
-			<Alert type={(errorMsg && 'error') || (successMsg && 'success')}msg={errorMsg || successMsg} />
+			<Alert type={(errorMsg && MESSAGE_TYPE_ERROR) || (successMsg && MESSAGE_TYPE_SUCCESS)} msg={errorMsg || successMsg} />
 			<div className=" w-[90%]  py-5">
 				<label className="block pb-1">Email</label>
 				<input

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
 
 const initialState = {
-	showLayout: true,
 	errorMsg: '',
 	successMsg: ''
 };
@@ -10,9 +10,6 @@ const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		setShowLayout(state, action) {
-			state.showLayout = action.payload;
-		},
 		setError(state, action) {
 			state.errorMsg = action.payload;
 		},
@@ -31,7 +28,7 @@ let timeout;
 export const showAndHideMsg = (type, msg) => {
 	clearTimeout(timeout);
 	return async dispatch => {
-		if (type === 'error') {
+		if (type === MESSAGE_TYPE_ERROR) {
 			dispatch(uiActions.setSuccess(''));
 			dispatch(uiActions.setError(msg));
 			timeout = setTimeout(() => {
@@ -39,7 +36,7 @@ export const showAndHideMsg = (type, msg) => {
 				timeout = null;
 			}, 4000);
 		}
-		if (type === 'success') {
+		if (type === MESSAGE_TYPE_SUCCESS) {
 			dispatch(uiActions.setError(''));
 			dispatch(uiActions.setSuccess(msg));
 			setTimeout(() => {
