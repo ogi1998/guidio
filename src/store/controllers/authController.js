@@ -9,8 +9,8 @@ export const loginUser = function (formData, cb) {
 		try {
 			const data = await sendRequest("/auth/login", "POST", formData);
 			dispatch(userActions.setUser(data));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_SUCCESS, MESSAGE_SUCCESS_LOGIN));
 			cb();
-			showAndHideMsg(MESSAGE_TYPE_SUCCESS, MESSAGE_SUCCESS_LOGIN);
 		} catch (error) {
 			dispatch(
 				showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_LOGIN));

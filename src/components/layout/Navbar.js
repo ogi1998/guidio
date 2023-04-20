@@ -23,13 +23,13 @@ const Navbar = () => {
 			{!activeUser?.userId ? (
 				<div className="flex w-full justify-end gap-5 items-center text-light-main">
 					<NavLink
-						to="/register"
+						to="/auth/register"
 						className="bg-secondary-main py-[0.6rem] px-5 rounded-md text-lg font-medium hover:bg-secondary-dark"
 					>
 						REGISTER
 					</NavLink>
 					<NavLink
-						to="/login"
+						to="/auth/login"
 						className="bg-success-main py-[0.6rem] px-5 rounded-md text-lg font-medium hover:bg-success-dark"
 					>
 						LOGIN

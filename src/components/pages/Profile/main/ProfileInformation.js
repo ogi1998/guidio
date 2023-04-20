@@ -44,8 +44,7 @@ const ProfileInformation = ({user}) => {
 					is_instructor: isInstructor,
 					profession_id: profId,
 				},
-			}, () => dispatch(showAndHideMsg('success', 'User successfully updated!')))
-		);
+			}));
 	}
 	return (
 		<div className="flex justify-center my-10 gap-32">

@@ -1,19 +1,19 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { showAndHideMsg } from "../../store/slices/uiSlice";
+import { showAndHideMsg } from "../../../store/slices/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Form from "../common/Form";
-import { loginUser } from "../../store/controllers/authController";
-import Alert from "../common/Alert";
-import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../../store/constants";
+import Form from "./common/Form";
+import { loginUser } from "../../../store/controllers/authController";
+import Alert from "../../common/Alert";
+import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../../../store/constants";
+import InputGroup from "./common/InputGroup";
 
 const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const loginRef = useRef({});
-
 	const { errorMsg, successMsg } = useSelector((state) => state.ui);
 
 	function loginHandler(event) {
@@ -24,7 +24,6 @@ const Login = () => {
 			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_FIELDS));
 			return false;
 		}
-
 		dispatch(
 			loginUser(
 				{
@@ -33,33 +32,14 @@ const Login = () => {
 				},
 				() => navigate("/")));
 	}
-
 	useEffect(() => loginRef.current.email.focus(), []);
-
-
 
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold py-10 pb-5">Login</h1>
 			<Alert type={(errorMsg && MESSAGE_TYPE_ERROR) || (successMsg && MESSAGE_TYPE_SUCCESS)} msg={errorMsg || successMsg} />
-			<div className=" w-[90%]  py-5">
-				<label className="block pb-1">Email</label>
-				<input
-					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
-					type="text"
-					placeholder="Email..."
-					ref={(el) => (loginRef.current.email = el)}
-				/>
-			</div>
-			<div className="w-[90%] py-5">
-				<label className="block pb-1">Password</label>
-				<input
-					className="border-b-2 border-b-gray-dark focus:border-b-secondary-main py-1 w-full"
-					type="password"
-					placeholder="Password..."
-					ref={(el) => (loginRef.current.password = el)}
-				/>
-			</div>
+			<InputGroup inpRef={el => loginRef.current.email = el} lbl="Email" />
+			<InputGroup inpRef={el => loginRef.current.password = el} lbl="Password" isPw={true} />
 			<div className=" inline-block mt-10 text-center">
 				<input
 					type="submit"

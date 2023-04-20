@@ -17,7 +17,7 @@ const Header = () => {
 						Unlock Your Potential and Inspire Others to Learn.<br />
 						Join our platform to educate and share your expertise.
 						</h3>
-						<NavLink to='/register' className='bg-success-main text-primary-main text-center font-bold text-3xl
+						<NavLink to='/auth/register' className='bg-success-main text-primary-main text-center font-bold text-3xl
 						py-6 px-10 rounded-3xl self-center mt-20
 						hover:text-light-main hover:shadow-normal-hover hover:shadow-success-main'>Start Creating!</NavLink>
 					</div>

@@ -4,6 +4,9 @@ export const MESSAGE_TYPE_SUCCESS = 'success';
 export const MESSAGE_SUCCESS_LOGIN = 'Success! Successfully logged in.';
 export const MESSAGE_SUCCESS_LOGOUT = 'Success! Successfully logged out.';
 export const MESSAGE_SUCCESS_REGISTER = 'Success! Now you can login.';
+export const MESSAGE_SUCCESS_ACCOUNT_DELETE = 'Success! Account successfully deleted.';
+export const MESSAGE_SUCCESS_USER_UPDATE = 'Success! Data successfully updated.';
+export const MESSAGE_SUCCESS_PW_CHANGE = 'Success! Password successfully changed.';
 
 export const MESSAGE_ERROR_UNEXPECTED = 'Error! Unexpected error occured.';
 export const MESSAGE_ERROR_FIELDS = "Error! Fields can't be empty";
