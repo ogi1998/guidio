@@ -1,6 +1,8 @@
 export const MESSAGE_TYPE_ERROR = 'error';
 export const MESSAGE_TYPE_SUCCESS = 'success';
 
+// USER
+
 export const MESSAGE_SUCCESS_LOGIN = 'Success! Successfully logged in.';
 export const MESSAGE_SUCCESS_LOGOUT = 'Success! Successfully logged out.';
 export const MESSAGE_SUCCESS_REGISTER = 'Success! Now you can login.';
@@ -17,3 +19,13 @@ export const REGISTER_ERRORS = {
 	'value_error.email': 'Error! Invalid email.',
 	'value_error.any_str.min_length': 'Error! Password needs to have at least 8 characters.'
 }
+
+// GUIDE
+
+export const MESSAGE_ERROR_NO_GUIDES = 'No guides found.';
+export const MESSAGE_ERROR_GUIDE_CREATE = "Error! Can't create a guide.";
+export const MESSAGE_ERROR_GUIDE_UPDATE = "Error! Can't update a guide.";
+export const MESSAGE_ERROR_GUIDE_DELETE = "Error! Can't delete a guide.";
+
+export const MESSAGE_SUCCESS_GUIDE_DELETE = 'Success! Guide successfully deleted.';
+export const MESSAGE_SUCCESS_GUIDE_UPDATE = 'Success! Guide successfully updated.';

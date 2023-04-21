@@ -4,9 +4,10 @@ import { FaUser } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getGuides, guidesByUserId } from "../../../store/controllers/guideController";
+import { getGuides, getGuidesByUserId } from "../../../store/controllers/guideController";
 
 import Search from "./Search";
+import { MESSAGE_ERROR_NO_GUIDES } from "../../../store/constants";
 
 const Courses = ({ user, isSingleUser}) => {
 	const dispatch = useDispatch();
@@ -16,7 +17,6 @@ const Courses = ({ user, isSingleUser}) => {
 
 
 	const { guides, pages } = useSelector(state => state.guide.guidesData);
-	const guideErrorMsg = useSelector(state => state.guide.guideErrorMsg);
 
 	useEffect(() => {
 		function handleScroll() {
@@ -43,7 +43,7 @@ const Courses = ({ user, isSingleUser}) => {
 	}, [activePage, pages, user]);
 
 	useEffect(() => {
-		isSingleUser ? dispatch(guidesByUserId(user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
+		isSingleUser ? dispatch(getGuidesByUserId(user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
 	}, [dispatch, isSingleUser, activePage, user?.userId]);
 
 	return (
@@ -74,7 +74,7 @@ const Courses = ({ user, isSingleUser}) => {
 							<span className="italic">{guide.user.userDetails?.profession?.name}</span>
 						</div>
 					</NavLink>
-				) : <h1 className="text-danger-dark text-3xl py-5">{guideErrorMsg}</h1>}
+				) : <h1 className="text-danger-dark text-3xl py-5">{MESSAGE_ERROR_NO_GUIDES}</h1>}
 
 			</div>
 		</div>

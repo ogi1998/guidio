@@ -1,3 +1,4 @@
+import { MESSAGE_ERROR_GUIDE_CREATE, MESSAGE_ERROR_GUIDE_DELETE, MESSAGE_ERROR_GUIDE_UPDATE, MESSAGE_SUCCESS_GUIDE_DELETE, MESSAGE_SUCCESS_GUIDE_UPDATE, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../constants";
 import sendRequest from "../controllers/common/sendRequest";
 import { guideActions } from "../slices/guideSlice";
 import { showAndHideMsg } from "../slices/uiSlice";
@@ -13,7 +14,6 @@ export const getGuides = function (pageSize, page) {
 
 		} catch (err) {
 			dispatch(guideActions.setGuides({}));
-			dispatch(guideActions.setGuideErrorMsg(err.detail));
 		}
 	}
 }
@@ -25,12 +25,11 @@ export const searchGuides = function(title) {
 			dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 		} catch(err) {
 			dispatch(guideActions.setGuides({}));
-			dispatch(guideActions.setGuideErrorMsg(err.detail));
 		}
 	}
 }
 
-export const guidesByUserId = (id, pageSize, page, cb) => {
+export const getGuidesByUserId = (id, pageSize, page, cb) => {
 	return async dispatch => {
 		try {
 			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=${pageSize}`, 'GET');
@@ -41,7 +40,7 @@ export const guidesByUserId = (id, pageSize, page, cb) => {
 			if (cb)
 				cb();
 		} catch (err) {
-			console.log(err);
+			dispatch(guideActions.setGuides({}));
 		}
 	}
 }
@@ -52,7 +51,7 @@ export const createGuide = function (title, content, cb) {
 			await sendRequest('/guides', 'POST', { title, content });
 			cb();
 		} catch (err) {
-			dispatch(showAndHideMsg('error', 'Error creating a guide'));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_GUIDE_CREATE));
 		}
 	}
 }
@@ -62,8 +61,9 @@ export const updateGuide = function (title, content, id, cb) {
 		try {
 			await sendRequest(`/guides/${id}`, 'PUT', { title, content });
 			cb();
+			dispatch(showAndHideMsg(MESSAGE_TYPE_SUCCESS, MESSAGE_SUCCESS_GUIDE_UPDATE));
 		} catch (err) {
-			dispatch(showAndHideMsg('error', 'Error updating a guide'));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_GUIDE_UPDATE));
 		}
 	}
 }
@@ -74,14 +74,19 @@ export const getGuideById = function (id) {
 			const { title, content, guideId, user } = await sendRequest(`/guides/guide/${id}`, 'GET');
 			dispatch(guideActions.setActiveGuide({ title: `# ${title}`, content, guideId, userId: user.userId }));
 		} catch (err) {
-			console.log(err);
+			dispatch(guideActions.setActiveGuide({}));
 		}
 	}
 }
 
 export const deleteGuide = (id, cb) => {
-	return async () => {
-		await sendRequest(`/guides/${id}`, "DELETE");
-		cb();
+	return async (dispatch) => {
+		try {
+			await sendRequest(`/guides/${id}`, "DELETE");
+			cb();
+			dispatch(showAndHideMsg(MESSAGE_TYPE_SUCCESS, MESSAGE_SUCCESS_GUIDE_DELETE))
+		} catch(err) {
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_GUIDE_DELETE));
+		}
 	};
 };

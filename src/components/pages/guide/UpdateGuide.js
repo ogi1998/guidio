@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { deleteGuide, updateGuide } from "../../../store/controllers/guideController";
 import { showAndHideMsg } from "../../../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
+import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR } from "../../../store/constants";
 
 
 const UpdateGuide = ({id, guideContent, guideTitle, setIsUpdating}) => {
@@ -19,7 +20,7 @@ const UpdateGuide = ({id, guideContent, guideTitle, setIsUpdating}) => {
 
 	function updateGuideHandler() {
 		if (title === '' || content === '') {
-			dispatch(showAndHideMsg('error', 'Fields cant be empty!'));
+			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_FIELDS));
 			return;
 		}
 		dispatch(updateGuide(title, content, id, () => {
@@ -28,10 +29,7 @@ const UpdateGuide = ({id, guideContent, guideTitle, setIsUpdating}) => {
 	}
 
 	function deleteGuideHandler() {
-		dispatch(deleteGuide(id, () => {
-			navigate("/");
-			dispatch(showAndHideMsg('success', 'Guide successfully deleted!'))
-		}));
+		dispatch(deleteGuide(id, () => navigate("/")));
 	}
 	return (
 		<div className="flex justify-between gap-10">

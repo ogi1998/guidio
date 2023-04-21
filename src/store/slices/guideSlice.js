@@ -20,12 +20,6 @@ const guideSlice = createSlice({
 		},
 		filterActiveGuide(state) {
 			state.guidesData.guides = state.guidesData.guides.filter(guide => guide.guideId !== state.activeGuide.guideId);
-		},
-		setGuideErrorMsg(state, action) {
-			state.guideErrorMsg = action.payload;
-		},
-		clearGuideErrorMsg(state) {
-			state.guideErrorMsg = '';
 		}
 	}
 })

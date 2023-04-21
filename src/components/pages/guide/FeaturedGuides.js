@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { guidesByUserId } from "../../../store/controllers/guideController";
+import { getGuidesByUserId } from "../../../store/controllers/guideController";
 
 import cardImg from '../../../assets/card_item.png';
 import { NavLink } from "react-router-dom";
@@ -11,7 +11,7 @@ const FeaturedGuides = ({userId}) => {
 	const guides = useSelector(state => state.guide.guidesData.guides);
 	useEffect(() => {
 		if (userId) {
-			dispatch(guidesByUserId(userId, 5, 1, () => dispatch(guideActions.filterActiveGuide())));
+			dispatch(getGuidesByUserId(userId, 5, 1, () => dispatch(guideActions.filterActiveGuide())));
 		}
 	}, [userId, dispatch]);
 
@@ -30,7 +30,7 @@ const FeaturedGuides = ({userId}) => {
 						{new Date(guide.lastModified).getMonth() + 1}
 						-
 						{new Date(guide.lastModified).getFullYear()}
-						
+
 					</p>
 				</div>
 			</NavLink>
