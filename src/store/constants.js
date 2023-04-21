@@ -14,6 +14,7 @@ export const MESSAGE_ERROR_UNEXPECTED = 'Error! Unexpected error occured.';
 export const MESSAGE_ERROR_FIELDS = "Error! Fields can't be empty";
 export const MESSAGE_ERROR_LOGIN = 'Error! Wrong email or password.';
 export const MESSAGE_ERROR_PASSWORDS = "Error! Password don't match.";
+export const MESSAGE_ERROR_NO_INSTRUCTORS = 'No instructors found.';
 
 export const REGISTER_ERRORS = {
 	'value_error.email': 'Error! Invalid email.',

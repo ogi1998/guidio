@@ -2,7 +2,7 @@ import cardImg from "../../../assets/card_item.png";
 import { FaUser } from "react-icons/fa";
 
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGuides, getGuidesByUserId } from "../../../store/controllers/guideController";
 
@@ -12,6 +12,7 @@ import { MESSAGE_ERROR_NO_GUIDES } from "../../../store/constants";
 const Courses = ({ user, isSingleUser}) => {
 	const dispatch = useDispatch();
 	const searchRef = useRef();
+	const {id} = useParams();
 
 	const [activePage, setActivePage] = useState(1);
 
@@ -43,8 +44,8 @@ const Courses = ({ user, isSingleUser}) => {
 	}, [activePage, pages, user]);
 
 	useEffect(() => {
-		isSingleUser ? dispatch(getGuidesByUserId(user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
-	}, [dispatch, isSingleUser, activePage, user?.userId]);
+		isSingleUser ? dispatch(getGuidesByUserId(id ? id : user?.userId, 12, activePage)) : dispatch(getGuides(12, activePage))
+	}, [dispatch, isSingleUser, activePage, user?.userId, id]);
 
 	return (
 		<div className={`px-20 ${(!isSingleUser && user) && "pt-48 bg-secondary-light"}`}>
