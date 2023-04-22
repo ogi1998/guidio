@@ -9,6 +9,8 @@ class GuideListSingleSchema(BaseModelSchema):
     guide_id: int
     title: str
     last_modified: datetime
+    published: bool
+    cover_image: str | None
     user: UserReadSchema
 
     class Config:
@@ -23,6 +25,8 @@ class GuideListReadSchema(BaseModelSchema):
 class GuideCreateUpdateSchema(BaseModelSchema):
     title: str = Field(max_length=70)
     content: str
+    note: str | None
+    published: bool
 
 
 class GuideReadSchema(GuideCreateUpdateSchema):

@@ -68,6 +68,9 @@ class Guide(Base):
     content = Column(Text, nullable=False)
     last_modified = Column(DateTime(timezone=True), server_default=func.now(),
                            onupdate=func.current_timestamp(), nullable=False)
+    published = Column(Boolean, default=False, nullable=False)
+    note = Column(String(255), nullable=True)
+    cover_image = Column(String(255), nullable=True)
 
     user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"))
 
