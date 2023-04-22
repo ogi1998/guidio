@@ -1,12 +1,14 @@
 import { MESSAGE_ERROR_GUIDE_CREATE, MESSAGE_ERROR_GUIDE_DELETE, MESSAGE_ERROR_GUIDE_UPDATE, MESSAGE_SUCCESS_GUIDE_DELETE, MESSAGE_SUCCESS_GUIDE_UPDATE, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../constants";
 import sendRequest from "../controllers/common/sendRequest";
 import { guideActions } from "../slices/guideSlice";
-import { showAndHideMsg } from "../slices/uiSlice";
+import { showAndHideMsg, uiActions } from "../slices/uiSlice";
 
 export const getGuides = function (pageSize, page) {
 	return async dispatch => {
 		try {
+			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest(`/guides?page=${page}&page_size=${pageSize}`, 'GET');
+			dispatch(uiActions.setIsLoading(false));
 			if (page === 1)
 				dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 			if (page > 1)
@@ -14,6 +16,7 @@ export const getGuides = function (pageSize, page) {
 
 		} catch (err) {
 			dispatch(guideActions.setGuides({}));
+			dispatch(uiActions.setIsLoading(false));
 		}
 	}
 }
@@ -21,10 +24,13 @@ export const getGuides = function (pageSize, page) {
 export const searchGuides = function(title) {
 	return async dispatch => {
 		try {
+			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest(`/guides/search?title=${title}&page=1&page_size=12`, 'GET');
+			dispatch(uiActions.setIsLoading(false));
 			dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 		} catch(err) {
 			dispatch(guideActions.setGuides({}));
+			dispatch(uiActions.setIsLoading(false));
 		}
 	}
 }
@@ -32,7 +38,9 @@ export const searchGuides = function(title) {
 export const getGuidesByUserId = (id, pageSize, page, cb) => {
 	return async dispatch => {
 		try {
+			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=${pageSize}`, 'GET');
+			dispatch(uiActions.setIsLoading(false));
 			if (page === 1)
 				dispatch(guideActions.setGuides({ pages: data.pages, guides: data.guides }));
 			if (page > 1)
@@ -41,6 +49,7 @@ export const getGuidesByUserId = (id, pageSize, page, cb) => {
 				cb();
 		} catch (err) {
 			dispatch(guideActions.setGuides({}));
+			dispatch(uiActions.setIsLoading(false));
 		}
 	}
 }
@@ -71,10 +80,13 @@ export const updateGuide = function (title, content, id, cb) {
 export const getGuideById = function (id) {
 	return async dispatch => {
 		try {
+			dispatch(uiActions.setIsLoading(true));
 			const { title, content, guideId, user } = await sendRequest(`/guides/guide/${id}`, 'GET');
+			dispatch(uiActions.setIsLoading(false));
 			dispatch(guideActions.setActiveGuide({ title: `# ${title}`, content, guideId, userId: user.userId }));
 		} catch (err) {
 			dispatch(guideActions.setActiveGuide({}));
+			dispatch(uiActions.setIsLoading(false));
 		}
 	}
 }

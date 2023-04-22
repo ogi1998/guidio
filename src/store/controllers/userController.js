@@ -1,5 +1,5 @@
 import { MESSAGE_ERROR_UNEXPECTED, MESSAGE_SUCCESS_ACCOUNT_DELETE, MESSAGE_SUCCESS_PW_CHANGE, MESSAGE_SUCCESS_USER_UPDATE, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../constants";
-import { showAndHideMsg } from "../slices/uiSlice";
+import { showAndHideMsg, uiActions } from "../slices/uiSlice";
 import { userActions } from "../slices/userSlice";
 import { logoutUser } from "./authController";
 import sendRequest from "./common/sendRequest";
@@ -84,9 +84,12 @@ export const deleteImage = (type, cb) => {
 export const getInstructors = () => {
 	return async dispatch => {
 		try {
+			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest('/users/instructors', 'GET');
+			dispatch(uiActions.setIsLoading(false));
 			dispatch(userActions.setInstructors(data));
 		} catch(err) {
+			dispatch(uiActions.setIsLoading(false));
 			dispatch(showAndHideMsg(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_UNEXPECTED));
 		}
 	}

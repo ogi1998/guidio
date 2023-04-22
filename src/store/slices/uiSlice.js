@@ -3,7 +3,8 @@ import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
 
 const initialState = {
 	errorMsg: '',
-	successMsg: ''
+	successMsg: '',
+	isLoading: false
 };
 
 const uiSlice = createSlice({
@@ -15,6 +16,9 @@ const uiSlice = createSlice({
 		},
 		setSuccess(state, action) {
 			state.successMsg = action.payload;
+		},
+		setIsLoading(state, action) {
+			state.isLoading = (action.payload);
 		}
 	}
 });
