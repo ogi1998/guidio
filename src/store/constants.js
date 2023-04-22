@@ -28,5 +28,7 @@ export const MESSAGE_ERROR_GUIDE_CREATE = "Error! Can't create a guide.";
 export const MESSAGE_ERROR_GUIDE_UPDATE = "Error! Can't update a guide.";
 export const MESSAGE_ERROR_GUIDE_DELETE = "Error! Can't delete a guide.";
 
+export const MESSAGE_SUCCESS_GUIDE_CREATE = 'Success! Guide successfully created.';
+export const MESSAGE_SUCCESS_GUIDE_DRAFT = 'Success! Guide succesfully saved as a draft.'; 
 export const MESSAGE_SUCCESS_GUIDE_DELETE = 'Success! Guide successfully deleted.';
 export const MESSAGE_SUCCESS_GUIDE_UPDATE = 'Success! Guide successfully updated.';

@@ -18,7 +18,6 @@ import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/auth/Register";
 
 const App = () => {
-	console.log('xd');
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const activeUser = useSelector(state => state.user.activeUser);

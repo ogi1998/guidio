@@ -11,7 +11,6 @@ const Avatar = () => {
 	const fileRef = useRef();
 
 	function onUpload() {
-		console.log(fileRef.current.value);
 		const formData = new FormData();
 		formData.append('file', fileRef.current.files[0]);
 		dispatch(uploadImage(formData, 'avatar'));

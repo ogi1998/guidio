@@ -67,7 +67,7 @@ const Courses = ({ user, isSingleUser }) => {
 						absolute top-0 w-full h-full p-4 text-light-main
 						flex items-end gap-2
 						group-hover:bg-gradient-to-b from-gradient-white to-gradient-secondary">
-									<h3 className="text-xl">{guide.title}</h3>
+									<h3 className="text-xl">{guide.title} {!guide.published && <span className="bg-secondary-main p-1 rounded-md">DRAFT</span>}</h3>
 								</div>
 							</div>
 							<div className="flex items-center gap-2 px-2 py-4 shadow-secondary-main shadow-normal bg-light-main rounded-b-3xl">

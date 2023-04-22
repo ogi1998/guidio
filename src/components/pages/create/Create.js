@@ -13,20 +13,18 @@ import { useNavigate } from "react-router-dom";
 const Create = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	
+
 	const { errorMsg, successMsg } = useSelector(state => state.ui);
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
+	const [note, setNote] = useState("");
 
-	function createGuideHandler() {
+	function createGuideHandler(isPublic) {
 		if (title === '' || content === '') {
 			dispatch(showAndHideMsg('error', 'Fields cant be empty!'));
 			return;
 		}
-		dispatch(createGuide(title, content, () => {
-			navigate('/');
-			dispatch(showAndHideMsg('success', 'Guide successfully created!'));
-		}));
+		dispatch(createGuide(title, content, note, isPublic, () => navigate('/')));
 	}
 	return (
 		<div className="bg-secondary-light px-10">
@@ -41,12 +39,19 @@ const Create = () => {
 						setTitle={e => setTitle(e.target.value)}
 						value={content}
 						setContent={e => setContent(DOMPurify.sanitize(e.target.value))}
+						note={note}
+						setNote={e => { console.log(e.target.value); setNote(e.target.value) }}
 					/>
-					<button className="inline-block py-2 px-4 my-5 rounded-md bg-secondary-main text-light-main text-lg font-medium self-end" onClick={createGuideHandler}>
-						Publish a guide
-					</button>
 				</div>
 				<Preview title={title} content={content} />
+			</div>
+			<div className="flex justify-center gap-10">
+				<button className="inline-block py-2 px-4 my-5 rounded-md bg-secondary-main text-light-main text-lg font-medium self-end" onClick={() => createGuideHandler(true)}>
+					Publish a guide
+				</button>
+				<button className="inline-block py-2 px-4 my-5 rounded-md bg-secondary-main text-light-main text-lg font-medium self-end" onClick={() => createGuideHandler(false)}>
+					Save as draft
+				</button>
 			</div>
 		</div>
 	);

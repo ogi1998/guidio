@@ -17,7 +17,7 @@ const GuideContent = () => {
 	const activeUser = useSelector(state => state.user.activeUser);
 	const activeGuide = useSelector(state => state.guide.activeGuide);
 	const content = `${activeGuide.title}\n${activeGuide.content}`;
-	const {successMsg, errorMsg} = useSelector(state => state.ui);
+	const { successMsg, errorMsg } = useSelector(state => state.ui);
 
 	useEffect(() => {
 		dispatch(getGuideById(id));
@@ -33,7 +33,13 @@ const GuideContent = () => {
 			}
 			{
 				isUpdating ?
-					<UpdateGuide id={id} guideContent={activeGuide.content} guideTitle={activeGuide.title} setIsUpdating={setIsUpdating} />
+					<UpdateGuide
+						id={id}
+						guideContent={activeGuide.content}
+						guideTitle={activeGuide.title}
+						setIsUpdating={setIsUpdating}
+						guideNote={activeGuide.note}
+						published={activeGuide.published} />
 					:
 					<div className="flex gap-10">
 						<MarkdownContent content={content} className="h-fit" />

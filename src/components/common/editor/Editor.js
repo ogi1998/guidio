@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import {FaBold, FaCode, FaHeading, FaImage, FaItalic, FaLink, FaListOl, FaListUl, FaStrikethrough} from 'react-icons/fa';
+import { FaBold, FaCode, FaHeading, FaImage, FaItalic, FaLink, FaListOl, FaListUl, FaStrikethrough } from 'react-icons/fa';
 
-const Editor = ({ setContent, setTitle, title, value }) => {
+const Editor = ({ setContent, setTitle, setNote, title, value, note }) => {
 	const elsRef = useRef({});
 	const contentRef = useRef();
 
@@ -20,31 +20,31 @@ const Editor = ({ setContent, setTitle, title, value }) => {
 					value={title}
 				/>
 				<div className='flex justify-start gap-5 py-2 px-2 bg-secondary-main rounded'>
-					<span ref={el => elsRef.current.heading = {el, value: "## "}} onClick={handleEl.bind(this, "heading")}>
+					<span ref={el => elsRef.current.heading = { el, value: "## " }} onClick={handleEl.bind(this, "heading")}>
 						<FaHeading className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.bold = {el, value: "****"}} onClick={handleEl.bind(this, "bold")}>
+					<span ref={el => elsRef.current.bold = { el, value: "****" }} onClick={handleEl.bind(this, "bold")}>
 						<FaBold className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.italic = {el, value: "__"}} onClick={handleEl.bind(this, "italic")}>
+					<span ref={el => elsRef.current.italic = { el, value: "__" }} onClick={handleEl.bind(this, "italic")}>
 						<FaItalic className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.strike = {el, value: "~~"}} onClick={handleEl.bind(this, "strike")}>
+					<span ref={el => elsRef.current.strike = { el, value: "~~" }} onClick={handleEl.bind(this, "strike")}>
 						<FaStrikethrough className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.code = {el, value: "``"}} onClick={handleEl.bind(this, "code")}>
+					<span ref={el => elsRef.current.code = { el, value: "``" }} onClick={handleEl.bind(this, "code")}>
 						<FaCode className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.link = {el, value: "[](url)"}} onClick={handleEl.bind(this, "link")}>
+					<span ref={el => elsRef.current.link = { el, value: "[](url)" }} onClick={handleEl.bind(this, "link")}>
 						<FaLink className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.image = {el, value: "![](url)"}} onClick={handleEl.bind(this, "image")}>
+					<span ref={el => elsRef.current.image = { el, value: "![](url)" }} onClick={handleEl.bind(this, "image")}>
 						<FaImage className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.ul = {el, value: "- "}} onClick={handleEl.bind(this, "ul")}>
+					<span ref={el => elsRef.current.ul = { el, value: "- " }} onClick={handleEl.bind(this, "ul")}>
 						<FaListUl className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
-					<span ref={el => elsRef.current.ol = {el, value: "1. "}} onClick={handleEl.bind(this, "ol")}>
+					<span ref={el => elsRef.current.ol = { el, value: "1. " }} onClick={handleEl.bind(this, "ol")}>
 						<FaListOl className='text-2xl hover:bg-light-main rounded p-1 hover:cursor-pointer' />
 					</span>
 				</div>
@@ -53,8 +53,14 @@ const Editor = ({ setContent, setTitle, title, value }) => {
 					className="resize-none h-[100%] rounded bg-light-main p-2 border-4 border-secondary-main"
 					onChange={setContent}
 					ref={contentRef}
-					defaultValue={value}
+					value={value}
 				/>
+				<h3 className='text-xl text-light-main'>Notes</h3>
+				<textarea 
+				placeholder='Enter a note...'
+				value={note}
+				onChange={setNote}
+				className="resize-none h-[50%] rounded bg-light-main p-2 border-4 border-secondary-main" />
 			</div>
 		</div>
 	);
