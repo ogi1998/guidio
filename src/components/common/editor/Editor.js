@@ -8,6 +8,14 @@ const Editor = ({ setContent, setTitle, setNote, title, value, note }) => {
 	function handleEl(el) {
 		contentRef.current.focus();
 		contentRef.current.value += elsRef.current[el].value;
+
+		if (elsRef.current[el].value === "## ") {
+			console.log(contentRef.current.value.lastIndexOf('\n', contentRef.current.selectionStart - 1) + 1);
+			console.log(contentRef.current.value.indexOf('\n', contentRef.current.selectionStart));
+		}
+		if (elsRef.current[el].value === "****") {
+			contentRef.current.setSelectionRange(contentRef.current.selectionStart -2, contentRef.current.selectionStart - 2);
+		}
 	}
 	return (
 		<div className="w-full h-[70vh]">
@@ -18,6 +26,7 @@ const Editor = ({ setContent, setTitle, setNote, title, value, note }) => {
 					placeholder="Title"
 					onChange={setTitle}
 					value={title}
+					autoFocus
 				/>
 				<div className='flex justify-start gap-5 py-2 px-2 bg-secondary-main rounded'>
 					<span ref={el => elsRef.current.heading = { el, value: "## " }} onClick={handleEl.bind(this, "heading")}>
@@ -56,7 +65,7 @@ const Editor = ({ setContent, setTitle, setNote, title, value, note }) => {
 					value={value}
 				/>
 				<h3 className='text-xl text-light-main'>Notes</h3>
-				<textarea 
+				<textarea
 				placeholder='Enter a note...'
 				value={note}
 				onChange={setNote}
