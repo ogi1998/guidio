@@ -35,7 +35,7 @@ const Courses = ({ user, isSingleUser }) => {
 				setActivePage(1);
 
 		}
-		if (user) {
+		if (user && activePage === pages) {
 			window.addEventListener('scroll', handleScroll);
 
 			if (activePage === pages) {

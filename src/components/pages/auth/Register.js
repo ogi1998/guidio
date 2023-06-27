@@ -76,7 +76,7 @@ const Register = () => {
 				<p className="border-t-2 mt-3 pt-2 px-2">
 					Already a user?{" "}
 					<NavLink
-						to="/login"
+						to="/auth/login"
 						className="text-secondary-main border-b-2 border-secondary-main"
 					>
 						LOGIN

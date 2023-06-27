@@ -1,4 +1,4 @@
-import hero from '../../../assets/hero-img.png';
+import heroImg from '../../../assets/hero-img.png';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
@@ -22,7 +22,7 @@ const Header = () => {
 						hover:text-light-main hover:shadow-normal-hover hover:shadow-success-main'>Start Creating!</NavLink>
 					</div>
 					<div className='self-center'>
-						<img className="block" src={hero} alt="Hero" />
+						<img className="block" src={heroImg} alt="Hero" />
 					</div>
 				</div>
 			</div>
