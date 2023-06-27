@@ -6,7 +6,16 @@ from guides.schemas import GuideCreateUpdateSchema
 
 
 def count_pages(db: Session, page_size: int):
-    count_of_guides: int = db.query(Guide.guide_id).order_by(desc(Guide.last_modified)).count()
+    count_of_guides: int = db.query(Guide.guide_id) \
+        .order_by(desc(Guide.last_modified)).count()
+    division: tuple[int, int] = divmod(count_of_guides, page_size)
+    pages: int = division[0] + 1 if division[1] else division[0]
+    return pages
+
+
+def count_published_guides_pages(db: Session, page_size: int):
+    count_of_guides: int = db.query(Guide.guide_id).filter(Guide.published) \
+        .order_by(desc(Guide.last_modified)).count()
     division: tuple[int, int] = divmod(count_of_guides, page_size)
     pages: int = division[0] + 1 if division[1] else division[0]
     return pages
@@ -14,8 +23,8 @@ def count_pages(db: Session, page_size: int):
 
 def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | None:
     offset: int = page * page_size
-    guides: list[Guide] = db.query(Guide)\
-        .filter(Guide.published)\
+    guides: list[Guide] = db.query(Guide) \
+        .filter(Guide.published) \
         .order_by(desc(Guide.last_modified)) \
         .offset(offset).limit(page_size).all()
     return guides
@@ -23,9 +32,9 @@ def get_list_of_guides(db: Session, page: int, page_size: int) -> list[Guide] | 
 
 def get_list_of_guides_ascending(db: Session, page: int, page_size: int) -> list[Guide] | None:
     offset: int = page * page_size
-    guides = db.query(Guide)\
-        .filter(Guide.published)\
-        .order_by(asc(Guide.last_modified))\
+    guides = db.query(Guide) \
+        .filter(Guide.published) \
+        .order_by(asc(Guide.last_modified)) \
         .offset(offset).limit(page_size).all()
     return guides
 
@@ -33,7 +42,7 @@ def get_list_of_guides_ascending(db: Session, page: int, page_size: int) -> list
 def search_guides(db: Session, title: str, page: int, page_size: int) -> list[Guide] | None:
     offset: int = page * page_size
     guides = db.query(Guide).filter(Guide.title.ilike(f"%{title}%")) \
-        .filter(Guide.published)\
+        .filter(Guide.published) \
         .order_by(desc(Guide.last_modified)).offset(offset).limit(page_size).all()
     return guides
 
