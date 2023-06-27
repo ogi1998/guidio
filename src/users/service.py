@@ -43,6 +43,8 @@ def cover_image_upload_path(first_name: str, last_name: str, filename: str):
 
 
 def get_avatar(user: User) -> str | None:
+    if not user.user_details:
+        return
     return user.user_details.avatar
 
 
@@ -81,6 +83,8 @@ def delete_avatar(db: Session, user: User):
 
 
 def get_cover_image(user: User) -> str | None:
+    if not user.user_details:
+        return
     return user.user_details.cover_image
 
 
