@@ -23,7 +23,7 @@ def get_list_of_guides(db=DBDependency,
                                                     description="Retrieve order: asc/desc"),
                        page: int = Query(default=1, ge=1, description="Page to request"),
                        page_size: int = Query(default=50, ge=1, le=100, description="Page size")):
-    total_pages = service.count_pages(db, page_size)
+    total_pages = service.count_published_guides_pages(db, page_size)
     if order == RetrieveOrder.ascending:
         guides = service.get_list_of_guides_ascending(db, page=page - 1, page_size=page_size)
     else:
@@ -60,7 +60,7 @@ def get_guides_by_title(title: str,
                         page: int = Query(default=1, ge=1, description="Page to request"),
                         page_size: int = Query(default=50, ge=1, le=100, description="Page size"),
                         db=DBDependency):
-    total_pages = service.count_pages(db, page_size)
+    total_pages = service.count_published_guides_pages(db, page_size)
     guides = service.search_guides(db, title, page=page - 1, page_size=page_size)
     if not guides:
         raise guides_not_found_exception()
@@ -79,7 +79,10 @@ def get_guides_by_user_id(user_id: int,
                           page_size: int = Query(default=50, ge=1, le=100, description="Page size"),
                           db=DBDependency,
                           user: User = Depends(get_current_user)):
-    total_pages = service.count_pages(db, page_size)
+    if user.user_id == user_id:
+        total_pages = service.count_pages(db, page_size)
+    else:
+        total_pages = service.count_published_guides_pages(db, page_size)
     guides = service.get_guides_by_user_id(db=db,
                                            user_id=user_id,
                                            page=page-1,
