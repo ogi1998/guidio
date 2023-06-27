@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import UploadFile
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 
 from auth.service import get_password_hash
 from core.constants import MEDIA_ROOT
@@ -123,8 +123,8 @@ def delete_cover_image(db: Session, user: User):
 
 
 def get_instructors(db: Session) -> list[User]:
-    instructors = db.query(User).options(joinedload(User.user_details)) \
-        .filter(UserDetail.is_instructor.is_(True)).all()
+    instructors = db.query(User).join(User.user_details) \
+        .filter(UserDetail.is_instructor).all()
     return instructors
 
 
