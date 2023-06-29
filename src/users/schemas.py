@@ -54,7 +54,7 @@ class UserDetailUpdateSchema(BaseModelSchema):
     github: str = Field(max_length=255)
     website: str = Field(max_length=255)
     is_instructor: bool = False
-    bio: str = Field(None, min_length=1, max_length=255)
+    bio: str | None
     profession_id: int | None
 
     class Config:
