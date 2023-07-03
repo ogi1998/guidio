@@ -6,15 +6,20 @@ const Editor = ({ setContent, setTitle, setNote, title, value, note }) => {
 	const contentRef = useRef();
 
 	function handleEl(el) {
+		const val = elsRef.current[el].value;
 		contentRef.current.focus();
-		contentRef.current.value += elsRef.current[el].value;
+		contentRef.current.value += val;
 
-		if (elsRef.current[el].value === "## ") {
-			console.log(contentRef.current.value.lastIndexOf('\n', contentRef.current.selectionStart - 1) + 1);
-			console.log(contentRef.current.value.indexOf('\n', contentRef.current.selectionStart));
-		}
-		if (elsRef.current[el].value === "****") {
+		if (val === "****") {
 			contentRef.current.setSelectionRange(contentRef.current.selectionStart -2, contentRef.current.selectionStart - 2);
+		}
+
+		if (val === "__" || val === "~~" || val === "``") {
+			contentRef.current.setSelectionRange(contentRef.current.selectionStart -1, contentRef.current.selectionStart - 1);
+		}
+
+		if (val === "[](url)" || val === "![](url)") {
+			contentRef.current.setSelectionRange(contentRef.current.selectionStart -6, contentRef.current.selectionStart - 6);
 		}
 	}
 	return (
