@@ -4,11 +4,12 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import UploadFile
+from sqlalchemy import update
 from sqlalchemy.orm import Session
 
 from auth.service import get_password_hash
 from core.constants import MEDIA_ROOT
-from core.models import User, UserDetail, Profession
+from core.models import User, UserDetail, Profession, Guide
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema
 
 
@@ -166,6 +167,14 @@ def update_user_profile(data: UserProfileUpdateSchema,
                                      bio=data.user_details.bio,
                                      profession_id=data.user_details.profession_id)
         db.add(new_user_detail)
+
+    # Update guides if is_instructor is set to false
+    if not data.user_details.is_instructor:
+        guides = db.query(Guide).filter(Guide.user_id == db_user.user_id).all()
+        if guides:
+            for guide in guides:
+                guide.published = False
+
     db.commit()
     db.refresh(db_user)
     return db_user
