@@ -28,5 +28,9 @@ app.include_router(guides_router.router,
                    tags=["guides"])
 
 
-if __name__ == "__main__":
+def main():
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+
+
+if __name__ == "__main__":
+    main()
