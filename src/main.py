@@ -14,6 +14,11 @@ app_configs = {'title': 'Guidio'}
 if ENVIRONMENT not in SHOW_DOCS_ENVIRONMENT:
     app_configs['openapi_url'] = None
 
+
+def is_debug() -> bool:
+    return False if ENVIRONMENT != 'dev' else True
+
+
 app = FastAPI(**app_configs)
 core_service.create_media_root()
 app.mount("/media", StaticFiles(directory=MEDIA_ROOT), name="media")
@@ -29,7 +34,10 @@ app.include_router(guides_router.router,
 
 
 def main():
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    debug = is_debug()
+    if debug:
+        uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":
