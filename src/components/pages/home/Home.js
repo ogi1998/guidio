@@ -1,4 +1,4 @@
-import Courses from "./Courses";
+import Courses from "../../common/guides/Guides";
 import Header from "./Header";
 import Alert from '../../common/Alert';
 
@@ -14,7 +14,7 @@ const Home = () => {
 				<Alert type={MESSAGE_TYPE_SUCCESS} size='fit' msg={successMsg} />
 			</div>
 			{!activeUser && <Header />}
-			<Courses user={activeUser} isSingleuser={false} />
+			<Courses user={activeUser} />
 		</div>
 	);
 };
