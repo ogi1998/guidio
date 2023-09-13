@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Form from "./common/Form";
 import { loginUser } from "../../../store/controllers/authController";
 import Alert from "../../common/Alert";
-import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from "../../../store/constants";
+import { MESSAGE_ERROR_FIELDS, MESSAGE_TYPE_ERROR} from "../../../store/constants";
 import InputGroup from "./common/InputGroup";
 
 const Login = () => {
@@ -14,7 +14,7 @@ const Login = () => {
 	const navigate = useNavigate();
 
 	const loginRef = useRef({});
-	const { errorMsg, successMsg } = useSelector((state) => state.ui);
+	const { errorMsg } = useSelector((state) => state.ui);
 
 	useEffect(() => loginRef.current.email.focus(), []);
 
@@ -38,7 +38,7 @@ const Login = () => {
 	return (
 		<Form onSubmit={loginHandler}>
 			<h1 className="text-5xl font-bold pb-5">Login</h1>
-			<Alert type={(errorMsg && MESSAGE_TYPE_ERROR) || (successMsg && MESSAGE_TYPE_SUCCESS)} msg={errorMsg || successMsg} />
+			<Alert type={MESSAGE_TYPE_ERROR} msg={errorMsg} />
 			<InputGroup inpRef={el => loginRef.current.email = el} lbl="Email" />
 			<InputGroup inpRef={el => loginRef.current.password = el} lbl="Password" isPw />
 			<div className=" inline-block mt-10 text-center">
