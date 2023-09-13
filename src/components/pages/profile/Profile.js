@@ -34,13 +34,7 @@ const Profile = () => {
 					<Menu setActiveTab={setActiveTab} activeTab={activeTab} /> : ''
 				}
 				<div className="flex justify-center">
-					<Alert
-						type={
-							(errorMsg && "error") || (successMsg && "success")
-						}
-						msg={successMsg || errorMsg}
-						size="half"
-					/>
+					<Alert type={(errorMsg && "error") || (successMsg && "success")} msg={successMsg || errorMsg} size="half"/>
 				</div>
 				{(!id && activeTab === 0) && <ProfileInformation user={user} />}
 				{(!id && activeTab === 1) && <ChangePassword user={user} />}

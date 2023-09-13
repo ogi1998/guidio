@@ -17,7 +17,7 @@ const Instructors = () => {
 		dispatch(getInstructors());
 	}, [dispatch]);
 	return (
-		<div className="p-28 bg-bg-main">
+		<div className="p-28 bg-bg-main min-h-[60vh]">
 			<h2 className="text-3xl">Instructors</h2>
 			{isLoading ? <Loading /> :
 				<div className="grid grid-cols-4 w-full gap-5 mt-10">

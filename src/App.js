@@ -24,14 +24,13 @@ const App = () => {
 	const activeUser = useSelector(state => state.user.activeUser);
 	const isInstructor = activeUser?.userDetails?.isInstructor;
 
-	const showLayout = pathname !== '/auth/login' && pathname !== '/auth/register';
+	const showLayout = !pathname.startsWith('/auth');
 
 	useEffect(() => {
-		if (showLayout)
-			window.scrollTo(0, 0);
+		const shouldClearMessages = pathname.startsWith('/auth') || pathname === '/profile' || pathname === '/create';
 
-		if (pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/profile' || pathname === '/create')
-			dispatch(clearMessages());
+		showLayout && window.scrollTo(0, 0);
+		shouldClearMessages && dispatch(clearMessages());
 	}, [dispatch, pathname, showLayout]);
 
 	useEffect(() => {

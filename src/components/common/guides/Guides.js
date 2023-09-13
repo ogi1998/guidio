@@ -46,12 +46,15 @@ const Guides = ({ user, isSingleUser = false }) => {
 	}, [dispatch, isSingleUser, activePage, user?.userId]);
 
 	return (
-		<div className={`px-20 ${isSingleUser ? "pt-10" : "pt-48"} bg-bg-main`}>
-			{user && <Search inputRef={searchRef} activePage={activePage} setActivePage={setActivePage} />}
+		<div className={` ${isSingleUser ? "pt-10" : "px-20 pt-48 bg-bg-main"}`}>
+			{user && <Search inputRef={searchRef} activePage={activePage} setActivePage={setActivePage} isSingleUser={isSingleUser} />}
 			<h2 className="text-5xl py-10">Recent Guides</h2>
 			<div className={`grid ${!isSingleUser ? 'grid-cols-4' : 'grid-cols-3'} w-full gap-5`}>
-				{guides?.length ? guides.map(guide => <Guide guide={guide} />) :
-					!isLoading && <h1 className="text-danger-dark text-3xl py-5">{MESSAGE_ERROR_NO_GUIDES}</h1>}
+				{
+					guides?.length ? guides.map(guide => <Guide guide={guide} />)
+					:
+					!isLoading && <h1 className="text-danger-dark text-3xl py-5">{MESSAGE_ERROR_NO_GUIDES}</h1>
+				}
 			</div>
 			{isLoading && <Loading />}
 		</div>
