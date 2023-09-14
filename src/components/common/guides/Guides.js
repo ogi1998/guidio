@@ -43,7 +43,7 @@ const Guides = ({ user, isSingleUser = false }) => {
 	}, [activePage, pages, user]);
 
 	useEffect(() => {
-		activePage &&
+		if (activePage)
 			isSingleUser ? dispatch(getGuidesByUserId(user.userId, activePage)) : dispatch(getGuides(activePage))
 	}, [dispatch, isSingleUser, activePage, user]);
 
