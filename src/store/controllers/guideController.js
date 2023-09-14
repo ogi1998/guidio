@@ -9,7 +9,6 @@ export const getGuides = function (page) {
 			dispatch(guideActions.setError(null));
 			page === 1 && dispatch(guideActions.setGuides({}));
 			dispatch(uiActions.setIsLoading(true));
-			page === 1 && dispatch(guideActions.setGuides({}));
 			const data = await sendRequest(`/guides?page=${page}&page_size=12`, 'GET');
 			await new Promise((res) => {setTimeout(() =>{res()}, 500)});
 			dispatch(uiActions.setIsLoading(false));
@@ -50,7 +49,7 @@ export const getGuidesByUserId = (id, page, cb) => {
 	return async dispatch => {
 		try {
 			dispatch(guideActions.setError(null));
-			dispatch(guideActions.setGuides({}));
+			page === 1 && dispatch(guideActions.setGuides({}));
 			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest(`/guides/${id}?page=${page}&page_size=12`, 'GET');
 			await new Promise((res) => {setTimeout(() =>{res()}, 500)});
