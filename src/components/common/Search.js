@@ -1,9 +1,9 @@
 import { FaSearch } from "react-icons/fa"
 import { useDispatch } from "react-redux";
-import { getGuides, searchGuides } from "../../store/controllers/guideController";
+import { searchGuides } from "../../store/controllers/guideController";
 
 let timeout;
-const Search = ({ inputRef, activePage, setActivePage, isSingleUser }) => {
+const Search = ({ inputRef, setActivePage, isSingleUser }) => {
 
 	const dispatch = useDispatch();
 
@@ -11,12 +11,12 @@ const Search = ({ inputRef, activePage, setActivePage, isSingleUser }) => {
 		clearTimeout(timeout);
 
 		timeout = setTimeout(() => {
-			if (event.target.value)
+			if (event.target.value) {
 				dispatch(searchGuides(event.target.value));
-			else {
-				setActivePage(1);
-				dispatch(getGuides(activePage));
+				setActivePage(0);
 			}
+			else
+				setActivePage(1);
 			timeout = null;
 		}, 500);
 	}

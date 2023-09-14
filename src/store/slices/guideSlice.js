@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 	guidesData: {},
 	activeGuide: {},
-	guideErrorMsg: ''
+	guideError: null
 }
 const guideSlice = createSlice({
 	name: 'guide',
@@ -20,6 +20,9 @@ const guideSlice = createSlice({
 		},
 		filterActiveGuide(state) {
 			state.guidesData.guides = state.guidesData.guides.filter(guide => guide.guideId !== state.activeGuide.guideId);
+		},
+		setError(state, action) {
+			state.guideError = action.payload;
 		}
 	}
 })

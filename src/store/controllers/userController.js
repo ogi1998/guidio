@@ -86,12 +86,12 @@ export const getInstructors = () => {
 		try {
 			dispatch(uiActions.setIsLoading(true));
 			const data = await sendRequest('/users/instructors', 'GET');
-			await new Promise(res => setTimeout(() =>{res()}, 1000));
+			await new Promise(res => setTimeout(() =>{res()}, 500));
 			dispatch(uiActions.setIsLoading(false));
 			dispatch(userActions.setInstructors(data));
 		} catch (err) {
+			await new Promise(res => setTimeout(() =>{res()}, 500));
 			dispatch(uiActions.setIsLoading(false));
-			dispatch(showMessage(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_UNEXPECTED));
 		}
 	}
 }
