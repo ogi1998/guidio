@@ -15,7 +15,7 @@ const Navbar = () => {
 		dispatch(logoutUser(() => navigate("/")));
 	}
 
-	const setActiveLink = ({isActive}) => isActive && "text-success-main border-b-2";
+	const setActiveLink = ({isActive}) => isActive ? "text-success-main border-b-2" : undefined;
 
 	return (
 		<div className="flex bg-primary-main py-4 px-20 relative shadow-2xl">

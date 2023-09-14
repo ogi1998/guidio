@@ -35,7 +35,7 @@ const App = () => {
 
 	useEffect(() => {
 		if (document.cookie.startsWith('auth_token'))
-			dispatch(getUserByToken);
+			dispatch(getUserByToken());
 	}, [dispatch]);
 
 	return (
