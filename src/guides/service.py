@@ -29,7 +29,8 @@ def get_initial_list_of_guides(db: Session,
         Guide.guide_id,
         Guide.title,
         Guide.published,
-        UserDetail.cover_image,
+        User.first_name,
+        User.last_name,
         UserDetail.avatar,
         User.user_id,
         Profession.name.label('profession')) \
@@ -67,10 +68,11 @@ def get_list_of_guides(db: Session,
             title=record[1],
             published=record[2],
             user=UserListReadSchema(
-                cover_image=record[3],
-                avatar=record[4],
-                user_id=record[5],
-                profession=record[6]
+                first_name=record[3],
+                last_name=record[4],
+                avatar=record[5],
+                user_id=record[6],
+                profession=record[7]
             )
         ))
     return guides_list
