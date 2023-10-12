@@ -9,6 +9,8 @@ class GuideListSingleSchema(BaseModelSchema):
     guide_id: int
     title: str
     published: bool
+    created_at: datetime
+    last_modified: datetime
     user: UserListReadSchema
 
     class Config:
@@ -29,6 +31,7 @@ class GuideCreateUpdateSchema(BaseModelSchema):
 
 class GuideReadSchema(GuideCreateUpdateSchema):
     guide_id: int
+    created_at: datetime
     last_modified: datetime
     user: UserReadSchema
 
