@@ -1,33 +1,47 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
-import { getInstructors } from "../../../store/controllers/userController";
+import { getInstructors, searchInstructors } from "../../../store/controllers/instructorController";
 
-import { MESSAGE_ERROR_NO_INSTRUCTORS } from "../../../store/constants";
-import Loading from "../../common/Loading";
 import Instructor from "./Instructor";
-import ErrorMessage from "../../common/ErrorMessage";
+import List from "../../common/list/List";
+import { resetInstructors } from "../../../store/slices/instructorSlice";
 
 const Instructors = () => {
 	const dispatch = useDispatch();
 
-	const instructors = useSelector(state => state.user.instructors);
-	const { isLoading } = useSelector(state => state.ui);
+	const {activeUser} = useSelector(state => state.user);
+	const { instructors, pages } = useSelector(state => state.instructor.instructorsData);
+
+	const getInstructorsHandler = useCallback(activePage => {
+		dispatch(getInstructors(activePage));
+	}, [dispatch]);
+
+	const searchInstructorsHandler = useCallback((search, activePage) => {
+		dispatch(searchInstructors(search, activePage));
+	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(getInstructors());
+		dispatch(resetInstructors());
 	}, [dispatch]);
+
 	return (
-		<div className="p-28 bg-bg-main min-h-[60vh]">
-			<h2 className="text-3xl">Instructors</h2>
-			{isLoading ? <Loading /> :
-				<div className="grid grid-cols-4 w-full gap-5 mt-10">
-					{instructors?.length ? instructors.map(instructor => <Instructor key={instructor.userId} instructor={instructor} />)
-						:
-						<ErrorMessage msg={MESSAGE_ERROR_NO_INSTRUCTORS} />
-					}
+		<div className="bg-bg-main">
+			<List
+				user={activeUser}
+				title="Instructors"
+				onSearch={searchInstructorsHandler}
+				onGet={getInstructorsHandler}
+				items={instructors}
+				pages={pages}
+			>
+				<div className="grid grid-cols-4 w-full gap-5">
+					{instructors &&
+						instructors.map(instructor =>
+							<Instructor instructor={instructor} key={instructor.userId} />
+						)}
 				</div>
-			}
+			</List>
 		</div>
 	)
 }
