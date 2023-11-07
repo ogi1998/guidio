@@ -140,12 +140,8 @@ export const uploadCoverImage = (file, id) => {
 		try {
 			const data = await sendRequest(`/guides/cover_image?guide_id=${id}`, 'POST', file, true);
 			dispatch(guideActions.updateCoverImage(data.coverImage));
-		} catch (error) {
-			console.log(error);
-			if (error.cause.status === 401)
-				dispatch(getUserByToken());
-			else
-				dispatch(showAlert(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_UNEXPECTED));
+		} catch (err) {
+			handleErrorMessages(dispatch, err.message);
 		}
 	}
 }
@@ -156,11 +152,8 @@ export const deleteCoverImage = (id, cb) => {
 			await sendRequest(`/guides/cover_image?guide_id=${id}`, 'DELETE');
 			cb();
 			dispatch(guideActions.removeCoverImage());
-		} catch (error) {
-			if (error.cause.status === 401)
-				dispatch(getUserByToken());
-			else
-				dispatch(showAlert(MESSAGE_TYPE_ERROR, MESSAGE_ERROR_UNEXPECTED));
+		} catch (err) {
+			handleErrorMessages(dispatch, err.message);
 		}
 	}
 }
