@@ -1,18 +1,21 @@
-import os
+import base64
 import re
 from datetime import datetime, timedelta
 from typing import Match
 
-from fastapi import Depends
-from jose import jwt, JWTError
+from fastapi import Request, HTTPException
+from jose import jwt, ExpiredSignatureError, JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+from starlette import status
 
 from auth import schemas
-from auth.dependencies import has_valid_token
-from auth.exceptions import invalid_credentials_exception, token_exception
+from auth.dependencies import is_valid_token
+from auth.exceptions import invalid_credentials_exception, token_exception, user_inactive_exception
 from core.dependencies import DBDependency
 from core.models import User, UserDetail
+from core.settings import AUTH_TOKEN
+from src.config import SECRET_KEY, ALGORITHM, TOKEN_EXP_MINUTES
 
 # CONSTANTS
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -59,43 +62,53 @@ def find_detail_in_error(substring: str, message: str) -> Match[str] | None:
 
 
 def create_auth_token(user_id: int) -> str:
-    """Create authentication jwt token for specific user
+    """Create authentication jwt token for a specific user
 
     Args:
         user_id (int): user id for which jwt token will be created
 
     Returns:
-        jwt token for specific user
+        jwt token for a specific user
     """
     token_creation_time = datetime.utcnow()
-    encode = {"sub": str(user_id), "iat": token_creation_time}
-    token_expiration_time = float(os.getenv("TOKEN_EXP_MINUTES"))
-    expire = datetime.utcnow() + timedelta(minutes=token_expiration_time)
+    user_id_base64 = base64.b64encode(str(user_id).encode('utf-8')).decode('utf-8')
+    encode = {"sub": user_id_base64, "iat": token_creation_time}
+    expire = token_creation_time + timedelta(minutes=float(TOKEN_EXP_MINUTES))
     encode.update({"exp": expire})
-    return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=os.getenv("ALGORITHM"))
+    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def get_current_user(token: str = Depends(has_valid_token), db=DBDependency):
+def get_current_user(token: str, db: Session):
     """Get current user object if jwt is valid
 
     Args:
-        token (str): jwt token
+        token (str): JWT encoded token
         db (Session): database session
 
     Returns:
-        User object or invalid credentials exception
+        User object or exception
     """
     try:
-        payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=[os.getenv("ALGORITHM")])
-        user_id: int = payload.get("sub")
+        payload = is_valid_token(token)
+        user_id_base64 = payload.get("sub")
+        user_id = int(base64.b64decode(user_id_base64).decode('utf-8'))
         if user_id is None:
             raise invalid_credentials_exception()
-        user = db.query(User).get(user_id)
+        user: User = db.query(User).get(user_id)
         if user is None:
-            return invalid_credentials_exception()
+            raise invalid_credentials_exception()
         return user
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Token expired")
     except JWTError:
         token_exception()
+
+
+def get_current_active_user(request: Request, db=DBDependency):
+    current_user = get_current_user(request.cookies.get(AUTH_TOKEN), db)
+    if not current_user.is_active:
+        raise user_inactive_exception()
+    return current_user
 
 
 # Database interactive functions
@@ -119,7 +132,7 @@ def authenticate_user(email: str, password: str, db: Session) -> User | bool:
     return user
 
 
-def check_account_existence_by_email(db: Session, email: str) -> bool:
+def get_user_by_email(db: Session, email: str) -> User | None:
     """Check if user exist based on provided email
 
     Args:
@@ -131,12 +144,23 @@ def check_account_existence_by_email(db: Session, email: str) -> bool:
     return db.query(User).filter(User.email == email).first()
 
 
-def create_user(db: Session, data: schemas.RegistrationSchemaUser) -> User.user_id | None:
-    """ If user doesn't already exist, create user in database and return created object id.
+async def send_activation_email_to_user(request: Request, user: User):
+    token = create_auth_token(user.user_id)
+    base_url = str(request.base_url)
+    verification_url: str = f"{base_url}auth/verify_email?token={token}"
+    expiration_time: datetime = datetime.utcnow() + timedelta(minutes=int(TOKEN_EXP_MINUTES))
+    await user.send_activation_email(verification_url, expiration_time)
+
+
+async def create_user(request: Request, db: Session,
+                      data: schemas.RegistrationSchemaUser) -> User.user_id | None:
+    """ If user doesn't already exist, create user in database, send verification email and
+    return created object id.
     Also create UserDetail.
     If user already exist, return None.
 
     Args:
+        request (Request): request object to construct verification url
         db (Session): database Session
         data (schema): fields provided based on schema
             email (str): provided email for the registration
@@ -147,8 +171,8 @@ def create_user(db: Session, data: schemas.RegistrationSchemaUser) -> User.user_
     Returns:
         object id | None: User object id or None
     """
-    account_exist: bool = check_account_existence_by_email(db, data.email)
-    if account_exist:
+    user: User | None = get_user_by_email(db, data.email)
+    if user is not None:
         return None
     db_user = User()
     db_user.email = data.email
@@ -163,4 +187,11 @@ def create_user(db: Session, data: schemas.RegistrationSchemaUser) -> User.user_
     db.add(user_detail)
     db.commit()
     db.refresh(db_user)
+    await send_activation_email_to_user(request, db_user)
     return db_user.user_id
+
+
+def activate_user(user: User, db: Session) -> None:
+    user.is_active = True
+    db.commit()
+    return
