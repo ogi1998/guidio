@@ -1,23 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-	alert: {type: '', msgObj: {msg: '', pages: []}},
+	alert: { type: '', msgConf: { msg: '', pages: [] } },
 	error: null,
-	isLoading: false
+	loading: null
 };
 
 const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		setAlert(state, action) {
-			state.alert= action.payload;
+		showAlert(state, action) {
+			const { type, msgConf } = action.payload;
+			state.alert = { type, msgConf };
+		},
+		clearAlert(state) {
+			state.alert = { type: '', msgConf: { msg: '', pages: [] } };
 		},
 		setError(state, action) {
 			state.error = action.payload;
 		},
-		setIsLoading(state, action) {
-			state.isLoading = action.payload;
+		setLoading(state, action) {
+			state.loading = action.payload;
 		}
 	}
 });
@@ -25,24 +29,3 @@ const uiSlice = createSlice({
 export const uiActions = uiSlice.actions;
 
 export default uiSlice;
-
-let timeout;
-
-export const showAlert = (type, msgObj) => {
-	clearTimeout(timeout);
-	return async dispatch => {
-			dispatch(uiActions.setAlert({type, msgObj}))
-			timeout = setTimeout(() => {
-				dispatch(uiActions.setAlert({type: '',  msgObj: {msg: '', pages: []}}));
-				timeout = null;
-			}, 3000);
-	};
-};
-
-export const clearAlerts = () => {
-	clearTimeout(timeout);
-
-	return async dispatch => {
-		dispatch(uiActions.setAlert({type: '',  msgObj: {msg: '', pages: []}}));
-	}
-}

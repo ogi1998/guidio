@@ -1,15 +1,15 @@
 import messages from "../messages";
-import { showAlert } from "../slices/uiSlice";
+import { uiActions } from "../slices/uiSlice";
 import { userActions } from "../slices/userSlice";
 import { handleErrorMessages, sendRequest } from "./common/request";
 
 export const deleteUser = (id, cb) => {
 	return async (dispatch) => {
 		try {
-			await sendRequest(`/users/${id}`, "DELETE");
+			await sendRequest(`/users/${id}`, "DELETE", null, dispatch);
 			dispatch(userActions.removeUser());
 			cb();
-			dispatch(showAlert('success', messages.success['account_delete_success']));
+			dispatch(uiActions.showAlert({ type: 'success', msgConf: messages.success['account_delete_success'] }));
 		} catch (err) {
 			handleErrorMessages(dispatch, err.message);
 		}
@@ -19,9 +19,9 @@ export const deleteUser = (id, cb) => {
 export const updateUser = (id, formData) => {
 	return async (dispatch) => {
 		try {
-			const newUser = await sendRequest(`/users/${id}`, "PUT", formData);
+			const newUser = await sendRequest(`/users/${id}`, "PUT", formData, dispatch);
 			dispatch(userActions.setUser(newUser));
-			dispatch(showAlert('success', messages.success['account_update_success']));
+			dispatch(uiActions.showAlert({ type: 'success', msgConf: messages.success['account_update_success'] }));
 		} catch (err) {
 			handleErrorMessages(dispatch, err.message);
 		}
@@ -31,8 +31,8 @@ export const updateUser = (id, formData) => {
 export const changePassword = (id, formData) => {
 	return async (dispatch) => {
 		try {
-			await sendRequest(`/users/${id}/update_password`, "PUT", formData);
-			dispatch(showAlert('success', messages.success['pw_change_success']));
+			await sendRequest(`/users/${id}/update_password`, "PUT", formData, dispatch);
+			dispatch(uiActions.showAlert({ type: 'success', msgConf: messages.success['pw_change_success'] }));
 		} catch (err) {
 			handleErrorMessages(dispatch, err.message);
 		}
@@ -42,10 +42,7 @@ export const changePassword = (id, formData) => {
 export const getProfessionByName = (name) => {
 	return async (dispatch) => {
 		try {
-			const data = await sendRequest(
-				"/users/professions?name=" + name,
-				"GET"
-			);
+			const data = await sendRequest("/users/professions?name=" + name, "GET", null, dispatch);
 			dispatch(userActions.updateProfessions(data));
 		} catch (err) {
 			handleErrorMessages(dispatch, err.message);
@@ -56,7 +53,7 @@ export const getProfessionByName = (name) => {
 export const uploadImage = (file, type) => {
 	return async dispatch => {
 		try {
-			const data = await sendRequest(`/users/${type}`, 'POST', file, true);
+			const data = await sendRequest(`/users/${type}`, 'POST', file, dispatch);
 			dispatch(userActions.setUser(data));
 		} catch (err) {
 			handleErrorMessages(dispatch, err.message);
@@ -67,7 +64,7 @@ export const uploadImage = (file, type) => {
 export const deleteImage = (type, cb) => {
 	return async dispatch => {
 		try {
-			await sendRequest(`/users/${type}`, 'DELETE');
+			await sendRequest(`/users/${type}`, 'DELETE', null, dispatch);
 			cb();
 			if (type === 'avatar')
 				dispatch(userActions.removeAvatarImage());
