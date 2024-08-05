@@ -145,7 +145,7 @@ async def get_user_by_email(db: Session, email: str) -> User | None:
 
 
 async def send_activation_email_to_user(request: Request, user: User):
-    token = create_auth_token(user.user_id)
+    token = await create_auth_token(user.user_id)
     base_url = str(request.base_url)
     verification_url: str = f"{base_url}auth/verify_email?token={token}"
     expiration_time: datetime = datetime.utcnow() + timedelta(minutes=int(TOKEN_EXP_MINUTES))
@@ -178,7 +178,7 @@ async def create_user(request: Request, db: Session,
     db_user.email = data.email
     db_user.first_name = data.first_name
     db_user.last_name = data.last_name
-    hashed_password = get_password_hash(data.password)
+    hashed_password = await get_password_hash(data.password)
     db_user.password = hashed_password
     db.add(db_user)
     db.commit()
