@@ -1,60 +1,16 @@
 import os
 import shutil
-from datetime import datetime
-from pathlib import Path
 
 from fastapi import UploadFile
 from sqlalchemy import asc, desc, func
 from sqlalchemy.orm import Session, Query
 
-from core.constants import MEDIA_ROOT
 from core.models import Guide, User, Profession, UserDetail
 from core.service import count_number_of_pages
 from guides.constants import RetrieveOrder
 from guides.schemas import GuideCreateUpdateSchema, GuideListSingleSchema, GuideListReadSchema
 from users.schemas import UserListReadSchema
-
-
-async def prepare_guide_data(data: GuideCreateUpdateSchema) -> GuideCreateUpdateSchema:
-    title = data.title.strip()
-    content = data.content.strip()
-    note = data.note.strip() if data.note else None
-    return GuideCreateUpdateSchema(title=title, content=content,
-                                   note=note, published=data.published)
-
-
-def create_upload_path(directory: str, filename: str):
-    if not os.path.exists(directory):
-        Path(directory).mkdir(parents=True, exist_ok=True)
-    if not os.path.exists(directory + filename):
-        filename_parts = filename.split(".")
-        timestamp = str(int(datetime.now().timestamp()))
-        filename = "".join(filename_parts[:-1]) + "_" + timestamp + "." + filename_parts[-1]
-    open(f'{directory}{filename}', 'wb').close()
-    return directory + filename
-
-
-def cover_image_upload_path(guide_id: str, filename: str):
-    directory = f"{MEDIA_ROOT}/guides/{guide_id}/cover_image/"
-    path = create_upload_path(directory, filename)
-    path_to_save = 'media' + path.split('media')[1]
-    return path_to_save
-
-
-def count_pages(db: Session, page_size: int):
-    count_of_guides: int = db.query(Guide.guide_id) \
-        .order_by(desc(Guide.last_modified)).count()
-    division: tuple[int, int] = divmod(count_of_guides, page_size)
-    pages: int = division[0] + 1 if division[1] else division[0]
-    return pages
-
-
-def count_published_guides_pages(db: Session, page_size: int):
-    count_of_guides: int = db.query(Guide.guide_id).filter(Guide.published) \
-        .order_by(desc(Guide.last_modified)).count()
-    division: tuple[int, int] = divmod(count_of_guides, page_size)
-    pages: int = division[0] + 1 if division[1] else division[0]
-    return pages
+from utils.guides import get_featured_image_upload_path
 
 
 async def get_initial_list_of_guides(db: Session,
@@ -101,23 +57,28 @@ async def get_list_of_guides(db: Session,
         guides = guides.filter(Guide.user_id == user_id)
     pages: int = await count_number_of_pages(guides.count(), page_size)
     guides = guides.offset(offset).limit(page_size).all()
-    guides_list: list[GuideListSingleSchema] = []
-    for record in guides:
-        guides_list.append(GuideListSingleSchema(
-            guide_id=record[0],
-            title=record[1],
-            published=record[2],
-            created_at=record[3],
-            last_modified=record[4],
-            cover_image=record[5],
-            user=UserListReadSchema(
-                first_name=record[6],
-                last_name=record[7],
-                avatar=record[8],
-                user_id=record[9],
-                profession=record[10]
-            )
-        ))
+    guides_list = [
+        GuideListSingleSchema(
+            **{
+                "guide_id": record.guide_id,
+                "title": record.title,
+                "published": record.published,
+                "created_at": record.created_at,
+                "last_modified": record.last_modified,
+                "cover_image": record.cover_image,
+                "user": UserListReadSchema(
+                    **{
+                        "first_name": record.first_name,
+                        "last_name": record.last_name,
+                        "avatar": record.avatar,
+                        "user_id": record.user_id,
+                        "profession": record.profession,
+                    }
+                ),
+            }
+        )
+        for record in guides
+    ]
     return GuideListReadSchema(pages=pages, guides=guides_list)
 
 
@@ -141,12 +102,8 @@ async def get_guides_by_user_id(db: Session,
     return guides
 
 
-async def get_guide_by_id(db: Session, guide_id: int, user: User) -> Guide | None:
+async def get_guide_by_id(db: Session, guide_id: int) -> Guide | None:
     guide: Guide = db.query(Guide).get(guide_id)
-    if not guide:
-        return None
-    if not guide.user_id == user.user_id and not guide.published:
-        return None
     return guide
 
 
@@ -167,18 +124,12 @@ async def save_guide(db: Session,
     return guide
 
 
-async def get_cover_image(guide: Guide) -> str | None:
-    if not guide.cover_image:
-        return None
-    return guide.cover_image
-
-
-async def save_cover_image(file: UploadFile, db: Session, guide: Guide) -> Guide:
+async def save_featured_image(file: UploadFile, db: Session, guide: Guide) -> Guide:
     """Check if cover image exists and create it if not. If it exists then do the update"""
 
     old_cover_image = guide.cover_image
 
-    file_path = cover_image_upload_path(str(guide.guide_id), file.filename)
+    file_path = get_featured_image_upload_path(str(guide.guide_id), file.filename)
     try:
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
@@ -196,7 +147,7 @@ async def save_cover_image(file: UploadFile, db: Session, guide: Guide) -> Guide
     return guide
 
 
-async def delete_cover_image(db: Session, guide: Guide) -> None:
+async def delete_featured_image(db: Session, guide: Guide) -> None:
     image = guide.cover_image
 
     if image and os.path.exists(image):
@@ -208,7 +159,7 @@ async def delete_cover_image(db: Session, guide: Guide) -> None:
 
 
 async def delete_guide(db: Session, guide: Guide) -> None:
-    await delete_cover_image(db, guide)
+    await delete_featured_image(db, guide)
     db.delete(guide)
     db.commit()
     return None

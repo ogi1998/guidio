@@ -7,12 +7,13 @@ from fastapi import UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from auth.service import get_password_hash
+# from auth.service import get_password_hash # TODO: fix this because it is inside a class
 from core.constants import MEDIA_ROOT
 from core.models import User, UserDetail, Profession, Guide
 from core.service import count_number_of_pages
 from users.schemas import UserProfileUpdateSchema, UserPasswordUpdateSchema, UserDetailUpdateSchema, \
     UserReadSchemaWithPages
+from utils.auth import get_password_hash
 
 
 async def get_instructors_by_search(db: Session, search: str):
@@ -163,7 +164,7 @@ async def get_profession_by_id(db: Session, profession_id: int) -> Profession | 
     return profession
 
 
-async def get_professions_by_name(db: Session, name: str) -> list[Profession]:
+async def get_professions_by_name(name: str, db: Session) -> list[Profession] | None:
     professions = db.query(Profession).filter(Profession.name.ilike(f'%{name}%')).all()
     return professions
 
@@ -223,7 +224,7 @@ async def delete_user_profile(db: Session, user_id: int) -> None:
 
 async def update_user_password(db: Session,
                                data: UserPasswordUpdateSchema,
-                               user: User) -> tuple[User, UserDetail]:
+                               user: User) -> User:
     hashed_password = await get_password_hash(data.password)
     user.password = hashed_password
     db.commit()
