@@ -5,11 +5,10 @@ from sqlalchemy.orm import Session
 
 from auth import schemas
 from auth.exceptions import UserDoesNotExistException, UnauthorizedException
+from core.config import settings
 from core.constants import ACTIVATE_ACCOUNT_SUBJECT
-from core.dependencies import DBDependency
+from core.dependencies import SessionDep
 from core.models import User, UserDetail
-from core.settings import AUTH_TOKEN
-from src.config import TOKEN_EXP_MINUTES
 from utils.auth import create_auth_token, get_password_hash, get_base64_subject_from_token, \
     get_decoded_sub_from_base64
 from utils.mail.send_mail import send_mail
@@ -22,9 +21,9 @@ async def get_user_by_email(email: str, db: Session) -> User | None:
 async def send_activation_email_to_user(request: Request, user: User):
     token = await create_auth_token(user.user_id)
     base_url = str(request.base_url)
-    verification_url: str = f"{base_url}auth/verify_email?token={token}"
+    verification_url: str = f"{base_url}auth/activate_user?token={token}"
     expiration_time: datetime = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
-        minutes=int(TOKEN_EXP_MINUTES))
+        minutes=int(settings.ACCESS_TOKEN_EXP_MINUTES))
     await send_mail(subject=ACTIVATE_ACCOUNT_SUBJECT,
                     recipients=[user.email],
                     body={"first_name": user.first_name, "url": verification_url,
@@ -50,11 +49,11 @@ async def get_user_from_token(token: str, db: Session) -> User:
 
 
 async def get_user_from_request(request: Request, db: Session) -> User | None:
-    user: User = await get_user_from_token(request.cookies.get(AUTH_TOKEN), db)
+    user: User = await get_user_from_token(request.cookies.get(settings.AUTH_TOKEN), db)
     return user
 
 
-async def user_if_profile_is_active(request: Request, db: Session = DBDependency) -> User:
+async def user_if_profile_is_active(request: Request, db: Session = SessionDep) -> User:
     user: User = await get_user_from_request(request, db)
     if not user.is_active:
         raise UnauthorizedException()

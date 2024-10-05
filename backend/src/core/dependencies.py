@@ -1,21 +1,14 @@
+from collections.abc import Generator
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from database import SessionLocal
+from database import engine
 
 
-class DBSession:
-    def __enter__(self):
-        self.db = SessionLocal()
-        return self.db
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.db.close()
+def get_db() -> Generator[Session, None, None]:
+    with Session(engine) as session:
+        yield session
 
 
-def get_db() -> Session:
-    with DBSession() as db:
-        yield db
-
-
-DBDependency: Session = Depends(get_db)
+SessionDep: Session = Depends(get_db)

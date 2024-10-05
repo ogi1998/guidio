@@ -2,9 +2,9 @@ from fastapi import APIRouter, Query, status, Depends, UploadFile, Response
 from sqlalchemy.orm import Session
 
 from auth.service import user_if_profile_is_active
-from core.dependencies import DBDependency
+from core.dependencies import SessionDep
 from core.models import User
-from core.settings import AUTH_TOKEN
+from core.config import settings
 from users import schemas, manager
 
 router = APIRouter()
@@ -14,7 +14,7 @@ router = APIRouter()
             description="Get professions based on search by name",
             response_model=list[schemas.ProfessionReadSchema])
 async def get_profession_by_name(name: str,
-                                 db: Session = DBDependency) -> list[schemas.ProfessionReadSchema]:
+                                 db: Session = SessionDep) -> list[schemas.ProfessionReadSchema]:
     professions = await manager.get_professions_by_name(name, db)
     return professions
 
@@ -24,7 +24,7 @@ async def get_profession_by_name(name: str,
             response_model=schemas.UserReadSchemaWithPages)
 async def get_instructors(page: int = Query(default=1, ge=1, description="Page to request"),
                           page_size: int = Query(default=50, ge=1, le=100, description="Page size"),
-                          db: Session = DBDependency) -> schemas.UserReadSchemaWithPages:
+                          db: Session = SessionDep) -> schemas.UserReadSchemaWithPages:
     return await manager.get_instructors(page, page_size, db)
 
 
@@ -36,7 +36,7 @@ async def search_instructors(search: str,
                              page: int = Query(default=1, ge=1, description="Page to request"),
                              page_size: int = Query(default=50, ge=1, le=100,
                                                     description="Page size"),
-                             db: Session = DBDependency):
+                             db: Session = SessionDep):
     return await manager.search_instructors(search, page, page_size, db)
 
 
@@ -52,7 +52,7 @@ async def get_avatar(user: User = Depends(user_if_profile_is_active)):
              description="Save user avatar",
              response_model=schemas.UserReadSchema,
              status_code=status.HTTP_201_CREATED)
-async def save_avatar(file: UploadFile, db: Session = DBDependency,
+async def save_avatar(file: UploadFile, db: Session = SessionDep,
                       user: User = Depends(user_if_profile_is_active)):
     return await manager.save_user_avatar(file, db, user)
 
@@ -61,7 +61,7 @@ async def save_avatar(file: UploadFile, db: Session = DBDependency,
             description="Update user avatar",
             response_model=schemas.UserReadSchema,
             status_code=status.HTTP_200_OK)
-async def update_avatar(file: UploadFile, db: Session = DBDependency,
+async def update_avatar(file: UploadFile, db: Session = SessionDep,
                         user: User = Depends(user_if_profile_is_active)):
     return await manager.save_user_avatar(file, db, user)
 
@@ -69,7 +69,7 @@ async def update_avatar(file: UploadFile, db: Session = DBDependency,
 @router.delete(path="/avatar",
                description="Delete user avatar",
                status_code=status.HTTP_204_NO_CONTENT)
-async def delete_avatar(db: Session = DBDependency,
+async def delete_avatar(db: Session = SessionDep,
                         user: User = Depends(user_if_profile_is_active)):
     return await manager.delete_user_avatar(db, user)
 
@@ -86,7 +86,7 @@ async def get_cover_image(user: User = Depends(user_if_profile_is_active)):
              description="Save user cover image",
              response_model=schemas.UserReadSchema,
              status_code=status.HTTP_201_CREATED)
-async def save_cover_image(file: UploadFile, db: Session = DBDependency,
+async def save_cover_image(file: UploadFile, db: Session = SessionDep,
                            user: User = Depends(user_if_profile_is_active)):
     return await manager.save_user_cover_image(file, db, user)
 
@@ -95,7 +95,7 @@ async def save_cover_image(file: UploadFile, db: Session = DBDependency,
             description="Update user cover image",
             response_model=schemas.UserReadSchema,
             status_code=status.HTTP_200_OK)
-async def update_cover_image(file: UploadFile, db: Session = DBDependency,
+async def update_cover_image(file: UploadFile, db: Session = SessionDep,
                              user: User = Depends(user_if_profile_is_active)):
     return await manager.save_user_cover_image(file, db, user)
 
@@ -103,7 +103,7 @@ async def update_cover_image(file: UploadFile, db: Session = DBDependency,
 @router.delete(path="/cover_image",
                description="Delete user cover image",
                status_code=status.HTTP_204_NO_CONTENT)
-async def delete_cover_image(db: Session = DBDependency,
+async def delete_cover_image(db: Session = SessionDep,
                              user: User = Depends(user_if_profile_is_active)):
     return await manager.delete_user_cover_image(db, user)
 
@@ -111,7 +111,7 @@ async def delete_cover_image(db: Session = DBDependency,
 @router.get(path="/{user_id}",
             description="Get user profile by id",
             response_model=schemas.UserReadSchema)
-async def get_user_profile_by_id(user_id: int, db: Session = DBDependency):
+async def get_user_profile_by_id(user_id: int, db: Session = SessionDep):
     return await manager.get_user_profile_by_id(user_id, db)
 
 
@@ -119,18 +119,19 @@ async def get_user_profile_by_id(user_id: int, db: Session = DBDependency):
             description="Update user profile",
             response_model=schemas.UserReadSchema)
 async def update_user_profile(user_id: int, data: schemas.UserProfileUpdateSchema,
-                              db: Session = DBDependency,
+                              db: Session = SessionDep,
                               user: User = Depends(user_if_profile_is_active)):
+    # TODO: email shouldn't be updated here, there should be a separate functionality to update email
     return await manager.update_user_profile(user_id, data, db, user)
 
 
 @router.delete(path='/{user_id}',
                description="Delete user profile",
                status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user_profile(user_id: int, response: Response, db: Session = DBDependency,
+async def delete_user_profile(user_id: int, response: Response, db: Session = SessionDep,
                               user: User = Depends(user_if_profile_is_active)):
     await manager.delete_user_profile(user_id, db, user)
-    response.delete_cookie(AUTH_TOKEN)
+    response.delete_cookie(settings.AUTH_TOKEN)
     return None
 
 
@@ -140,6 +141,6 @@ async def delete_user_profile(user_id: int, response: Response, db: Session = DB
             response_model=schemas.UserReadSchema)
 async def update_user_password(user_id: int,
                                data: schemas.UserPasswordUpdateSchema,
-                               db: Session = DBDependency,
+                               db: Session = SessionDep,
                                user: User = Depends(user_if_profile_is_active)):
     return await manager.update_user_password(user_id, data, db, user)

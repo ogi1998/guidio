@@ -6,19 +6,19 @@ from fastapi import HTTPException, status
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from pydantic import EmailStr
 
-from core.settings import DEFAULT_FROM_EMAIL
+from src.core.config import settings
 from src import config
 
 logging.basicConfig(level=logging.DEBUG)
 
 conf = ConnectionConfig(
-    MAIL_USERNAME=config.MAIL_USERNAME if config.MAIL_USERNAME else '',
-    MAIL_FROM=str(config.MAIL_FROM) if config.MAIL_FROM else DEFAULT_FROM_EMAIL,
-    MAIL_PASSWORD=config.MAIL_PASSWORD if config.MAIL_PASSWORD else '',
-    MAIL_SERVER=config.MAIL_SERVER if config.MAIL_SERVER else '',
-    MAIL_PORT=config.MAIL_PORT if config.MAIL_PORT else 587,
-    MAIL_STARTTLS=config.MAIL_STARTTLS if config.MAIL_STARTTLS else True,
-    MAIL_SSL_TLS=config.MAIL_SSL_TLS if config.MAIL_SSL_TLS else False,
+    MAIL_USERNAME=settings.SMTP_USER if settings.SMTP_USER else '',
+    MAIL_FROM=settings.EMAIL_TEST_USER,
+    MAIL_PASSWORD=settings.SMTP_PASSWORD if settings.SMTP_PASSWORD else '',
+    MAIL_SERVER=settings.SMTP_HOST if settings.SMTP_HOST else '',
+    MAIL_PORT=settings.SMTP_PORT if settings.SMTP_PORT else 587,
+    MAIL_STARTTLS=settings.SMTP_TLS if settings.SMTP_TLS else True,
+    MAIL_SSL_TLS=settings.SMTP_SSL if settings.SMTP_SSL else False,
     TEMPLATE_FOLDER=Path(__file__).parent.parent.parent / 'templates/mail/',
     SUPPRESS_SEND=config.SUPPRESS_SEND if config.SUPPRESS_SEND else 0,
 )
