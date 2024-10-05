@@ -1,0 +1,82 @@
+services:
+  database:
+    image: postgres:15.3-alpine3.18
+    container_name: guidio_db
+    restart: always
+    networks:
+      - guidio_network
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+
+  backend:
+    container_name: guidio_backend
+    restart: always
+    networks:
+      - guidio_network
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT}
+      - SECRET_KEY=${SECRET_KEY}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_SERVER=database
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_TLS=${SMTP_TLS}
+      - SMTP_SSL=${SMTP_SSL}
+      - SUPPRESS_SEND=${SUPPRESS_SEND}
+    command: sh -c "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000"
+    env_file:
+      - .env
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/code
+
+
+  frontend:
+    container_name: guidio_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - guidio_network
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+networks:
+  guidio_network:
+    name: guidio_network
+
+volumes:
+  db_data:
+    driver: local

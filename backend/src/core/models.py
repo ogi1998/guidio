@@ -1,12 +1,10 @@
-from datetime import datetime
 from typing import Any, Dict
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, func, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
-from core.constants import ACTIVATE_ACCOUNT_SUBJECT
 from src.database import Base
-from utils.mail.send_mail import send_mail
+from src.utils.mail.send_mail import send_mail
 
 
 # CODEBOOKS

@@ -1,14 +1,14 @@
-FROM python:3.11-alpine3.18 as requirements-stage
+FROM python:3.12-alpine3.20 AS requirements-stage
 
 WORKDIR /tmp
 
 RUN pip install poetry
 
 COPY ./pyproject.toml ./poetry.lock* /tmp/
- 
+
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-FROM python:3.11-alpine3.18
+FROM python:3.12-alpine3.20
 
 WORKDIR /code
 

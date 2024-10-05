@@ -6,8 +6,7 @@ from passlib.context import CryptContext
 
 from auth.dependencies import verify_token
 from auth.exceptions import UnauthorizedException
-from src.config import SECRET_KEY, ALGORITHM
-from src.config import TOKEN_EXP_MINUTES
+from core.config import settings
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -40,9 +39,9 @@ async def create_auth_token(user_id: int) -> str:
     token_creation_time = datetime.datetime.now(datetime.UTC)
     user_id_base64 = base64.b64encode(str(user_id).encode('utf-8')).decode('utf-8')
     encode = {"sub": user_id_base64, "iat": token_creation_time}
-    expire = token_creation_time + datetime.timedelta(minutes=float(TOKEN_EXP_MINUTES))
+    expire = token_creation_time + datetime.timedelta(minutes=float(settings.ACCESS_TOKEN_EXP_MINUTES))
     encode.update({"exp": expire})
-    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
 async def get_password_hash(password: str) -> str:

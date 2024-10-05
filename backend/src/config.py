@@ -1,12 +1,12 @@
-import os
+# TODO: Remove this file after env refactoring
 
-from dotenv import load_dotenv
+import os
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 TOKEN_EXP_MINUTES = os.getenv("TOKEN_EXP_MINUTES")
 
-load_dotenv()
+# load_dotenv() # TODO: Remove this after testing
 DB_USER = os.getenv('DB_USER')
 DB_PASS = os.getenv('DB_PASS')
 DB_HOST = os.getenv('DB_HOST')

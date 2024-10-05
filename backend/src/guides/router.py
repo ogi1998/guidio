@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, Query, Depends, UploadFile
 from sqlalchemy.orm import Session
 
 from auth.service import user_if_profile_is_active
-from core.dependencies import DBDependency
+from core.dependencies import SessionDep
 from core.models import User, Guide
 from guides import schemas, manager
 from guides.constants import RetrieveOrder
@@ -14,7 +14,7 @@ router = APIRouter()
             description="Get list of guides",
             status_code=status.HTTP_200_OK,
             response_model=schemas.GuideListReadSchema)
-async def get_guides(db: Session = DBDependency,
+async def get_guides(db: Session = SessionDep,
                      order: RetrieveOrder = Query(default=RetrieveOrder.descending,
                                                   description="Retrieve order: asc/desc"),
                      page: int = Query(default=1, ge=1, description="Page to request"),
@@ -31,7 +31,7 @@ async def get_guides(db: Session = DBDependency,
              status_code=status.HTTP_201_CREATED,
              response_model=schemas.GuideReadSchema)
 async def create_guide(data: schemas.GuideCreateUpdateSchema,
-                       db: Session = DBDependency,
+                       db: Session = SessionDep,
                        user: User = Depends(user_if_profile_is_active)) -> Guide:
     guide: Guide = await manager.create_guide(db, user, data)
     return guide
@@ -43,7 +43,7 @@ async def create_guide(data: schemas.GuideCreateUpdateSchema,
             status_code=status.HTTP_200_OK)
 async def get_featured_image(
         guide_id: int,
-        db: Session = DBDependency,
+        db: Session = SessionDep,
         user: User = Depends(user_if_profile_is_active)):
     return await manager.get_guide_featured_image(db, guide_id, user)
 
@@ -54,7 +54,7 @@ async def get_featured_image(
              status_code=status.HTTP_201_CREATED)
 async def save_featured_image(guide_id: int,
                               file: UploadFile,
-                              db: Session = DBDependency,
+                              db: Session = SessionDep,
                               user: User = Depends(user_if_profile_is_active)):
     return await manager.save_guide_featured_image(db, guide_id, user, file)
 
@@ -65,7 +65,7 @@ async def save_featured_image(guide_id: int,
             status_code=status.HTTP_200_OK)
 async def update_featured_image(guide_id: int,
                                 file: UploadFile,
-                                db: Session = DBDependency,
+                                db: Session = SessionDep,
                                 user: User = Depends(user_if_profile_is_active)):
     return await manager.save_guide_featured_image(db, guide_id, user, file)
 
@@ -74,7 +74,7 @@ async def update_featured_image(guide_id: int,
                description="Delete guide featured image",
                status_code=status.HTTP_204_NO_CONTENT)
 async def delete_featured_image(guide_id: int,
-                                db: Session = DBDependency,
+                                db: Session = SessionDep,
                                 user: User = Depends(user_if_profile_is_active)) -> None:
     return await manager.delete_guide_featured_image(guide_id, db, user)
 
@@ -87,7 +87,7 @@ async def get_guides_by_title(title: str,
                               page: int = Query(default=1, ge=1, description="Page to request"),
                               page_size: int = Query(default=50, ge=1, le=100,
                                                      description="Page size"),
-                              db: Session = DBDependency):
+                              db: Session = SessionDep):
     return await manager.get_guides_by_title(title, page, page_size, db)
 
 
@@ -99,7 +99,7 @@ async def get_guides_by_user_id(user_id: int,
                                 page: int = Query(default=1, ge=1, description="Page to request"),
                                 page_size: int = Query(default=50, ge=1, le=100,
                                                        description="Page size"),
-                                db: Session = DBDependency,
+                                db: Session = SessionDep,
                                 user: User = Depends(user_if_profile_is_active)):
     return await manager.get_guides_by_user_id(user_id, page, page_size, db, user)
 
@@ -109,7 +109,7 @@ async def get_guides_by_user_id(user_id: int,
             status_code=status.HTTP_200_OK,
             response_model=schemas.GuideReadSchema)
 async def get_guide_by_id(guide_id: int,
-                          db: Session = DBDependency):
+                          db: Session = SessionDep):
     return await manager.get_guide_by_id(guide_id, db)
 
 
@@ -118,7 +118,7 @@ async def get_guide_by_id(guide_id: int,
             status_code=status.HTTP_201_CREATED,
             response_model=schemas.GuideReadSchema)
 async def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
-                       db: Session = DBDependency,
+                       db: Session = SessionDep,
                        user: User = Depends(user_if_profile_is_active)):
     return await manager.update_guide(guide_id, data, db, user)
 
@@ -127,6 +127,6 @@ async def update_guide(guide_id: int, data: schemas.GuideCreateUpdateSchema,
                description="Delete guide",
                status_code=status.HTTP_204_NO_CONTENT)
 async def delete_guide(guide_id: int,
-                       db: Session = DBDependency,
+                       db: Session = SessionDep,
                        user: User = Depends(user_if_profile_is_active)):
     return await manager.delete_guide(guide_id, db, user)

@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from auth import schemas, manager, service
-from core.dependencies import DBDependency
+from core.config import settings
+from core.dependencies import SessionDep
 from core.models import User
-from core.settings import AUTH_TOKEN
 from users.schemas import UserIDSchema, UserReadSchema
 
 router = APIRouter()
@@ -14,14 +14,14 @@ router = APIRouter()
 
 @router.post(path="/send_verification_email",
              status_code=status.HTTP_200_OK)
-async def send_verification_email(request: Request, email: EmailStr, db: Session = DBDependency):
+async def send_verification_email(request: Request, email: EmailStr, db: Session = SessionDep):
     await manager.send_verification_email(request, email, db)
     return JSONResponse(content={"detail": "Activation email sent"})
 
 
 @router.get(path="/activate_user",
             status_code=status.HTTP_200_OK)
-async def activate_user(token: str, db: Session = DBDependency):
+async def activate_user(token: str, db: Session = SessionDep):
     await manager.activate_user(token, db)
     return JSONResponse(content={"detail": "Activation successful"}, status_code=status.HTTP_200_OK)
 
@@ -30,7 +30,7 @@ async def activate_user(token: str, db: Session = DBDependency):
              status_code=status.HTTP_201_CREATED,
              response_model=UserIDSchema)
 async def register_user(request: Request, data: schemas.RegistrationSchemaUser,
-                        db: Session = DBDependency) -> UserIDSchema:
+                        db: Session = SessionDep) -> UserIDSchema:
     user_id: int = await manager.register_user(request, data, db)
     return UserIDSchema(user_id=user_id)
 
@@ -38,9 +38,9 @@ async def register_user(request: Request, data: schemas.RegistrationSchemaUser,
 @router.post(path="/login",
              response_model=UserReadSchema)
 async def login_user(data: schemas.LoginSchema, response: Response,
-                     db: Session = DBDependency) -> UserReadSchema:
+                     db: Session = SessionDep) -> UserReadSchema:
     user, token = await manager.login_user(data.email, data.password, db)
-    response.set_cookie(key=AUTH_TOKEN, value=token)
+    response.set_cookie(key=settings.AUTH_TOKEN, value=token)
     return user
 
 
@@ -48,7 +48,7 @@ async def login_user(data: schemas.LoginSchema, response: Response,
 async def logout_user():
     response = JSONResponse(content={"message": "Logged out successfully"},
                             status_code=status.HTTP_200_OK)
-    response.delete_cookie(AUTH_TOKEN)
+    response.delete_cookie(settings.AUTH_TOKEN)
     return response
 
 
