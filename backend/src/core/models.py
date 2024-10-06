@@ -1,10 +1,11 @@
 from typing import Any, Dict
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, func, Text, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
 
-from src.database import Base
 from src.utils.mail.send_mail import send_mail
+
+Base = declarative_base()
 
 
 # CODEBOOKS
@@ -27,6 +28,7 @@ class User(Base):
     email = Column(String(120), unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
     is_active = Column(Boolean, default=False, nullable=True)
+    is_superuser = Column(Boolean, default=False, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user_details = relationship("UserDetail",

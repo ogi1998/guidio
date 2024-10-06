@@ -36,6 +36,8 @@ services:
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - SECRET_KEY=${SECRET_KEY}
+      - FIRST_SUPERUSER_EMAIL=${FIRST_SUPERUSER_EMAIL?Variable not set}
+      - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD?Variable not set}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
       - POSTGRES_SERVER=database
@@ -48,7 +50,7 @@ services:
       - SMTP_TLS=${SMTP_TLS}
       - SMTP_SSL=${SMTP_SSL}
       - SUPPRESS_SEND=${SUPPRESS_SEND}
-    command: sh -c "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000"
+    command: sh -c "sh prestart.sh && uvicorn src.main:app --host 0.0.0.0 --port 8000"
     env_file:
       - .env
     build:

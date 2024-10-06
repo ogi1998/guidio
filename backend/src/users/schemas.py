@@ -95,6 +95,7 @@ class UserListReadSchema(BaseModelSchema):
 class UserReadSchema(UserBaseSchema):
     user_id: int
     is_active: bool
+    is_superuser: bool
     user_details: UserDetailSchema | None
 
     class Config:
