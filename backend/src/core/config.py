@@ -1,7 +1,7 @@
 import secrets
 from typing import Literal
 
-from pydantic import computed_field, PostgresDsn
+from pydantic import computed_field, PostgresDsn, EmailStr
 from pydantic_core import MultiHostUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -43,7 +43,10 @@ class Settings(BaseSettings):
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
 
-    EMAIL_TEST_USER: str = "test@guidio.com"
+    FIRST_SUPERUSER_EMAIL: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
+
+    EMAIL_TEST_USER: EmailStr = "test@guidio.com"
 
 
 settings = Settings()
