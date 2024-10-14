@@ -60,7 +60,6 @@ services:
 
 
   frontend:
-    container_name: guidio_frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -68,12 +67,13 @@ services:
       - "3000:3000"
     networks:
       - guidio_network
+    container_name: guidio_frontend
     restart: always
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      WATCHPACK_POLLING: "true"
 
 networks:
   guidio_network:
